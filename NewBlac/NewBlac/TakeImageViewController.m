@@ -145,7 +145,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	dispatch_async([self sessionQueue], ^{
+	dispatch_async(self.sessionQueue, ^{
 		[self.session stopRunning];
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[self.videoDeviceInput device]];
@@ -173,6 +173,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		
 		// Capture a still image.
 		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+            // Creates exifAttachments
 			CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer,
                                                               kCGImagePropertyExifDictionary,
                                                               NULL);
@@ -189,6 +190,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
 			}
+            [self loadCroppedImageView];
 		}];
 	});
 }
@@ -206,9 +208,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     [self.canvas straightenCanvas];
     
     self.croppedImage = self.canvas.originalImage;
-    // Do manual segue to the next window to show the image captured
-    [self loadCroppedImageView];
-    
 }
 
 -(void)loadCroppedImageView
@@ -219,8 +218,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"View Image"]) {
-        if ([segue.destinationViewController respondsToSelector:@selector(setImageForCroppedImageView:)]) {
-            [segue.destinationViewController performSelector:@selector(setImageForCroppedImageView:) withObject:self.croppedImage];
+        if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
+            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.croppedImage];
         }
     }
 }
