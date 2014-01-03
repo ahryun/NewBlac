@@ -43,22 +43,6 @@
     }
 }
 
-@synthesize deviceModel = _deviceModel;
-- (NSString *)deviceModel
-{
-    if (!_deviceModel) {
-        _deviceModel = [[NSString alloc] init];
-    }
-    return _deviceModel;
-}
-
-- (void)setDeviceModel:(NSString *)deviceModel
-{
-    if (_deviceModel != deviceModel) {
-        _deviceModel = deviceModel;
-    }
-}
-
 - (cv::Mat)cvMatFromUIImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
@@ -132,7 +116,7 @@
     images.imageWidth = self.imageWidth;
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;
-    images.sensorWidth = [self.deviceModel isEqualToString:@"iphone 5s"] ? 4.8: 4.54;
+    images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];

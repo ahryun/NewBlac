@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91418760DB50045E642 /* TakeImageViewController.m */; };
+		F33EA918187612140045E642 /* StillImagePreview.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA917187612140045E642 /* StillImagePreview.m */; };
+		F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91A187641E90045E642 /* ViewImageViewController.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
 		F3B0ECD11857B10100143044 /* CvCanvasProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD01857B10100143044 /* CvCanvasProcessor.mm */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
@@ -52,6 +54,10 @@
 /* Begin PBXFileReference section */
 		F33EA91318760DB50045E642 /* TakeImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TakeImageViewController.h; sourceTree = "<group>"; };
 		F33EA91418760DB50045E642 /* TakeImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TakeImageViewController.m; sourceTree = "<group>"; };
+		F33EA916187612140045E642 /* StillImagePreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StillImagePreview.h; sourceTree = "<group>"; };
+		F33EA917187612140045E642 /* StillImagePreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StillImagePreview.m; sourceTree = "<group>"; };
+		F33EA919187641E90045E642 /* ViewImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewImageViewController.h; sourceTree = "<group>"; };
+		F33EA91A187641E90045E642 /* ViewImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewImageViewController.m; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
 		F3B0ECCB1857A5AF00143044 /* CanvasStraightener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanvasStraightener.hpp; path = ../CanvasStraightener.hpp; sourceTree = "<group>"; };
 		F3B0ECCF1857B10100143044 /* CvCanvasProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CvCanvasProcessor.h; sourceTree = "<group>"; };
@@ -210,6 +216,10 @@
 				F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */,
 				F33EA91318760DB50045E642 /* TakeImageViewController.h */,
 				F33EA91418760DB50045E642 /* TakeImageViewController.m */,
+				F33EA919187641E90045E642 /* ViewImageViewController.h */,
+				F33EA91A187641E90045E642 /* ViewImageViewController.m */,
+				F33EA916187612140045E642 /* StillImagePreview.h */,
+				F33EA917187612140045E642 /* StillImagePreview.m */,
 				F3B0ECD51857B93C00143044 /* Models */,
 				F3B0ECCE1857A60300143044 /* C++ Classes */,
 				F3B0ECCD1857A5F200143044 /* Storyboards */,
@@ -356,10 +366,12 @@
 			files = (
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
+				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.mm in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F3B0ECD11857B10100143044 /* CvCanvasProcessor.mm in Sources */,
 				F3F1AA8A18626B2A00307DFE /* CanvasStraightener_NotUsed.cpp in Sources */,
+				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
 			);

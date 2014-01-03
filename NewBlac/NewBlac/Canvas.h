@@ -23,7 +23,7 @@
 @property (nonatomic) float imageWidth;
 @property (nonatomic) float imageHeight;
 @property (nonatomic) float focalLength;
-@property (strong, nonatomic) NSString *deviceModel;
+@property (nonatomic) float apertureSize;
 
 - (void)straightenCanvas;
 
