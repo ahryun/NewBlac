@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Photo" syncable="YES">
+        <attribute name="cornerArray" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="croppedPhoto" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="orderInVideo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalPhoto" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="uniqueID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="photos" inverseEntity="Video" syncable="YES"/>
+    </entity>
+    <entity name="Video" syncable="YES">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoComp" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Photo" inverseName="video" inverseEntity="Photo" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Photo" positionX="117" positionY="180" width="128" height="133"/>
+        <element name="Video" positionX="450" positionY="189" width="128" height="103"/>
+    </elements>
+</model>

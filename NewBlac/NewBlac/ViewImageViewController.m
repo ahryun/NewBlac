@@ -18,6 +18,7 @@
 
 - (void)setPhoto:(UIImage *)photo
 {
+    // Need to change to Core Data
     _photo = photo;
 }
 
@@ -34,8 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    NSLog(@"I'm in view did load\n");
+    
     [self displayPhoto];
     
 }
