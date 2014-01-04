@@ -11,7 +11,6 @@
 		F33EA918187612140045E642 /* StillImagePreview.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA917187612140045E642 /* StillImagePreview.m */; };
 		F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91A187641E90045E642 /* ViewImageViewController.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
-		F3B0ECD11857B10100143044 /* CvCanvasProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD01857B10100143044 /* CvCanvasProcessor.mm */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
 		F3C028AA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028A91843F5BD00FF08F1 /* Foundation.framework */; };
 		F3C028AC1843F5BD00FF08F1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028AB1843F5BD00FF08F1 /* CoreGraphics.framework */; };
@@ -31,14 +30,11 @@
 		F3C028F9184429D800FF08F1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028F8184429D800FF08F1 /* AVFoundation.framework */; };
 		F3C028FB184429E100FF08F1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028FA184429E100FF08F1 /* MobileCoreServices.framework */; };
 		F3C028FD18442A0300FF08F1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028FC18442A0300FF08F1 /* libc++.dylib */; };
-		F3C028FF18442A2500FF08F1 /* overlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3C028FE18442A2500FF08F1 /* overlayView.xib */; };
-		F3C0290118442A3200FF08F1 /* previewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3C0290018442A3200FF08F1 /* previewView.xib */; };
 		F3C0290718443ADB00FF08F1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290218443ADB00FF08F1 /* Accelerate.framework */; };
 		F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290318443ADB00FF08F1 /* AssetsLibrary.framework */; };
 		F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290418443ADB00FF08F1 /* CoreImage.framework */; };
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
 		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; };
-		F3F1AA8A18626B2A00307DFE /* CanvasStraightener_NotUsed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3F1AA8818626B2A00307DFE /* CanvasStraightener_NotUsed.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,8 +56,6 @@
 		F33EA91A187641E90045E642 /* ViewImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewImageViewController.m; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
 		F3B0ECCB1857A5AF00143044 /* CanvasStraightener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanvasStraightener.hpp; path = ../CanvasStraightener.hpp; sourceTree = "<group>"; };
-		F3B0ECCF1857B10100143044 /* CvCanvasProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CvCanvasProcessor.h; sourceTree = "<group>"; };
-		F3B0ECD01857B10100143044 /* CvCanvasProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CvCanvasProcessor.mm; sourceTree = "<group>"; };
 		F3B0ECD21857B93100143044 /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
 		F3B0ECD31857B93100143044 /* Canvas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Canvas.mm; sourceTree = "<group>"; };
 		F3C028A61843F5BD00FF08F1 /* NewBlac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewBlac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,15 +81,11 @@
 		F3C028F8184429D800FF08F1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F3C028FA184429E100FF08F1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F3C028FC18442A0300FF08F1 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		F3C028FE18442A2500FF08F1 /* overlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = overlayView.xib; sourceTree = "<group>"; };
-		F3C0290018442A3200FF08F1 /* previewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = previewView.xib; sourceTree = "<group>"; };
 		F3C0290218443ADB00FF08F1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F3C0290318443ADB00FF08F1 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		F3C0290418443ADB00FF08F1 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		F3C0290518443ADB00FF08F1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F3C0290618443ADB00FF08F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F3F1AA8818626B2A00307DFE /* CanvasStraightener_NotUsed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CanvasStraightener_NotUsed.cpp; sourceTree = "<group>"; };
-		F3F1AA8918626B2A00307DFE /* CanvasStraightener_NotUsed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CanvasStraightener_NotUsed.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,23 +121,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F377F7181857F2CF0040D6DE /* Trash */ = {
-			isa = PBXGroup;
-			children = (
-				F3B0ECCF1857B10100143044 /* CvCanvasProcessor.h */,
-				F3B0ECD01857B10100143044 /* CvCanvasProcessor.mm */,
-				F3F1AA8918626B2A00307DFE /* CanvasStraightener_NotUsed.hpp */,
-				F3F1AA8818626B2A00307DFE /* CanvasStraightener_NotUsed.cpp */,
-			);
-			name = Trash;
-			sourceTree = "<group>";
-		};
 		F3B0ECCD1857A5F200143044 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
 				F3C028BB1843F5BD00FF08F1 /* Main.storyboard */,
-				F3C028FE18442A2500FF08F1 /* overlayView.xib */,
-				F3C0290018442A3200FF08F1 /* previewView.xib */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -223,7 +200,6 @@
 				F3B0ECD51857B93C00143044 /* Models */,
 				F3B0ECCE1857A60300143044 /* C++ Classes */,
 				F3B0ECCD1857A5F200143044 /* Storyboards */,
-				F377F7181857F2CF0040D6DE /* Trash */,
 				F3C028B01843F5BD00FF08F1 /* Supporting Files */,
 			);
 			path = NewBlac;
@@ -342,8 +318,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3C028C21843F5BD00FF08F1 /* Images.xcassets in Resources */,
-				F3C0290118442A3200FF08F1 /* previewView.xib in Resources */,
-				F3C028FF18442A2500FF08F1 /* overlayView.xib in Resources */,
 				F3C028B41843F5BD00FF08F1 /* InfoPlist.strings in Resources */,
 				F3C028BD1843F5BD00FF08F1 /* Main.storyboard in Resources */,
 			);
@@ -369,8 +343,6 @@
 				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.mm in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
-				F3B0ECD11857B10100143044 /* CvCanvasProcessor.mm in Sources */,
-				F3F1AA8A18626B2A00307DFE /* CanvasStraightener_NotUsed.cpp in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,

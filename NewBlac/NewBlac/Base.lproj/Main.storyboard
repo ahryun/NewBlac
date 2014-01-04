@@ -106,7 +106,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Wb-DZ-ch2">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Wb-DZ-ch2">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
@@ -126,6 +126,12 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4Wb-DZ-ch2" firstAttribute="top" secondItem="ppV-eC-b9u" secondAttribute="top" id="2g8-gQ-enL"/>
+                            <constraint firstAttribute="bottom" secondItem="4Wb-DZ-ch2" secondAttribute="bottom" id="JxS-Zy-Vjd"/>
+                            <constraint firstItem="4Wb-DZ-ch2" firstAttribute="leading" secondItem="ppV-eC-b9u" secondAttribute="leading" id="VNt-dJ-pmK"/>
+                            <constraint firstAttribute="trailing" secondItem="4Wb-DZ-ch2" secondAttribute="trailing" id="eij-ci-U81"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="croppedImageView" destination="4Wb-DZ-ch2" id="w8n-vk-FFt"/>
