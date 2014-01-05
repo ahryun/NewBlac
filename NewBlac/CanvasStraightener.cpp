@@ -221,7 +221,7 @@ double CanvasStraightener::getAspectRatio(const cv::Mat &image, vector<Point> &s
     
     cout << "The aspect ratio is " << aspectRatio << "\n";
     
-    return aspectRatio;
+    return aspectRatio; // width / height
 }
 
 void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&originalImage, vector<Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
@@ -261,8 +261,16 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
         }
         
         float aspectRatio = getAspectRatio(image, square, imageWidth, imageHeight, focalLength, sensorWidth);
-        float rectWidth = 2000.0;
-        float rectHeight = rectWidth / aspectRatio;
+        
+        // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
+        float rectWidth, rectHeight;
+        if (aspectRatio > 1.0) {
+            rectWidth = 2000.0;
+            rectHeight = rectWidth / aspectRatio;
+        } else {
+            rectHeight = 2000.0;
+            rectWidth = rectHeight * aspectRatio;
+        }
         
         outputQuad[0] = Point2f(0,rectHeight);
         outputQuad[1] = Point2f(rectWidth,rectHeight);

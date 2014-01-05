@@ -11,6 +11,10 @@
 		F33EA918187612140045E642 /* StillImagePreview.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA917187612140045E642 /* StillImagePreview.m */; };
 		F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91A187641E90045E642 /* ViewImageViewController.m */; };
 		F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */; };
+		F33EA9361878CF010045E642 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33EA9351878CF010045E642 /* CoreData.framework */; };
+		F33EA93F1878F45A0045E642 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA93E1878F45A0045E642 /* Photo.m */; };
+		F33EA9421878F45B0045E642 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA9411878F45B0045E642 /* PhotoCorners.m */; };
+		F33EA9451878F45B0045E642 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA9441878F45B0045E642 /* Video.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
 		F3C028AA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028A91843F5BD00FF08F1 /* Foundation.framework */; };
@@ -18,7 +22,7 @@
 		F3C028AE1843F5BD00FF08F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028AD1843F5BD00FF08F1 /* UIKit.framework */; };
 		F3C028B41843F5BD00FF08F1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3C028B21843F5BD00FF08F1 /* InfoPlist.strings */; };
 		F3C028B61843F5BD00FF08F1 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3C028B51843F5BD00FF08F1 /* main.mm */; };
-		F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.mm */; };
+		F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */; };
 		F3C028BD1843F5BD00FF08F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3C028BB1843F5BD00FF08F1 /* Main.storyboard */; };
 		F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */; };
 		F3C028C21843F5BD00FF08F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C028C11843F5BD00FF08F1 /* Images.xcassets */; };
@@ -56,6 +60,13 @@
 		F33EA919187641E90045E642 /* ViewImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewImageViewController.h; sourceTree = "<group>"; };
 		F33EA91A187641E90045E642 /* ViewImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewImageViewController.m; sourceTree = "<group>"; };
 		F33EA9201877A4FC0045E642 /* ArtProgressCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ArtProgressCoreData.xcdatamodel; sourceTree = "<group>"; };
+		F33EA9351878CF010045E642 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F33EA93D1878F45A0045E642 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
+		F33EA93E1878F45A0045E642 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
+		F33EA9401878F45B0045E642 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
+		F33EA9411878F45B0045E642 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
+		F33EA9431878F45B0045E642 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
+		F33EA9441878F45B0045E642 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
 		F3B0ECCB1857A5AF00143044 /* CanvasStraightener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanvasStraightener.hpp; path = ../CanvasStraightener.hpp; sourceTree = "<group>"; };
 		F3B0ECD21857B93100143044 /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
@@ -69,7 +80,7 @@
 		F3C028B51843F5BD00FF08F1 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		F3C028B71843F5BD00FF08F1 /* NewBlac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NewBlac-Prefix.pch"; sourceTree = "<group>"; };
 		F3C028B81843F5BD00FF08F1 /* newBlacAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newBlacAppDelegate.h; sourceTree = "<group>"; };
-		F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = newBlacAppDelegate.mm; sourceTree = "<group>"; };
+		F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newBlacAppDelegate.m; sourceTree = "<group>"; };
 		F3C028BC1843F5BD00FF08F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F3C028BE1843F5BD00FF08F1 /* NewBlacViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewBlacViewController.h; sourceTree = "<group>"; };
 		F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewBlacViewController.m; sourceTree = "<group>"; };
@@ -95,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F33EA9361878CF010045E642 /* CoreData.framework in Frameworks */,
 				F3C0290718443ADB00FF08F1 /* Accelerate.framework in Frameworks */,
 				F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */,
 				F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */,
@@ -127,6 +139,12 @@
 			isa = PBXGroup;
 			children = (
 				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
+				F33EA9431878F45B0045E642 /* Video.h */,
+				F33EA9441878F45B0045E642 /* Video.m */,
+				F33EA9401878F45B0045E642 /* PhotoCorners.h */,
+				F33EA9411878F45B0045E642 /* PhotoCorners.m */,
+				F33EA93D1878F45A0045E642 /* Photo.h */,
+				F33EA93E1878F45A0045E642 /* Photo.m */,
 			);
 			name = "Core Data";
 			path = ..;
@@ -180,6 +198,7 @@
 		F3C028A81843F5BD00FF08F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F33EA9351878CF010045E642 /* CoreData.framework */,
 				F3C0290218443ADB00FF08F1 /* Accelerate.framework */,
 				F3C0290318443ADB00FF08F1 /* AssetsLibrary.framework */,
 				F3C0290418443ADB00FF08F1 /* CoreImage.framework */,
@@ -222,7 +241,7 @@
 			children = (
 				F3C028C11843F5BD00FF08F1 /* Images.xcassets */,
 				F3C028B81843F5BD00FF08F1 /* newBlacAppDelegate.h */,
-				F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.mm */,
+				F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */,
 				F3C028B11843F5BD00FF08F1 /* NewBlac-Info.plist */,
 				F3C028B21843F5BD00FF08F1 /* InfoPlist.strings */,
 				F3C028B51843F5BD00FF08F1 /* main.mm */,
@@ -353,12 +372,15 @@
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
 				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
-				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.mm in Sources */,
+				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
+				F33EA93F1878F45A0045E642 /* Photo.m in Sources */,
+				F33EA9451878F45B0045E642 /* Video.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
+				F33EA9421878F45B0045E642 /* PhotoCorners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

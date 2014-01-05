@@ -188,9 +188,15 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
                 
+                // Save the original image to a file system and save URL to core data
+                NSString *imagePath = [self getOriginalImageFilePath:imageData];
+                
                 [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
 			}
-            [self loadCroppedImageView];
+            // Once image is manipulated and ready to be shown, segue to the next page
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self performSegueWithIdentifier:@"View Image" sender:self];
+            });
 		}];
 	});
 }
@@ -210,9 +216,24 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     self.croppedImage = self.canvas.originalImage;
 }
 
--(void)loadCroppedImageView
+- (NSString *)getOriginalImageFilePath:(NSData *)photoData
 {
-    [self performSegueWithIdentifier:@"View Image" sender:self];
+    NSString *UUID = [[NSUUID UUID] UUIDString];
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath =[documentPaths objectAtIndex:0];
+    NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"OriginalImage"];
+    NSString *imgPath = [originalImageDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", UUID]];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    if (![fileManager fileExistsAtPath:imgPath]) {
+        [fileManager createDirectoryAtPath:originalImageDir withIntermediateDirectories:YES attributes:nil error:nil];
+        BOOL success = [fileManager createFileAtPath:imgPath contents:photoData attributes:nil];
+        if (!success) NSLog(@"Photo did NOT get saved correctly");
+    } else {
+        NSLog(@"File exists");
+    }
+    return imgPath;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
