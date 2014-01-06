@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Photo+LifeCycle.h"
 
 @interface ViewImageViewController : UIViewController
 
-@property (nonatomic, strong) UIImage *photo;
+@property (nonatomic, strong) Photo *photo;
 
 @end

@@ -16,7 +16,7 @@
 
 @implementation ViewImageViewController
 
-- (void)setPhoto:(UIImage *)photo
+- (void)setPhoto:(Photo *)photo
 {
     // Need to change to Core Data
     _photo = photo;
@@ -24,12 +24,14 @@
 
 - (void)displayPhoto
 {
-    if (self.photo) {
-        NSLog(@"Image exists and the image size is %f x %f\n", self.photo.size.width, self.photo.size.height);
-        // image is a UIImage init alloced with NSData
-        self.croppedImageView.image = self.photo;
-        self.croppedImageView.frame = CGRectMake(0, 0, self.photo.size.width, self.photo.size.height);
-    }
+    // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
+    
+//    if (self.photo) {
+//        NSLog(@"Image exists and the image size is %f x %f\n", self.photo.size.width, self.photo.size.height);
+//        // image is a UIImage init alloced with NSData
+//        self.croppedImageView.image = self.photo;
+//        self.croppedImageView.frame = CGRectMake(0, 0, self.photo.size.width, self.photo.size.height);
+//    }
 }
 
 - (void)viewDidLoad

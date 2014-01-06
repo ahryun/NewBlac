@@ -208,9 +208,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     imagePath = [self saveUIImage:image toFilePath:nil];
                     croppedImagePath = [self saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
                     [self.managedObjectContext performBlock:^{
-                        // Photo entity is created in core data with paths to original photo and cropped photo
-                        self.photo = [Photo photoWithOriginalPhotoFilePath:imagePath inManagedObjectContext:self.managedObjectContext];
-                        // Must also save the coordinates
+                        // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
+                        self.photo = [Photo photoWithOriginalPhotoFilePath:imagePath withCoordinates:self.canvas.coordinates inManagedObjectContext:self.managedObjectContext];
                     }];
                 });
 			}
@@ -264,7 +263,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 {
     if ([segue.identifier isEqualToString:@"View Image"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
-            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.croppedImage];
+            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.photo];
         }
     }
 }

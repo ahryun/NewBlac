@@ -7,10 +7,11 @@
 //
 
 #import "Photo+LifeCycle.h"
+#import "PhotoCorners+LifeCycle.h"
 
 @implementation Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context
++ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context
 {
     Photo *photo = nil;
     
@@ -27,6 +28,8 @@
         photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
         [photo setOriginalPhotoFilePath:path];
         [photo setCroppedPhotoFilePath:[path stringByAppendingString:@"_cropped"]];
+        PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates withManagedObjectContext:context];
+        [photo setCanvasRect:photoCorners];
     } else {
         photo = [matches lastObject];
     }

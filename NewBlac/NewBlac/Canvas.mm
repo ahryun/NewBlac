@@ -103,6 +103,20 @@
     return finalImage;
 }
 
+- (NSArray *)convertToNSArray:(cv::Point2f[])array
+{
+    NSMutableArray *convertedArray = [[NSMutableArray alloc] init];
+    
+    // Need some rethinking and refactoring
+    for (int i = 0; i < sizeof(*array); i++) {
+        NSMutableArray *point = [NSMutableArray arrayWithObjects:[NSNumber numberWithFloat:array[i].x], [NSNumber numberWithFloat:array[i].y], nil];
+        [convertedArray addObject:point];
+    }
+    NSLog(@"%@", convertedArray);
+    
+    return convertedArray;
+}
+
 - (void)straightenCanvas
 {
     NSLog(@"Photo dimensions are %f by %f", self.imageWidth, self.imageHeight);
@@ -120,6 +134,7 @@
     
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
+    self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
 }
 
 // Images captured by iPhone camera are rotated 90 degree automatically
@@ -146,6 +161,8 @@
                 bounds.size.width = bounds.size.height * ratio;
             }
         }
+    } else {
+        // if original image, no scaling done.
     }
     
     CGFloat scaleRatio = bounds.size.width / width;
