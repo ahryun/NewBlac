@@ -2,20 +2,20 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Photo" representedClassName="Photo" syncable="YES">
         <attribute name="croppedPhotoFilePath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="orderInVideo" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="originalPhotoFilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeTaken" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="canvasRect" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PhotoCorners" inverseName="originalPhoto" inverseEntity="PhotoCorners" syncable="YES"/>
         <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="photos" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="PhotoCorners" representedClassName="PhotoCorners" syncable="YES">
-        <attribute name="bottomLeftx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomLefty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomRightx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomRighty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topLeftx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topLefty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topRightx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topRighty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomLeftx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomLefty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomRightx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomRighty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topLeftx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topLefty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topRightx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topRighty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
         <relationship name="originalPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="canvasRect" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">

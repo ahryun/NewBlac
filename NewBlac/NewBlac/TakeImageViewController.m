@@ -13,6 +13,8 @@
 #import "StillImagePreview.h"
 #import "Canvas.h"
 #import "ViewImageViewController.h"
+#import "SharedManagedDocument.h"
+#import "Photo+LifeCycle.h"
 
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
@@ -21,6 +23,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @interface TakeImageViewController ()
 
 @property (nonatomic, weak) IBOutlet StillImagePreview *stillImagePreview;
+@property (nonatomic, strong) Photo *photo;
 @property (weak, nonatomic) IBOutlet UIButton *cancelCamera;
 @property (nonatomic) Canvas *canvas;
 @property (nonatomic) dispatch_queue_t sessionQueue;
@@ -119,6 +122,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if (!self.managedObjectContext) [self useDemoDocument];
+    
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
                   options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
@@ -141,6 +146,13 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		}]];
 		[[self session] startRunning];
 	});
+}
+
+- (void)useDemoDocument
+{
+    [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
+        self.managedObjectContext = document.managedObjectContext;
+    }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -189,9 +201,18 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
                 
                 // Save the original image to a file system and save URL to core data
-                NSString *imagePath = [self getOriginalImageFilePath:imageData];
-                
-                [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
+                dispatch_queue_t saveQ = dispatch_queue_create("Load Flickr", nil);
+                dispatch_async(saveQ, ^{
+                    [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
+                    NSString *imagePath, *croppedImagePath;
+                    imagePath = [self saveUIImage:image toFilePath:nil];
+                    croppedImagePath = [self saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
+                    [self.managedObjectContext performBlock:^{
+                        // Photo entity is created in core data with paths to original photo and cropped photo
+                        self.photo = [Photo photoWithOriginalPhotoFilePath:imagePath inManagedObjectContext:self.managedObjectContext];
+                        // Must also save the coordinates
+                    }];
+                });
 			}
             // Once image is manipulated and ready to be shown, segue to the next page
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -216,22 +237,25 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     self.croppedImage = self.canvas.originalImage;
 }
 
-- (NSString *)getOriginalImageFilePath:(NSData *)photoData
+- (NSString *)saveUIImage:(UIImage *)image toFilePath:(NSString *)imgPath
 {
-    NSString *UUID = [[NSUUID UUID] UUIDString];
-    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath =[documentPaths objectAtIndex:0];
-    NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"OriginalImage"];
-    NSString *imgPath = [originalImageDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", UUID]];
-    
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     
-    if (![fileManager fileExistsAtPath:imgPath]) {
+    if (!imgPath) {
+        NSString *UUID = [[NSUUID UUID] UUIDString];
+        NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentPath =[documentPaths objectAtIndex:0];
+        NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"Images"];
         [fileManager createDirectoryAtPath:originalImageDir withIntermediateDirectories:YES attributes:nil error:nil];
-        BOOL success = [fileManager createFileAtPath:imgPath contents:photoData attributes:nil];
+        imgPath = [originalImageDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", UUID]];
+    }
+    
+    if (![fileManager fileExistsAtPath:imgPath]) {
+        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+        BOOL success = [fileManager createFileAtPath:imgPath contents:imageData attributes:nil];
         if (!success) NSLog(@"Photo did NOT get saved correctly");
     } else {
-        NSLog(@"File exists");
+        NSLog(@"File exists. Possibly UUID collision. This should never happen.\n");
     }
     return imgPath;
 }
@@ -244,7 +268,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
         }
     }
 }
-
 
 #pragma mark Device Configuration
 
@@ -380,6 +403,5 @@ monitorSubjectAreaChange:NO];
 		}
 	}];
 }
-
 
 @end
