@@ -10,6 +10,6 @@
 
 @interface Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context;
++ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCroppedPhotoFilePath:(NSString *)croppedPath withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

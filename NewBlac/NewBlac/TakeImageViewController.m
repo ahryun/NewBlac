@@ -209,7 +209,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     croppedImagePath = [self saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-                        self.photo = [Photo photoWithOriginalPhotoFilePath:imagePath withCoordinates:self.canvas.coordinates inManagedObjectContext:self.managedObjectContext];
+                        self.photo = [Photo photoWithOriginalPhotoFilePath:[imagePath stringByAppendingString:@".jpg"]
+                                                  withCroppedPhotoFilePath:[croppedImagePath stringByAppendingString:@".jpg"]
+                                                           withCoordinates:self.canvas.coordinates
+                                                    inManagedObjectContext:self.managedObjectContext];
                         [self performSegueWithIdentifier:@"View Image" sender:self];
                     }];
                 });
@@ -246,9 +249,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
         imgPath = [originalImageDir stringByAppendingPathComponent:UUID];
     }
     
-    if (![fileManager fileExistsAtPath:imgPath]) {
+    NSString *imgPathWithFormat = [imgPath stringByAppendingString:@".jpg"];
+    if (![fileManager fileExistsAtPath:imgPathWithFormat]) {
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        BOOL success = [fileManager createFileAtPath:[imgPath stringByAppendingString:@".jpg"] contents:imageData attributes:nil];
+        BOOL success = [fileManager createFileAtPath:imgPathWithFormat contents:imageData attributes:nil];
         if (!success) NSLog(@"Photo did NOT get saved correctly");
     } else {
         NSLog(@"File exists. Possibly UUID collision. This should never happen.\n");

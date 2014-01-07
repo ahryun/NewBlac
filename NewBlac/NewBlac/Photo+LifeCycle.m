@@ -11,7 +11,7 @@
 
 @implementation Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context
++ (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCroppedPhotoFilePath:(NSString *)croppedPath withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context
 {
     Photo *photo = nil;
     
@@ -27,7 +27,7 @@
     } else if (![matches count]) {
         photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
         [photo setOriginalPhotoFilePath:path];
-        [photo setCroppedPhotoFilePath:[path stringByAppendingString:@"_cropped"]];
+        [photo setCroppedPhotoFilePath:croppedPath];
         PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates withManagedObjectContext:context];
         [photo setCanvasRect:photoCorners];
     } else {
