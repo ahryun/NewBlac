@@ -8,14 +8,14 @@
         <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="photos" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="PhotoCorners" representedClassName="PhotoCorners" syncable="YES">
-        <attribute name="bottomLeftx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomLefty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomRightx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="bottomRighty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topLeftx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topLefty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topRightx" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="topRighty" optional="YES" attributeType="Float" maxValueString="1" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomLeftx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomLefty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomRightx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="bottomRighty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topLeftx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topLefty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topRightx" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="topRighty" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="originalPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="canvasRect" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">

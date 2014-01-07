@@ -2,7 +2,7 @@
 //  Video.h
 //  NewBlac
 //
-//  Created by Ahryun Moon on 1/5/14.
+//  Created by Ahryun Moon on 1/6/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 

@@ -17,4 +17,14 @@
 @implementation NewBlacViewController
 
 
+- (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
+{
+    // Add the photo to the buffer
+}
+
+- (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
+{
+    // Add the photo to the buffer
+}
+
 @end

@@ -12,6 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *croppedImageView;
 
+- (IBAction)editImage:(UIGestureRecognizer *)gestureRecognizer;
+
 @end
 
 @implementation ViewImageViewController
@@ -25,13 +27,14 @@
 - (void)displayPhoto
 {
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
-    
-//    if (self.photo) {
-//        NSLog(@"Image exists and the image size is %f x %f\n", self.photo.size.width, self.photo.size.height);
-//        // image is a UIImage init alloced with NSData
-//        self.croppedImageView.image = self.photo;
-//        self.croppedImageView.frame = CGRectMake(0, 0, self.photo.size.width, self.photo.size.height);
-//    }
+    if (self.photo) {
+        NSData *photoData = [NSData dataWithContentsOfFile:self.photo.croppedPhotoFilePath];
+        self.croppedImageView.image = [UIImage imageWithData:photoData];
+        self.croppedImageView.frame = CGRectMake(0,
+                                                 0,
+                                                 self.croppedImageView.image.size.width,
+                                                 self.croppedImageView.image.size.height);
+    }
 }
 
 - (void)viewDidLoad
@@ -47,5 +50,27 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
+{
+    // Nothing necessary to be done here
+}
+
+- (IBAction)editImage:(UIGestureRecognizer *)gestureRecognizer
+{
+    // manual segue to the next page where user can edit the location of corners
+    NSLog(@"I wanna edit the image\n");
+    [self performSegueWithIdentifier:@"Edit Image" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Edit Image"]) {
+        if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
+            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.photo];
+        }
+    }
+}
+
 
 @end

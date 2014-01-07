@@ -210,13 +210,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
                         self.photo = [Photo photoWithOriginalPhotoFilePath:imagePath withCoordinates:self.canvas.coordinates inManagedObjectContext:self.managedObjectContext];
+                        [self performSegueWithIdentifier:@"View Image" sender:self];
                     }];
                 });
 			}
-            // Once image is manipulated and ready to be shown, segue to the next page
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self performSegueWithIdentifier:@"View Image" sender:self];
-            });
 		}];
 	});
 }
@@ -238,7 +235,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (NSString *)saveUIImage:(UIImage *)image toFilePath:(NSString *)imgPath
 {
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
     if (!imgPath) {
         NSString *UUID = [[NSUUID UUID] UUIDString];
@@ -246,12 +243,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
         NSString *documentPath =[documentPaths objectAtIndex:0];
         NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"Images"];
         [fileManager createDirectoryAtPath:originalImageDir withIntermediateDirectories:YES attributes:nil error:nil];
-        imgPath = [originalImageDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", UUID]];
+        imgPath = [originalImageDir stringByAppendingPathComponent:UUID];
     }
     
     if (![fileManager fileExistsAtPath:imgPath]) {
         NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        BOOL success = [fileManager createFileAtPath:imgPath contents:imageData attributes:nil];
+        BOOL success = [fileManager createFileAtPath:[imgPath stringByAppendingString:@".jpg"] contents:imageData attributes:nil];
         if (!success) NSLog(@"Photo did NOT get saved correctly");
     } else {
         NSLog(@"File exists. Possibly UUID collision. This should never happen.\n");
@@ -401,6 +398,19 @@ monitorSubjectAreaChange:NO];
 			});
 		}
 	}];
+}
+
+- (IBAction)unwindToRetakePhoto:(UIStoryboardSegue *)segue
+{
+    // Nothing needed here
+    [self.managedObjectContext performBlock:^{
+        // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error = nil;
+        [fileManager removeItemAtPath:self.photo.originalPhotoFilePath error:&error];
+        [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:&error];
+        [self.managedObjectContext deleteObject:self.photo];
+    }];
 }
 
 @end
