@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D845E431-6023-4799-A0E0-4810A771A363</string>
+	<key>IDESourceControlProjectName</key>
+	<string>NewBlac</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>CBDAF3A1-CCDC-4544-95CC-7178FA935A59</key>
+		<string>https://github.com/ahryun/NewBlac.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>NewBlac/NewBlac.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>CBDAF3A1-CCDC-4544-95CC-7178FA935A59</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ahryun/NewBlac.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>CBDAF3A1-CCDC-4544-95CC-7178FA935A59</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CBDAF3A1-CCDC-4544-95CC-7178FA935A59</string>
+			<key>IDESourceControlWCCName</key>
+			<string>NewBlac</string>
+		</dict>
+	</array>
+</dict>
+</plist>

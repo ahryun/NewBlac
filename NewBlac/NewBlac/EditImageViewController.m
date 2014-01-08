@@ -7,10 +7,14 @@
 //
 
 #import "EditImageViewController.h"
+#import "CornerDetectionView.h"
+#import "PhotoCorners+LifeCycle.h"
 
-@interface EditImageViewController ()
+@interface EditImageViewController () <CornerDetectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *originalImageView;
+@property (strong, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
+
 
 @end
 
@@ -25,7 +29,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    // Sets the controller as a delegate for CornerDetectionView
+    self.cornerDetectionView.delegate = self;
     [self displayPhoto];
 }
 
@@ -45,6 +51,15 @@
                                                  self.originalImageView.image.size.width,
                                                  self.originalImageView.image.size.height);
     }
+}
+
+- (void)displayCorners
+{
+    // Display 4 corners
+    if (self.photo) {
+        [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftx, self.photo.canvasRect.bottomLefty];
+    }
+    
 }
 
 

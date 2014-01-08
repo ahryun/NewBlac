@@ -1,0 +1,33 @@
+//
+//  CornerDetectionView.m
+//  NewBlac
+//
+//  Created by Ahryun Moon on 1/7/14.
+//  Copyright (c) 2014 Ahryun Moon. All rights reserved.
+//
+
+#import "CornerDetectionView.h"
+
+@implementation CornerDetectionView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+    
+    
+}
+
+@synthesize delegate;
+
+@end

@@ -45,6 +45,7 @@
 		F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290418443ADB00FF08F1 /* CoreImage.framework */; };
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
 		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; };
+		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,8 @@
 		F3C0290418443ADB00FF08F1 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		F3C0290518443ADB00FF08F1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F3C0290618443ADB00FF08F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
+		F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerDetectionView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +253,8 @@
 				F33EA91A187641E90045E642 /* ViewImageViewController.m */,
 				F33EA991187BA1380045E642 /* EditImageViewController.h */,
 				F33EA992187BA1380045E642 /* EditImageViewController.m */,
+				F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */,
+				F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
 				F33EA917187612140045E642 /* StillImagePreview.m */,
 				F3B0ECD51857B93C00143044 /* Models */,
@@ -405,6 +410,7 @@
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,
 				F33EA98D187B8ABA0045E642 /* Video.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
+				F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F33EA990187B8ABA0045E642 /* Photo.m in Sources */,
