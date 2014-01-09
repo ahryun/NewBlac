@@ -2,7 +2,7 @@
 //  PhotoCorners.m
 //  NewBlac
 //
-//  Created by Ahryun Moon on 1/6/14.
+//  Created by Ahryun Moon on 1/8/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -12,14 +12,14 @@
 
 @implementation PhotoCorners
 
-@dynamic bottomLeftx;
-@dynamic bottomLefty;
-@dynamic bottomRightx;
-@dynamic topRighty;
-@dynamic topRightx;
-@dynamic topLefty;
-@dynamic topLeftx;
-@dynamic bottomRighty;
+@dynamic bottomLeftxPercent;
+@dynamic bottomLeftyPercent;
+@dynamic bottomRightxPercent;
+@dynamic bottomRightyPercent;
+@dynamic topLeftxPercent;
+@dynamic topLeftyPercent;
+@dynamic topRightxPercent;
+@dynamic topRightyPercent;
 @dynamic originalPhoto;
 
 @end

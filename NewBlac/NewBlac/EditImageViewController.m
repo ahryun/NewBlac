@@ -13,8 +13,7 @@
 @interface EditImageViewController () <CornerDetectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *originalImageView;
-@property (strong, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
-
+@property (weak, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
 
 @end
 
@@ -32,13 +31,7 @@
 	
     // Sets the controller as a delegate for CornerDetectionView
     self.cornerDetectionView.delegate = self;
-    [self displayPhoto];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    //[self displayPhoto];
 }
 
 - (void)displayPhoto
@@ -46,6 +39,7 @@
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
         NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
+        
         self.originalImageView.image = [UIImage imageWithData:photoData];
         self.originalImageView.frame = CGRectMake(0, 0,
                                                  self.originalImageView.image.size.width,
@@ -53,13 +47,32 @@
     }
 }
 
+#pragma mark CornerDetectionView
 - (void)displayCorners
 {
     // Display 4 corners
     if (self.photo) {
-        [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftx, self.photo.canvasRect.bottomLefty];
+        self.cornerDetectionView.bottomLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil];
+        self.cornerDetectionView.bottomRightCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil];
+        self.cornerDetectionView.topLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil];
+        self.cornerDetectionView.topRightCorner = [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil];
     }
     
+}
+
+#pragma mark Memory Management
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"View did disappear\n");
+    self.view = nil;
 }
 
 

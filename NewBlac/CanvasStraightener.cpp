@@ -31,7 +31,7 @@ void CanvasStraightener::straighten()
 
     vector<vector<Point>> squares;
     findASquare(images_.canvas, squares, images_.square);
-    warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth, images_.inputQuad);
+    warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth);
 }
 
 void CanvasStraightener::applyGrayscale(Mat &image)
@@ -224,11 +224,11 @@ double CanvasStraightener::getAspectRatio(const cv::Mat &image, vector<Point> &s
     return aspectRatio; // width / height
 }
 
-void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&originalImage, vector<Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth, Point2f inputQuad[4])
+void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&originalImage, vector<Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
 {
     if (!square.empty() && !image.empty() && !originalImage.empty()) {
         // get each corner of the square in order
-//        Point2f inputQuad[4];
+        Point2f inputQuad[4];
         Point2f outputQuad[4];
         sort(square.begin(), square.end(), vectorSorter_y);
         float ratioToOriginalImageWidth = (float)originalImage.size().width / (float)image.size().width;
@@ -258,6 +258,10 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
                                    square[1].y * ratioToOriginalImageHeight);
             inputQuad[3] = Point2f(square[0].x * ratioToOriginalImageWidth,
                                    square[0].y * ratioToOriginalImageHeight);
+        }
+        
+        for (int i = 0; i < 4; i ++) {
+            images_.inputQuad[i] = inputQuad[i];
         }
         
         float aspectRatio = getAspectRatio(image, square, imageWidth, imageHeight, focalLength, sensorWidth);

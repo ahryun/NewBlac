@@ -2,7 +2,7 @@
 //  Photo.h
 //  NewBlac
 //
-//  Created by Ahryun Moon on 1/6/14.
+//  Created by Ahryun Moon on 1/8/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -13,10 +13,10 @@
 
 @interface Photo : NSManagedObject
 
-@property (nonatomic, retain) NSString * originalPhotoFilePath;
 @property (nonatomic, retain) NSString * croppedPhotoFilePath;
+@property (nonatomic, retain) NSString * originalPhotoFilePath;
 @property (nonatomic, retain) NSDate * timeTaken;
-@property (nonatomic, retain) Video *video;
 @property (nonatomic, retain) PhotoCorners *canvasRect;
+@property (nonatomic, retain) Video *video;
 
 @end

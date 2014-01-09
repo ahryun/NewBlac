@@ -23,7 +23,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="CaK-cf-brN" kind="modal" identifier="readyCamera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
+                                    <segue destination="CaK-cf-brN" kind="push" identifier="readyCamera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -86,7 +86,7 @@
                     <connections>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>
                         <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="dAX-m9-GtR"/>
-                        <segue destination="OHR-e6-UtV" kind="modal" identifier="View Image" id="C8N-o2-owV"/>
+                        <segue destination="OHR-e6-UtV" kind="push" identifier="View Image" id="C8N-o2-owV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="74r-8o-GnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -151,7 +151,7 @@
                     </view>
                     <connections>
                         <outlet property="croppedImageView" destination="4Wb-DZ-ch2" id="w8n-vk-FFt"/>
-                        <segue destination="w2n-4r-LyO" kind="modal" identifier="Edit Image" id="CCk-dF-AjU"/>
+                        <segue destination="w2n-4r-LyO" kind="push" identifier="Edit Image" id="CCk-dF-AjU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="grq-Fp-EAk" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -47,5 +47,5 @@ private:
     void drawSquares(cv::Mat &image, const std::vector<cv::Point> &squares);
     cv::Point convertToPixel(const cv::Mat &image, cv::Point &point, const float imageWidth, const float imageHeight);
     double getAspectRatio(const cv::Mat &image, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
-    void warpToRectangle(const cv::Mat&image, const cv::Mat&originalImage, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth, cv::Point2f inputQuad[4]);
+    void warpToRectangle(const cv::Mat&image, const cv::Mat&originalImage, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
 };

@@ -106,10 +106,11 @@
 - (NSArray *)convertToNSArray:(cv::Point2f[])array
 {
     NSMutableArray *convertedArray = [[NSMutableArray alloc] init];
-    
     // Need some rethinking and refactoring
     for (int i = 0; i < 4; i++) {
-        NSMutableArray *point = [NSMutableArray arrayWithObjects:[NSNumber numberWithFloat:array[i].x], [NSNumber numberWithFloat:array[i].y], nil];
+        NSMutableArray *point = [NSMutableArray arrayWithObjects:
+                                 [NSNumber numberWithFloat:array[i].x / self.imageWidth],
+                                 [NSNumber numberWithFloat:array[i].y / self.imageHeight], nil];
         [convertedArray addObject:point];
     }
     NSLog(@"The converted array is %@", convertedArray);

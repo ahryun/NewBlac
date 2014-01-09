@@ -18,7 +18,10 @@
     id<CornerDetectionViewDelegate> delegate;
 }
 
-@property (nonatomic, strong) id<CornerDetectionViewDelegate> delegate;
-
+@property (nonatomic) id<CornerDetectionViewDelegate> delegate;
+@property (nonatomic) NSArray *bottomLeftCorner;
+@property (nonatomic) NSArray *bottomRightCorner;
+@property (nonatomic) NSArray *topLeftCorner;
+@property (nonatomic) NSArray *topRightCorner;
 
 @end

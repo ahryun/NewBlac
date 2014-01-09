@@ -16,9 +16,6 @@
 		F33EA966187A3B860045E642 /* SharedManagedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA965187A3B860045E642 /* SharedManagedDocument.m */; };
 		F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA968187A3BA60045E642 /* TroubleshootManagedDocument.m */; };
 		F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */; };
-		F33EA98A187B8ABA0045E642 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA989187B8ABA0045E642 /* PhotoCorners.m */; };
-		F33EA98D187B8ABA0045E642 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA98C187B8ABA0045E642 /* Video.m */; };
-		F33EA990187B8ABA0045E642 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA98F187B8ABA0045E642 /* Photo.m */; };
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
@@ -46,6 +43,9 @@
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
 		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; };
 		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
+		F3FEBEFD187E0AD7000C1181 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEFC187E0AD7000C1181 /* Video.m */; };
+		F3FEBF00187E0AD7000C1181 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEFF187E0AD7000C1181 /* PhotoCorners.m */; };
+		F3FEBF03187E0AD7000C1181 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF02187E0AD7000C1181 /* Photo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,12 +75,6 @@
 		F33EA968187A3BA60045E642 /* TroubleshootManagedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TroubleshootManagedDocument.m; sourceTree = "<group>"; };
 		F33EA985187B5BE40045E642 /* PhotoCorners+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PhotoCorners+LifeCycle.h"; path = "NewBlac/PhotoCorners+LifeCycle.h"; sourceTree = "<group>"; };
 		F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PhotoCorners+LifeCycle.m"; path = "NewBlac/PhotoCorners+LifeCycle.m"; sourceTree = "<group>"; };
-		F33EA988187B8ABA0045E642 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
-		F33EA989187B8ABA0045E642 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
-		F33EA98B187B8ABA0045E642 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
-		F33EA98C187B8ABA0045E642 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
-		F33EA98E187B8ABA0045E642 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
-		F33EA98F187B8ABA0045E642 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
 		F33EA991187BA1380045E642 /* EditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
@@ -117,6 +111,12 @@
 		F3C0290618443ADB00FF08F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
 		F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerDetectionView.m; sourceTree = "<group>"; };
+		F3FEBEFB187E0AD7000C1181 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
+		F3FEBEFC187E0AD7000C1181 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
+		F3FEBEFE187E0AD7000C1181 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
+		F3FEBEFF187E0AD7000C1181 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
+		F3FEBF01187E0AD7000C1181 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
+		F3FEBF02187E0AD7000C1181 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,12 +157,12 @@
 			isa = PBXGroup;
 			children = (
 				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
-				F33EA988187B8ABA0045E642 /* PhotoCorners.h */,
-				F33EA98E187B8ABA0045E642 /* Photo.h */,
-				F33EA98F187B8ABA0045E642 /* Photo.m */,
-				F33EA98B187B8ABA0045E642 /* Video.h */,
-				F33EA98C187B8ABA0045E642 /* Video.m */,
-				F33EA989187B8ABA0045E642 /* PhotoCorners.m */,
+				F3FEBEFE187E0AD7000C1181 /* PhotoCorners.h */,
+				F3FEBEFF187E0AD7000C1181 /* PhotoCorners.m */,
+				F3FEBF01187E0AD7000C1181 /* Photo.h */,
+				F3FEBF02187E0AD7000C1181 /* Photo.m */,
+				F3FEBEFB187E0AD7000C1181 /* Video.h */,
+				F3FEBEFC187E0AD7000C1181 /* Video.m */,
 				F33EA985187B5BE40045E642 /* PhotoCorners+LifeCycle.h */,
 				F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */,
 				F33EA961187A31D50045E642 /* Photo+LifeCycle.h */,
@@ -402,21 +402,21 @@
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
 				F33EA966187A3B860045E642 /* SharedManagedDocument.m in Sources */,
+				F3FEBEFD187E0AD7000C1181 /* Video.m in Sources */,
 				F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */,
 				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,
-				F33EA98D187B8ABA0045E642 /* Video.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
 				F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */,
+				F3FEBF03187E0AD7000C1181 /* Photo.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
-				F33EA990187B8ABA0045E642 /* Photo.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
-				F33EA98A187B8ABA0045E642 /* PhotoCorners.m in Sources */,
+				F3FEBF00187E0AD7000C1181 /* PhotoCorners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

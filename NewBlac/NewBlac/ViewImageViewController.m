@@ -30,8 +30,7 @@
     if (self.photo) {
         NSData *photoData = [NSData dataWithContentsOfFile:self.photo.croppedPhotoFilePath];
         self.croppedImageView.image = [UIImage imageWithData:photoData];
-        self.croppedImageView.frame = CGRectMake(0,
-                                                 0,
+        self.croppedImageView.frame = CGRectMake(0, 0,
                                                  self.croppedImageView.image.size.width,
                                                  self.croppedImageView.image.size.height);
     }

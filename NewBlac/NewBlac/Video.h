@@ -2,7 +2,7 @@
 //  Video.h
 //  NewBlac
 //
-//  Created by Ahryun Moon on 1/6/14.
+//  Created by Ahryun Moon on 1/8/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @interface Video : NSManagedObject
 
-@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * compFilePath;
 @property (nonatomic, retain) NSDate * dateCreated;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSOrderedSet *photos;
 @end
 
