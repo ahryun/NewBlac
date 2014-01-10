@@ -39,7 +39,12 @@
 - (void)setOriginalImage:(UIImage *)originalImage
 {
     if (_originalImage != originalImage) {
-        _originalImage = [self scaleAndRotateImage:originalImage ifOriginal:true];
+        if (!self.orientationChanged) {
+            _originalImage = [self scaleAndRotateImage:originalImage ifOriginal:true];
+            self.orientationChanged = YES;
+        } else {
+            _originalImage = originalImage;
+        }
     }
 }
 
@@ -122,12 +127,10 @@
 {
     NSLog(@"Photo dimensions are %f by %f", self.imageWidth, self.imageHeight);
     
-    cv::Mat destinationImage, photoCopy;
-    destinationImage = [self cvMatFromUIImage:self.photo];
-    photoCopy = [self cvMatFromUIImage:self.originalImage];
     CanvasStraightener::Images images;
-    images.canvas = destinationImage;
-    images.photoCopy = photoCopy;
+    images.canvas = [self cvMatFromUIImage:self.photo];
+    images.photoCopy = [self cvMatFromUIImage:self.originalImage];
+    self.originalImage = nil;
     images.imageWidth = self.imageWidth;
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;
@@ -142,7 +145,7 @@
 // This function corrects the orientation
 - (UIImage *)scaleAndRotateImage:(UIImage *)image ifOriginal:(BOOL)iforiginal
 {
-    int kMaxResolution = iforiginal ? 1632 : 408;
+    int kMaxResolution = 480;
     
     CGImageRef imgRef = image.CGImage;
     CGFloat width = CGImageGetWidth(imgRef);
@@ -150,15 +153,17 @@
     
     CGAffineTransform transform = CGAffineTransformIdentity;
     CGRect bounds = CGRectMake(0, 0, width, height);
-    if (width > kMaxResolution || height > kMaxResolution) {
-        CGFloat ratio = width/height;
-        if (ratio > 1) {
-            bounds.size.width = kMaxResolution;
-            bounds.size.height = bounds.size.width / ratio;
-        }
-        else {
-            bounds.size.height = kMaxResolution;
-            bounds.size.width = bounds.size.height * ratio;
+    if (!iforiginal) {
+        if (width > kMaxResolution || height > kMaxResolution) {
+            CGFloat ratio = width/height;
+            if (ratio > 1) {
+                bounds.size.width = kMaxResolution;
+                bounds.size.height = bounds.size.width / ratio;
+            }
+            else {
+                bounds.size.height = kMaxResolution;
+                bounds.size.width = bounds.size.height * ratio;
+            }
         }
     }
     
@@ -224,7 +229,7 @@
             [NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
             
     }
-    UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 0.0);
+    UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 1.0);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     

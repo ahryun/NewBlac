@@ -28,6 +28,16 @@
     }
 }
 
+- (void)reloadData
+{
+    [self setNeedsDisplay];
+}
+
+- (void)reloadDataInRect:(CGRect)rect
+{
+    [self setNeedsDisplayInRect:rect];
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
@@ -39,22 +49,24 @@
     NSLog(@"%@\n", self.topLeftCorner);
     NSLog(@"%@\n", self.topRightCorner);
     
+    float circleDiameter = 10.0;
+    float circleRadius = circleDiameter / 2;
     UIBezierPath *bottomLeftCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                            CGRectMake([self.bottomLeftCorner[0] floatValue] * self.frame.size.width,
-                                                       [self.bottomLeftCorner[1] floatValue] * self.frame.size.height,
-                                                       10.0, 10.0)];
+                                            CGRectMake([self.bottomLeftCorner[0] floatValue] * self.frame.size.width - circleRadius,
+                                                       [self.bottomLeftCorner[1] floatValue] * self.frame.size.height - circleRadius,
+                                                       circleDiameter, circleDiameter)];
     UIBezierPath *bottomRightCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                             CGRectMake([self.bottomRightCorner[0] floatValue] * self.frame.size.width,
-                                                        [self.bottomRightCorner[1] floatValue] * self.frame.size.height,
-                                                        10.0, 10.0)];
+                                             CGRectMake([self.bottomRightCorner[0] floatValue] * self.frame.size.width - circleRadius,
+                                                        [self.bottomRightCorner[1] floatValue] * self.frame.size.height - circleRadius,
+                                                        circleDiameter, circleDiameter)];
     UIBezierPath *topLeftCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                         CGRectMake([self.topLeftCorner[0] floatValue] * self.frame.size.width,
-                                                    [self.topLeftCorner[1] floatValue] * self.frame.size.height,
-                                                    10.0, 10.0)];
+                                         CGRectMake([self.topLeftCorner[0] floatValue] * self.frame.size.width - circleRadius,
+                                                    [self.topLeftCorner[1] floatValue] * self.frame.size.height - circleRadius,
+                                                    circleDiameter, circleDiameter)];
     UIBezierPath *topRightCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                          CGRectMake([self.topRightCorner[0] floatValue] * self.frame.size.width,
-                                                     [self.topRightCorner[1] floatValue] * self.frame.size.height,
-                                                     10.0, 10.0)];
+                                          CGRectMake([self.topRightCorner[0] floatValue] * self.frame.size.width - circleRadius,
+                                                     [self.topRightCorner[1] floatValue] * self.frame.size.height - circleRadius,
+                                                     circleDiameter, circleDiameter)];
     [[UIColor blueColor] setFill];
     [bottomLeftCornerCircle fill];
     [bottomRightCornerCircle fill];

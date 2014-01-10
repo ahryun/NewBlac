@@ -21,6 +21,7 @@
 @property (strong, nonatomic) UIImage *photo;
 @property (strong, nonatomic) UIImage *originalImage;
 @property (strong, nonatomic) NSArray *coordinates;
+@property (nonatomic) BOOL orientationChanged;
 @property (nonatomic) float imageWidth;
 @property (nonatomic) float imageHeight;
 @property (nonatomic) float focalLength;

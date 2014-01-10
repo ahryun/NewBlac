@@ -9,11 +9,15 @@
 #import "EditImageViewController.h"
 #import "CornerDetectionView.h"
 #import "PhotoCorners+LifeCycle.h"
+#import "CornerCircle.h"
 
 @interface EditImageViewController () <CornerDetectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *originalImageView;
 @property (weak, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
+@property (nonatomic, strong) NSMutableArray *corners;
+@property (nonatomic, assign) NSUInteger selectedShapeIndex;
+
 
 @end
 
@@ -32,6 +36,16 @@
     // Sets the controller as a delegate for CornerDetectionView
     self.cornerDetectionView.delegate = self;
     [self displayPhoto];
+    
+    [self displayCorners];
+}
+
+- (NSMutableArray *)corners
+{
+    if (!_corners) {
+        _corners = [[NSMutableArray alloc] init];
+    }
+    return _corners;
 }
 
 - (void)displayPhoto
@@ -49,7 +63,8 @@
 
 #pragma mark CornerDetectionView
 - (void)displayCorners
-{    
+{
+    CornerCircle *corner = [CornerCircle addCornerWithCoordinate:(NSArray *)coordinate];
     // Display 4 corners
     if (self.photo) {
         self.cornerDetectionView.bottomLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil];
@@ -65,8 +80,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -75,6 +88,5 @@
     NSLog(@"View did disappear\n");
     self.view = nil;
 }
-
 
 @end

@@ -51,7 +51,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -82,6 +82,12 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0z0-yS-VDR" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="3gz-TF-806"/>
+                            <constraint firstAttribute="trailing" secondItem="0z0-yS-VDR" secondAttribute="trailing" id="Rfy-75-bg3"/>
+                            <constraint firstAttribute="bottom" secondItem="0z0-yS-VDR" secondAttribute="bottom" id="W3n-ve-8b5"/>
+                            <constraint firstItem="0z0-yS-VDR" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="l5x-QY-fKL"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>

@@ -15,6 +15,7 @@
 #import "ViewImageViewController.h"
 #import "SharedManagedDocument.h"
 #import "Photo+LifeCycle.h"
+#import "UIImage+ResizeImage.h"
 
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
@@ -196,6 +197,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			if (imageDataSampleBuffer) {
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
+                image = [UIImage imageWithImage:image scaledToMultiplier:0.5];
                 NSLog(@"image width is %f, height is %f", image.size.width, image.size.height);
                 float focalLength = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FocalLength"] floatValue];
                 float apertureSize = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FNumber"] floatValue];

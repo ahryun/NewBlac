@@ -46,6 +46,8 @@
 		F3FEBEFD187E0AD7000C1181 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEFC187E0AD7000C1181 /* Video.m */; };
 		F3FEBF00187E0AD7000C1181 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEFF187E0AD7000C1181 /* PhotoCorners.m */; };
 		F3FEBF03187E0AD7000C1181 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF02187E0AD7000C1181 /* Photo.m */; };
+		F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */; };
+		F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF0818809D85000C1181 /* CornerCircle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +119,10 @@
 		F3FEBEFF187E0AD7000C1181 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
 		F3FEBF01187E0AD7000C1181 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
 		F3FEBF02187E0AD7000C1181 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
+		F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeImage.h"; sourceTree = "<group>"; };
+		F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeImage.m"; sourceTree = "<group>"; };
+		F3FEBF0718809D85000C1181 /* CornerCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerCircle.h; sourceTree = "<group>"; };
+		F3FEBF0818809D85000C1181 /* CornerCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerCircle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +263,10 @@
 				F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
 				F33EA917187612140045E642 /* StillImagePreview.m */,
+				F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */,
+				F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */,
+				F3FEBF0718809D85000C1181 /* CornerCircle.h */,
+				F3FEBF0818809D85000C1181 /* CornerCircle.m */,
 				F3B0ECD51857B93C00143044 /* Models */,
 				F3B0ECCE1857A60300143044 /* C++ Classes */,
 				F33EA9221877A51D0045E642 /* Core Data */,
@@ -411,11 +421,13 @@
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
 				F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */,
+				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F3FEBF03187E0AD7000C1181 /* Photo.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
+				F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */,
 				F3FEBF00187E0AD7000C1181 /* PhotoCorners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

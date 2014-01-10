@@ -23,5 +23,7 @@
 @property (nonatomic) NSArray *bottomRightCorner;
 @property (nonatomic) NSArray *topLeftCorner;
 @property (nonatomic) NSArray *topRightCorner;
+- (void)reloadData;
+- (void)reloadDataInRect:(CGRect)rect;
 
 @end
