@@ -31,7 +31,7 @@
 	
     // Sets the controller as a delegate for CornerDetectionView
     self.cornerDetectionView.delegate = self;
-    //[self displayPhoto];
+    [self displayPhoto];
 }
 
 - (void)displayPhoto
@@ -49,7 +49,7 @@
 
 #pragma mark CornerDetectionView
 - (void)displayCorners
-{
+{    
     // Display 4 corners
     if (self.photo) {
         self.cornerDetectionView.bottomLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil];
@@ -65,6 +65,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
     
 }
 

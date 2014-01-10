@@ -269,10 +269,10 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
         // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
         float rectWidth, rectHeight;
         if (aspectRatio > 1.0) {
-            rectWidth = 2000.0;
+            rectWidth = 1000.0;
             rectHeight = rectWidth / aspectRatio;
         } else {
-            rectHeight = 2000.0;
+            rectHeight = 1000.0;
             rectWidth = rectHeight * aspectRatio;
         }
         

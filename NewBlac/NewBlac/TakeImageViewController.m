@@ -66,6 +66,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 	
 	// Create the AVCaptureSession
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
+    session.sessionPreset = AVCaptureSessionPresetPhoto;
 	[self setSession:session];
 	
 	// Setup the preview view
@@ -195,14 +196,14 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			if (imageDataSampleBuffer) {
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
+                NSLog(@"image width is %f, height is %f", image.size.width, image.size.height);
                 float focalLength = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FocalLength"] floatValue];
                 float apertureSize = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FNumber"] floatValue];
                 
                 NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
                 
                 // Save the original image to a file system and save URL to core data
-                dispatch_queue_t saveQ = dispatch_queue_create("Load Flickr", nil);
-                dispatch_async(saveQ, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
                     [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
                     NSString *imagePath, *croppedImagePath;
                     imagePath = [self saveUIImage:image toFilePath:nil];

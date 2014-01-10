@@ -14,7 +14,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.opaque = NO;
+        [self setBackgroundColor:[UIColor clearColor]];
     }
     return self;
 }
@@ -22,7 +23,8 @@
 - (void)awakeFromNib
 {
     if (self) {
-
+        self.opaque = NO;
+        [self setBackgroundColor:[UIColor clearColor]];
     }
 }
 
@@ -58,7 +60,6 @@
     [bottomRightCornerCircle fill];
     [topLeftCornerCircle fill];
     [topRightCornerCircle fill];
-    
 }
 
 @synthesize delegate;

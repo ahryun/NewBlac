@@ -142,7 +142,7 @@
 // This function corrects the orientation
 - (UIImage *)scaleAndRotateImage:(UIImage *)image ifOriginal:(BOOL)iforiginal
 {
-    int kMaxResolution = 320;
+    int kMaxResolution = iforiginal ? 1632 : 408;
     
     CGImageRef imgRef = image.CGImage;
     CGFloat width = CGImageGetWidth(imgRef);
@@ -150,20 +150,16 @@
     
     CGAffineTransform transform = CGAffineTransformIdentity;
     CGRect bounds = CGRectMake(0, 0, width, height);
-    if (!iforiginal) {
-        if (width > kMaxResolution || height > kMaxResolution) {
-            CGFloat ratio = width/height;
-            if (ratio > 1) {
-                bounds.size.width = kMaxResolution;
-                bounds.size.height = bounds.size.width / ratio;
-            }
-            else {
-                bounds.size.height = kMaxResolution;
-                bounds.size.width = bounds.size.height * ratio;
-            }
+    if (width > kMaxResolution || height > kMaxResolution) {
+        CGFloat ratio = width/height;
+        if (ratio > 1) {
+            bounds.size.width = kMaxResolution;
+            bounds.size.height = bounds.size.width / ratio;
         }
-    } else {
-        // if original image, no scaling done.
+        else {
+            bounds.size.height = kMaxResolution;
+            bounds.size.width = bounds.size.height * ratio;
+        }
     }
     
     CGFloat scaleRatio = bounds.size.width / width;
@@ -228,8 +224,7 @@
             [NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
             
     }
-    
-    UIGraphicsBeginImageContext(bounds.size);
+    UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 0.0);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
