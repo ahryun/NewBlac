@@ -38,6 +38,7 @@
     [self displayPhoto];
     
     [self displayCorners];
+    [self.cornerDetectionView reloadData];
 }
 
 - (NSMutableArray *)corners
@@ -58,21 +59,58 @@
         self.originalImageView.frame = CGRectMake(0, 0,
                                                  self.originalImageView.image.size.width,
                                                  self.originalImageView.image.size.height);
+        
+        // This is how it should be changed
+//        NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
+//        
+//        self.originalImageView.image = [UIImage imageWithData:photoData];
+//        float width = self.originalImageView.image.size.width;
+//        float height = self.originalImageView.image.size.height;
+//        float offset = 0;
+//        if (width > height) {
+//            height = self.view.bounds.size.width / width * height;
+//            width = self.view.bounds.size.width;
+//            offset = (self.view.bounds.size.height - height) / 2;
+//            self.originalImageView.frame = CGRectMake(0, offset, width, height);
+//        } else {
+//            width = self.view.bounds.size.height / height * width;
+//            height = self.view.bounds.size.height;
+//            offset = (self.view.bounds.size.width - width) / 2;
+//            self.originalImageView.frame = CGRectMake(0, 0, width, height);
+//        }
     }
 }
 
 #pragma mark CornerDetectionView
 - (void)displayCorners
 {
-    CornerCircle *corner = [CornerCircle addCornerWithCoordinate:(NSArray *)coordinate];
-    // Display 4 corners
-    if (self.photo) {
-        self.cornerDetectionView.bottomLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil];
-        self.cornerDetectionView.bottomRightCorner = [NSArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil];
-        self.cornerDetectionView.topLeftCorner = [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil];
-        self.cornerDetectionView.topRightCorner = [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil];
-    }
-    
+    NSArray *coordinates = [NSArray arrayWithObjects:
+                            [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil],
+                            [NSArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil],
+                            [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
+                            [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
+                            , nil];
+    for (NSArray *coordinate in coordinates) {
+        NSLog(@"Corner detection view bounds are %f by %f", self.originalImageView.frame.size.width, self.originalImageView.frame.size.height);
+        CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:self.view.bounds.size];
+        [self.corners addObject:corner];
+    }    
+}
+
+- (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
+{
+    CornerCircle *corner = [self.corners objectAtIndex:index];
+    return corner.path;
+}
+
+- (UIColor *)fillColorInView:(CornerDetectionView *)view
+{
+    return [UIColor blueColor];
+}
+
+- (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view
+{
+    return [self.corners count];
 }
 
 #pragma mark Memory Management

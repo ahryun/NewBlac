@@ -5,37 +5,41 @@
 //  Created by Ahryun Moon on 1/10/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
+//  Only define the geometry of the corner circles
+//  Corlors and other attributes will be set in the view
 
 #import "CornerCircle.h"
 
 @interface CornerCircle()
 
+@property (nonatomic) float circleDiameter;
 @property (nonatomic, strong) UIBezierPath *tapTarget;
 
 @end
 
 @implementation CornerCircle
 
-- (id)init
+- (float)circleDiameter
 {
-    UIBezierPath *defaultPath = [UIBezierPath bezierPathWithRect:CGRectMake(0.0f, 0.0f, 100.0f, 100.0f)];
-    UIColor *defaultLineColor = [UIColor whiteColor];
-    return [self initWithPath:defaultPath lineColor:defaultLineColor];
+    return 10.0;
 }
 
-- (id)initWithPath:(UIBezierPath *)path lineColor:(UIColor *)lineColor
+- (id)initWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size
 {
     self = [super init];
+    float circleRadius = self.circleDiameter / 2;
     if (self != nil) {
-        _path = path;
-        _lineColor = lineColor;
+        self.path = [UIBezierPath bezierPathWithOvalInRect:
+                 CGRectMake([coordinate[0] floatValue] * size.width - circleRadius,
+                            [coordinate[1] floatValue] * size.height - circleRadius,
+                            self.circleDiameter, self.circleDiameter)];
     }
     return self;
 }
 
-+ (CornerCircle *)addCornerWithCoordinate:(NSArray *)coordinate
++ (CornerCircle *)addCornerWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size
 {
-    
+    return [[self alloc] initWithCoordinate:coordinate inRect:(CGSize)size];
 }
 
 @end

@@ -11,9 +11,8 @@
 @interface CornerCircle : NSObject
 
 @property (nonatomic, strong) UIBezierPath *path;
-@property (nonatomic, strong) UIColor *lineColor;
 @property (nonatomic, assign, readonly) CGRect totalBounds;
 
-+ (CornerCircle *)addCornerWithCoordinate:(NSArray *)coordinate;
++ (CornerCircle *)addCornerWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size;
 
 @end

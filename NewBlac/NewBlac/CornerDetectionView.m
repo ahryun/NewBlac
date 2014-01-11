@@ -43,35 +43,16 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    [self.delegate displayCorners];
-    NSLog(@"%@\n", self.bottomLeftCorner);
-    NSLog(@"%@\n", self.bottomRightCorner);
-    NSLog(@"%@\n", self.topLeftCorner);
-    NSLog(@"%@\n", self.topRightCorner);
-    
-    float circleDiameter = 10.0;
-    float circleRadius = circleDiameter / 2;
-    UIBezierPath *bottomLeftCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                            CGRectMake([self.bottomLeftCorner[0] floatValue] * self.frame.size.width - circleRadius,
-                                                       [self.bottomLeftCorner[1] floatValue] * self.frame.size.height - circleRadius,
-                                                       circleDiameter, circleDiameter)];
-    UIBezierPath *bottomRightCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                             CGRectMake([self.bottomRightCorner[0] floatValue] * self.frame.size.width - circleRadius,
-                                                        [self.bottomRightCorner[1] floatValue] * self.frame.size.height - circleRadius,
-                                                        circleDiameter, circleDiameter)];
-    UIBezierPath *topLeftCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                         CGRectMake([self.topLeftCorner[0] floatValue] * self.frame.size.width - circleRadius,
-                                                    [self.topLeftCorner[1] floatValue] * self.frame.size.height - circleRadius,
-                                                    circleDiameter, circleDiameter)];
-    UIBezierPath *topRightCornerCircle = [UIBezierPath bezierPathWithOvalInRect:
-                                          CGRectMake([self.topRightCorner[0] floatValue] * self.frame.size.width - circleRadius,
-                                                     [self.topRightCorner[1] floatValue] * self.frame.size.height - circleRadius,
-                                                     circleDiameter, circleDiameter)];
-    [[UIColor blueColor] setFill];
-    [bottomLeftCornerCircle fill];
-    [bottomRightCornerCircle fill];
-    [topLeftCornerCircle fill];
-    [topRightCornerCircle fill];
+    NSUInteger noCorners = [self.delegate numberOfCornersInView:self];
+    UIColor *color = [self.delegate fillColorInView:self];
+    if (noCorners) {
+        for (NSUInteger index = 0; index < noCorners; index++) {
+            UIBezierPath *corner = [self.delegate drawPathInView:self atIndex:index];
+            NSLog(@"Corner coordinate is %f, %f\n", corner.currentPoint.x, corner.currentPoint.y);
+            [color setFill];
+            [corner fill];
+        }
+    }
 }
 
 @synthesize delegate;

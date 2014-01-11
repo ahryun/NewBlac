@@ -8,22 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol CornerDetectionViewDelegate <NSObject>
-
-- (void)displayCorners;
-
-@end
+@protocol CornerDetectionViewDelegate;
 
 @interface CornerDetectionView : UIView {
     id<CornerDetectionViewDelegate> delegate;
 }
 
 @property (nonatomic) id<CornerDetectionViewDelegate> delegate;
-@property (nonatomic) NSArray *bottomLeftCorner;
-@property (nonatomic) NSArray *bottomRightCorner;
-@property (nonatomic) NSArray *topLeftCorner;
-@property (nonatomic) NSArray *topRightCorner;
 - (void)reloadData;
 - (void)reloadDataInRect:(CGRect)rect;
 
 @end
+
+@protocol CornerDetectionViewDelegate <NSObject>
+
+- (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index;
+- (UIColor *)fillColorInView:(CornerDetectionView *)view;
+- (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view;
+
+@end
+
+
