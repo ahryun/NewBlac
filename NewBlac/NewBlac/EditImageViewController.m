@@ -97,13 +97,13 @@
                             [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
                             [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
                             , nil];
-    CornerDetectionView *cornerDetectionview = [[CornerDetectionView alloc] initWithFrame:self.subviewRect];
+    CornerDetectionView *cornerDetectionview = [[CornerDetectionView alloc] initWithFrame:self.originalImageView.bounds];
     for (NSArray *coordinate in coordinates) {
         CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:cornerDetectionview.bounds.size];
         [self.corners addObject:corner];
     }
     cornerDetectionview.opaque = NO;
-    [self.view insertSubview:cornerDetectionview aboveSubview:self.originalImageView];
+    [self.originalImageView addSubview:cornerDetectionview];
     self.cornerDetectionView = cornerDetectionview;
     NSLog(@"displayCorners has been called");
 }
