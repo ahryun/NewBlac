@@ -77,7 +77,6 @@
     [self.cornerDetectionView reloadData];
     
     UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressDetected:)];
-    [pressGesture setMinimumPressDuration:1.0];
     self.originalImageView.userInteractionEnabled = YES;
     [self.originalImageView addGestureRecognizer:pressGesture];
     
