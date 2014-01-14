@@ -26,6 +26,15 @@
 
 - (IBAction)doneEditingImage:(UIButton *)sender {
     
+    // See if the coordinates have changed
+    
+    // If changed, save to the photos corners object in managed objects context
+    
+    // Send the new coordinates to the c++ file to recalculate the matrix
+    
+    // Apply the matrix to the image to unskew it again
+    
+    [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
 }
 
 - (void)setPhoto:(Photo *)photo

@@ -206,9 +206,11 @@
                     </view>
                     <connections>
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
+                        <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="bnT-VU-buG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJj-xv-cx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Sue-xC-YhO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2099" y="-35"/>
         </scene>
