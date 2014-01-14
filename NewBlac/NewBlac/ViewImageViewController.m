@@ -10,7 +10,8 @@
 
 @interface ViewImageViewController ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *croppedImageView;
+@property (weak, nonatomic) IBOutlet UIView *buttonView;
+@property (weak, nonatomic) UIImageView *croppedImageView;
 
 - (IBAction)editImage:(UIGestureRecognizer *)gestureRecognizer;
 
@@ -28,12 +29,34 @@
 {
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
+        
         NSData *photoData = [NSData dataWithContentsOfFile:self.photo.croppedPhotoFilePath];
-        self.croppedImageView.image = [UIImage imageWithData:photoData];
-        self.croppedImageView.frame = CGRectMake(0, 0,
-                                                 self.croppedImageView.image.size.width,
-                                                 self.croppedImageView.image.size.height);
+        
+        UIImage *image = [UIImage imageWithData:photoData];
+        float widthRatio = self.view.bounds.size.width / image.size.width;
+        float heightRatio = self.view.bounds.size.height / image.size.height;
+        float scale = MIN(widthRatio, heightRatio);
+        float imageWidth = scale * image.size.width;
+        float imageHeight = scale * image.size.height;
+        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
+        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
+        
+        CGRect rect = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.image = image;
+        imageView.opaque = NO;
+        [self.view insertSubview:imageView belowSubview:self.buttonView];
+        self.croppedImageView = imageView;
+        
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.buttonView.opaque = NO;
+    self.buttonView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidLoad
@@ -71,5 +94,10 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.croppedImageView = nil;
+}
 
 @end

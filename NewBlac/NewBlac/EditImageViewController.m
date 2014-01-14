@@ -13,8 +13,9 @@
 
 @interface EditImageViewController () <CornerDetectionViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *originalImageView;
-@property (weak, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
+@property (weak, nonatomic) UIImageView *originalImageView;
+@property (weak, nonatomic) CornerDetectionView *cornerDetectionView;
+@property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (nonatomic, strong) NSMutableArray *corners;
 @property (nonatomic, assign) NSUInteger selectedShapeIndex;
 @property (nonatomic) CGRect subviewRect;
@@ -39,6 +40,14 @@
     [self displayCorners];
     self.cornerDetectionView.delegate = self;
     [self.cornerDetectionView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.buttonView.opaque = NO;
+    [self.buttonView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (NSMutableArray *)corners
@@ -70,7 +79,7 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.image = image;
         imageView.opaque = NO;
-        [self.view addSubview:imageView];
+        [self.view insertSubview:imageView belowSubview:self.buttonView];
         self.originalImageView = imageView;
         
         NSLog(@"Image view frame is %f x %f", self.view.frame.size.width, self.view.frame.size.height);
@@ -94,7 +103,7 @@
         [self.corners addObject:corner];
     }
     cornerDetectionview.opaque = NO;
-    [self.view addSubview:cornerDetectionview];
+    [self.view insertSubview:cornerDetectionview aboveSubview:self.originalImageView];
     self.cornerDetectionView = cornerDetectionview;
     NSLog(@"displayCorners has been called");
 }
@@ -125,8 +134,33 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"View did disappear\n");
-    self.view = nil;
+    
+    self.originalImageView = nil;
+    self.cornerDetectionView = nil;
 }
+
+#pragma mark - Touch handling
+
+- (void)tapDetected:(UITapGestureRecognizer *)tapRecognizer
+{
+    CGPoint tapLocation = [tapRecognizer locationInView:self.cornerDetectionView];
+    self.selectedShapeIndex = [self hitTest:tapLocation];
+    NSLog(@"The corner selected is %u", self.selectedShapeIndex);
+}
+
+#pragma mark - Hit Testing
+
+- (NSUInteger)hitTest:(CGPoint)point
+{
+    __block NSUInteger hitShapeIndex = NSNotFound;
+    [self.corners enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id shape, NSUInteger idx, BOOL *stop) {
+        if ([shape containsPoint:point]) {
+            hitShapeIndex = idx;
+            *stop = YES;
+        }
+    }];
+    return hitShapeIndex;
+}
+
 
 @end
