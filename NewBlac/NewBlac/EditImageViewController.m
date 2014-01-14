@@ -17,9 +17,8 @@
 @property (weak, nonatomic) CornerDetectionView *cornerDetectionView;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (nonatomic, strong) NSMutableArray *corners;
-@property (nonatomic, assign) NSUInteger selectedShapeIndex;
-@property (nonatomic) CGRect subviewRect;
-
+@property (nonatomic, assign) NSUInteger selectedCornerIndex;
+@property (nonatomic, strong) CornerCircle *selectedCorner;
 
 @end
 
@@ -31,15 +30,43 @@
     _photo = photo;
 }
 
+@synthesize selectedCornerIndex = _selectedCornerIndex;
+
+- (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
+{
+    CGRect oldSelectionBounds = CGRectZero;
+    if (_selectedCornerIndex < [self.corners count]) {
+        oldSelectionBounds = self.selectedCorner.totalBounds;
+    }
+    _selectedCornerIndex = (selectedCornerIndex > [self.corners count]) ? NSNotFound : selectedCornerIndex;
+    CGRect newSelectionBounds = self.selectedCorner.totalBounds;
+    CGRect rectToRedraw = CGRectUnion(oldSelectionBounds, newSelectionBounds);
+    [self.cornerDetectionView setNeedsDisplayInRect:rectToRedraw];
+}
+
+- (CornerCircle *)selectedCorner
+{
+    if (self.selectedCornerIndex == NSNotFound) {
+        return nil;
+    }
+    return [self.corners objectAtIndex:self.selectedCornerIndex];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.selectedCornerIndex = NSNotFound;
     // Sets the controller as a delegate for CornerDetectionView
     [self displayPhoto];
     [self displayCorners];
     self.cornerDetectionView.delegate = self;
     [self.cornerDetectionView reloadData];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected:)];
+    [tapGesture setNumberOfTapsRequired:1];
+    self.originalImageView.userInteractionEnabled = YES;
+    [self.originalImageView addGestureRecognizer:tapGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,7 +101,6 @@
         float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
         
         CGRect rect = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
-        self.subviewRect = rect;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.image = image;
@@ -124,6 +150,19 @@
     return [self.corners count];
 }
 
+/* Delete the following two functions */
+- (UIBezierPath *)drawTaptargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
+{
+    CornerCircle *corner = [self.corners objectAtIndex:index];
+    return corner.tapTarget;
+}
+
+- (UIColor *)fillTapColorInView:(CornerDetectionView *)view
+{
+    return [UIColor yellowColor];
+}
+/* Delete the above two functions */
+
 #pragma mark Memory Management
 - (void)didReceiveMemoryWarning
 {
@@ -135,6 +174,7 @@
 {
     [super viewDidDisappear:animated];
     
+    self.view = nil;
     self.originalImageView = nil;
     self.cornerDetectionView = nil;
 }
@@ -143,23 +183,24 @@
 
 - (void)tapDetected:(UITapGestureRecognizer *)tapRecognizer
 {
-    CGPoint tapLocation = [tapRecognizer locationInView:self.cornerDetectionView];
-    self.selectedShapeIndex = [self hitTest:tapLocation];
-    NSLog(@"The corner selected is %u", self.selectedShapeIndex);
+    CGPoint tapLocation = [tapRecognizer locationInView:self.originalImageView];
+    self.selectedCornerIndex = [self hitTest:tapLocation];
+    NSLog(@"The tap location is %f, %f", tapLocation.x, tapLocation.y);
+    NSLog(@"The corner selected is %u", self.selectedCornerIndex);
 }
 
 #pragma mark - Hit Testing
 
 - (NSUInteger)hitTest:(CGPoint)point
 {
-    __block NSUInteger hitShapeIndex = NSNotFound;
-    [self.corners enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id shape, NSUInteger idx, BOOL *stop) {
-        if ([shape containsPoint:point]) {
-            hitShapeIndex = idx;
+    __block NSUInteger hitCornerIndex = NSNotFound;
+    [self.corners enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id corner, NSUInteger idx, BOOL *stop) {
+        if ([corner containsPoint:point]) {
+            hitCornerIndex = idx;
             *stop = YES;
         }
     }];
-    return hitShapeIndex;
+    return hitCornerIndex;
 }
 
 
