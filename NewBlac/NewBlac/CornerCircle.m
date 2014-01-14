@@ -50,14 +50,13 @@
         return nil;
     }
     
-    CGPathRef tapTargetPath = CGPathCreateCopyByStrokingPath(path.CGPath, NULL, fmaxf(35.0f, path.lineWidth), path.lineCapStyle, path.lineJoinStyle, path.miterLimit);
+    // Make the hit detection area 3 times bigger for people with fat fingers
+    UIBezierPath *tapTarget = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(path.bounds.origin.x - self.circleDiameter, path.bounds.origin.y - self.circleDiameter, self.circleDiameter * 3, self.circleDiameter * 3)];
     
-    if (tapTargetPath == NULL) {
+    if (tapTarget == NULL) {
         return nil;
     }
     
-    UIBezierPath *tapTarget = [UIBezierPath bezierPathWithCGPath:tapTargetPath];
-    CGPathRelease(tapTargetPath);
     return tapTarget;
 }
 
@@ -76,5 +75,15 @@
     
     return CGRectInset(self.path.bounds, -(self.path.lineWidth + 1.0f), -(self.path.lineWidth + 1.0f));
 }
+
+#pragma mark - Modifying Shapes
+
+- (void)moveBy:(CGPoint)delta
+{
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(delta.x, delta.y);
+    [self.path applyTransform:transform];
+    [self.tapTarget applyTransform:transform];
+}
+
 
 @end

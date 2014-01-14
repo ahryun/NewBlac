@@ -189,13 +189,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40l-pv-kOI">
-                                        <rect key="frame" x="39" y="10" width="37" height="30"/>
+                                        <rect key="frame" x="20" y="8" width="75" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Done">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="Sue-xC-YhO" kind="unwind" unwindAction="unwindDoneEditingImage:" id="b5M-Dq-Gft"/>
+                                            <action selector="doneEditingImage:" destination="w2n-4r-LyO" eventType="touchUpInside" id="bHt-El-Ifw"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -209,7 +209,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJj-xv-cx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Sue-xC-YhO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2099" y="-35"/>
         </scene>

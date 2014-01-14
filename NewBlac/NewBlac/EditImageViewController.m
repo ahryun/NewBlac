@@ -24,6 +24,10 @@
 
 @implementation EditImageViewController
 
+- (IBAction)doneEditingImage:(UIButton *)sender {
+    
+}
+
 - (void)setPhoto:(Photo *)photo
 {
     // Need to change to Core Data
@@ -63,10 +67,13 @@
     self.cornerDetectionView.delegate = self;
     [self.cornerDetectionView reloadData];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected:)];
-    [tapGesture setNumberOfTapsRequired:1];
+    UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressDetected:)];
+    [pressGesture setMinimumPressDuration:1.0];
     self.originalImageView.userInteractionEnabled = YES;
-    [self.originalImageView addGestureRecognizer:tapGesture];
+    [self.originalImageView addGestureRecognizer:pressGesture];
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
+    [self.originalImageView addGestureRecognizer:panGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,12 +188,35 @@
 
 #pragma mark - Touch handling
 
-- (void)tapDetected:(UITapGestureRecognizer *)tapRecognizer
+- (void)pressDetected:(UILongPressGestureRecognizer *)pressGesture
 {
-    CGPoint tapLocation = [tapRecognizer locationInView:self.originalImageView];
-    self.selectedCornerIndex = [self hitTest:tapLocation];
-    NSLog(@"The tap location is %f, %f", tapLocation.x, tapLocation.y);
+    CGPoint touchLocation = [pressGesture locationInView:self.originalImageView];
+    self.selectedCornerIndex = [self hitTest:touchLocation];
+    NSLog(@"The tap location is %f, %f", touchLocation.x, touchLocation.y);
     NSLog(@"The corner selected is %u", self.selectedCornerIndex);
+}
+
+- (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
+{
+    switch (panRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
+            self.selectedCornerIndex = [self hitTest:tapLocation];
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            CGPoint translation = [panRecognizer translationInView:self.originalImageView];
+            CGRect originalBounds = self.selectedCorner.totalBounds;
+            CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
+            CGRect rectToRedraw = CGRectUnion(originalBounds, newBounds);
+            
+            [self.selectedCorner moveBy:translation];
+            [self.cornerDetectionView reloadDataInRect:rectToRedraw];
+            [panRecognizer setTranslation:CGPointZero inView:self.originalImageView];
+        }
+        default:
+            break;
+    }
 }
 
 #pragma mark - Hit Testing

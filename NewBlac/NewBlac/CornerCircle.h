@@ -16,5 +16,6 @@
 
 + (CornerCircle *)addCornerWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size;
 - (BOOL)containsPoint:(CGPoint)point;
+- (void)moveBy:(CGPoint)delta;
 
 @end
