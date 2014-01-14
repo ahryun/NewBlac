@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet CornerDetectionView *cornerDetectionView;
 @property (nonatomic, strong) NSMutableArray *corners;
 @property (nonatomic, assign) NSUInteger selectedShapeIndex;
+@property (nonatomic) CGRect subviewRect;
 
 
 @end
@@ -32,12 +33,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    // Sets the controller as a delegate for CornerDetectionView
-    self.cornerDetectionView.delegate = self;
-    [self displayPhoto];
     
+    // Sets the controller as a delegate for CornerDetectionView
+    [self displayPhoto];
     [self displayCorners];
+    self.cornerDetectionView.delegate = self;
     [self.cornerDetectionView reloadData];
 }
 
@@ -55,29 +55,27 @@
     if (self.photo) {
         NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
         
-        self.originalImageView.image = [UIImage imageWithData:photoData];
-        self.originalImageView.frame = CGRectMake(0, 0,
-                                                 self.originalImageView.image.size.width,
-                                                 self.originalImageView.image.size.height);
+        UIImage *image = [UIImage imageWithData:photoData];
+        float widthRatio = self.view.bounds.size.width / image.size.width;
+        float heightRatio = self.view.bounds.size.height / image.size.height;
+        float scale = MIN(widthRatio, heightRatio);
+        float imageWidth = scale * image.size.width;
+        float imageHeight = scale * image.size.height;
+        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
+        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
         
-        // This is how it should be changed
-//        NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
-//        
-//        self.originalImageView.image = [UIImage imageWithData:photoData];
-//        float width = self.originalImageView.image.size.width;
-//        float height = self.originalImageView.image.size.height;
-//        float offset = 0;
-//        if (width > height) {
-//            height = self.view.bounds.size.width / width * height;
-//            width = self.view.bounds.size.width;
-//            offset = (self.view.bounds.size.height - height) / 2;
-//            self.originalImageView.frame = CGRectMake(0, offset, width, height);
-//        } else {
-//            width = self.view.bounds.size.height / height * width;
-//            height = self.view.bounds.size.height;
-//            offset = (self.view.bounds.size.width - width) / 2;
-//            self.originalImageView.frame = CGRectMake(0, 0, width, height);
-//        }
+        CGRect rect = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
+        self.subviewRect = rect;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.image = image;
+        imageView.opaque = NO;
+        [self.view addSubview:imageView];
+        self.originalImageView = imageView;
+        
+        NSLog(@"Image view frame is %f x %f", self.view.frame.size.width, self.view.frame.size.height);
+        NSLog(@"Image view bounds is %f x %f", self.view.bounds.size.width, self.view.bounds.size.height);
+        
     }
 }
 
@@ -90,11 +88,15 @@
                             [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
                             [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
                             , nil];
+    CornerDetectionView *cornerDetectionview = [[CornerDetectionView alloc] initWithFrame:self.subviewRect];
     for (NSArray *coordinate in coordinates) {
-        NSLog(@"Corner detection view bounds are %f by %f", self.originalImageView.frame.size.width, self.originalImageView.frame.size.height);
-        CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:self.view.bounds.size];
+        CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:cornerDetectionview.bounds.size];
         [self.corners addObject:corner];
-    }    
+    }
+    cornerDetectionview.opaque = NO;
+    [self.view addSubview:cornerDetectionview];
+    self.cornerDetectionView = cornerDetectionview;
+    NSLog(@"displayCorners has been called");
 }
 
 - (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index

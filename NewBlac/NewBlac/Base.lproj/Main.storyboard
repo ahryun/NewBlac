@@ -182,15 +182,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pQv-u8-Pvi">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqH-bB-lMm" customClass="CornerDetectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40l-pv-kOI">
                                 <rect key="frame" x="142" y="382" width="37" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -204,23 +195,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Z0a-Vu-8QF" firstAttribute="top" secondItem="pQv-u8-Pvi" secondAttribute="bottom" id="EBD-Fv-hOq"/>
-                            <constraint firstItem="pQv-u8-Pvi" firstAttribute="leading" secondItem="gP9-9I-sK7" secondAttribute="leading" id="OFf-G5-g6K"/>
-                            <constraint firstItem="Z0a-Vu-8QF" firstAttribute="top" secondItem="40l-pv-kOI" secondAttribute="bottom" constant="156" id="R13-OD-aoK"/>
-                            <constraint firstItem="fqH-bB-lMm" firstAttribute="top" secondItem="pQv-u8-Pvi" secondAttribute="top" id="Z2C-iR-x3y"/>
-                            <constraint firstItem="pQv-u8-Pvi" firstAttribute="centerX" secondItem="40l-pv-kOI" secondAttribute="centerX" id="a9C-Le-MFq"/>
-                            <constraint firstItem="pQv-u8-Pvi" firstAttribute="top" secondItem="gP9-9I-sK7" secondAttribute="top" id="alU-d8-6GE"/>
-                            <constraint firstItem="Z0a-Vu-8QF" firstAttribute="top" secondItem="pQv-u8-Pvi" secondAttribute="bottom" id="cc5-8D-BPK"/>
-                            <constraint firstItem="fqH-bB-lMm" firstAttribute="bottom" secondItem="pQv-u8-Pvi" secondAttribute="bottom" id="cxG-Dv-k7x"/>
-                            <constraint firstItem="fqH-bB-lMm" firstAttribute="leading" secondItem="pQv-u8-Pvi" secondAttribute="leading" id="uT7-an-Zrh"/>
-                            <constraint firstAttribute="trailing" secondItem="pQv-u8-Pvi" secondAttribute="trailing" id="ukB-la-4AV"/>
-                            <constraint firstItem="fqH-bB-lMm" firstAttribute="trailing" secondItem="pQv-u8-Pvi" secondAttribute="trailing" id="zjr-a5-qMp"/>
+                            <constraint firstAttribute="centerX" secondItem="40l-pv-kOI" secondAttribute="centerX" constant="-0.5" id="rEz-zs-fjs"/>
+                            <constraint firstItem="Z0a-Vu-8QF" firstAttribute="top" secondItem="40l-pv-kOI" secondAttribute="bottom" constant="156" id="ttO-3O-EjS"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="cornerDetectionView" destination="fqH-bB-lMm" id="67Z-Wp-cSy"/>
-                        <outlet property="originalImageView" destination="pQv-u8-Pvi" id="0mv-Ov-0qC"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJj-xv-cx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Sue-xC-YhO" userLabel="Exit" sceneMemberID="exit"/>
