@@ -111,7 +111,6 @@
 - (NSArray *)convertToNSArray:(cv::Point2f[])array
 {
     NSMutableArray *convertedArray = [[NSMutableArray alloc] init];
-    // Need some rethinking and refactoring
     for (int i = 0; i < 4; i++) {
         NSMutableArray *point = [NSMutableArray arrayWithObjects:
                                  [NSNumber numberWithFloat:array[i].x / self.imageWidth],
@@ -121,6 +120,36 @@
     NSLog(@"The converted array is %@", convertedArray);
     
     return convertedArray;
+}
+
+- (cv::Point2f *)convertToPointArrayInRealPixel:(NSArray *)coordinates
+{
+    int count = [coordinates count];
+    cv::Point2f *convertedArray = new cv::Point2f[count];
+    for (int i = 0; i < count; i++) {
+        convertedArray[i] = cv::Point2f([[coordinates objectAtIndex:i][0] floatValue] * self.imageWidth,
+                                        [[coordinates objectAtIndex:i][1] floatValue] * self.imageHeight);
+        NSLog(@"The point array is %f and %f", convertedArray[i].x, convertedArray[i].y);
+    }
+    
+    return convertedArray;
+}
+
+// Designated init for Canvas object
+- (id)initWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize;
+{
+    self = [super init];
+    
+    [self setPhoto: photo];
+    [self setOriginalImage: photo];
+    [self setImageWidth:photo.size.width];
+    [self setImageHeight:photo.size.height];
+    [self setFocalLength:focalLength];
+    [self setApertureSize:apertureSize];
+    
+    [self straightenCanvas];
+    
+    return self;
 }
 
 - (void)straightenCanvas
@@ -139,6 +168,28 @@
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
+}
+
+- (void)unskewWithCoordinates:(NSArray *)coordinates
+{
+    CanvasStraightener::Images images;
+    images.canvas = [self cvMatFromUIImage:self.photo];
+    images.photoCopy = [self cvMatFromUIImage:self.originalImage];
+    self.originalImage = nil;
+    images.imageWidth = self.imageWidth;
+    images.imageHeight = self.imageHeight;
+    images.focalLength = self.focalLength;
+    images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
+    
+    // Fill out the input quads of vertices in real pixel
+    // Meaning the floating points are not in percentage form
+    for (int i = 0; i < [coordinates count]; i++) {
+        images.inputQuad[i] = [self convertToPointArrayInRealPixel:coordinates][i];
+    }
+    
+    CanvasStraightener canvasStraightener(images);
+    self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
+    self.coordinates = coordinates;
 }
 
 // Images captured by iPhone camera are rotated 90 degree automatically

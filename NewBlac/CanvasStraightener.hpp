@@ -30,11 +30,11 @@ public:
         float focalLength;
         float sensorWidth;
         std::vector<cv::Point> square;
-        cv::Point2f inputQuad[4]; // coordinate in original image
+        cv::Point2f inputQuad[4]; // coordinate corresponding to pixels in images_photoCopy
     } images_;
     
     CanvasStraightener(Images images);
-    ~ CanvasStraightener() {};
+    ~ CanvasStraightener() {}; // destructor
     
     void straighten();
     
@@ -45,7 +45,11 @@ private:
     void applyGaussianBlur(cv::Mat &image, cv::Size kernel_size);
     double getAngle(cv::Point ptOne, cv::Point ptTwo, cv::Point ptZero);
     void drawSquares(cv::Mat &image, const std::vector<cv::Point> &squares);
-    cv::Point convertToPixel(const cv::Mat &image, cv::Point &point, const float imageWidth, const float imageHeight);
-    double getAspectRatio(const cv::Mat &image, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
+    cv::Point convertToPixel(float canvasWidth, float canvasHeight, cv::Point &point, const float imageWidth, const float imageHeight);
+    double getAspectRatio(float canvasWidth, float canvasHeight, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
     void warpToRectangle(const cv::Mat&image, const cv::Mat&originalImage, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
+    
+    // If a user manually changes the corners
+    void straightenToNewRectangle();
+    void warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
 };

@@ -21,8 +21,12 @@
 
 - (void)setPhoto:(Photo *)photo
 {
-    // Need to change to Core Data
     _photo = photo;
+}
+
+- (void)setCanvas:(Canvas *)canvas
+{
+    _canvas = canvas;
 }
 
 - (void)displayPhoto
@@ -90,6 +94,9 @@
     if ([segue.identifier isEqualToString:@"Edit Image"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
             [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.photo];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
+            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
         }
     }
 }

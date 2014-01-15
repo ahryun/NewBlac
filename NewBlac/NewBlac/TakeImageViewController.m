@@ -206,7 +206,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 // Save the original image to a file system and save URL to core data
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self createCanvasWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
+                    self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
+                    self.croppedImage = self.canvas.originalImage;
+                    
                     NSString *imagePath, *croppedImagePath;
                     imagePath = [self saveUIImage:image toFilePath:nil];
                     croppedImagePath = [self saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
@@ -222,21 +224,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			}
 		}];
 	});
-}
-
-- (void)createCanvasWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize
-{
-    self.canvas = [[Canvas alloc] init];
-    [self.canvas setPhoto: photo];
-    [self.canvas setOriginalImage: photo];
-    [self.canvas setImageWidth:photo.size.width];
-    [self.canvas setImageHeight:photo.size.height];
-    [self.canvas setFocalLength:focalLength];
-    [self.canvas setApertureSize:apertureSize];
-    
-    [self.canvas straightenCanvas];
-    
-    self.croppedImage = self.canvas.originalImage;
 }
 
 - (NSString *)saveUIImage:(UIImage *)image toFilePath:(NSString *)imgPath
@@ -268,6 +255,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     if ([segue.identifier isEqualToString:@"View Image"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
             [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.photo];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
+            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
         }
     }
 }

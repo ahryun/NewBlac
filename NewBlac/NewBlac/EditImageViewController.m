@@ -32,8 +32,16 @@
     if (self.coordinatesChanged) [self updateCoordinatesInManagedObjects];
     
     // Send the new coordinates to the c++ file to recalculate the matrix
+    [self.canvas unskewWithCoordinates:self.coordinates];
     
-    // Apply the matrix to the image to unskew it again
+    // Replace the cropped image saved in file system
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
+    BOOL removeSucceeded = [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:nil];
+    if (removeSucceeded) {
+        BOOL writeSucceeded = [fileManager createFileAtPath:self.photo.croppedPhotoFilePath contents:imageData attributes:nil];
+        writeSucceeded ? NSLog(@"Replacing cropped photo file was a success") : NSLog(@"Hey I couldn't resave the new cropped photo");
+    }
     
     // May need to prepareForSegue
     [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
@@ -56,8 +64,12 @@
 
 - (void)setPhoto:(Photo *)photo
 {
-    // Need to change to Core Data
     _photo = photo;
+}
+
+- (void)setCanvas:(Canvas *)canvas
+{
+    _canvas = canvas;
 }
 
 - (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
@@ -230,8 +242,8 @@
                 self.coordinatesChanged = YES;
                 
                 // Update coordinates of the corner selected
-                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x]];
-                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y]];
+                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x / self.originalImageView.bounds.size.width]];
+                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y / self.originalImageView.bounds.size.height]];
             }
         }
         default:

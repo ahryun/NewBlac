@@ -14,7 +14,7 @@ using namespace cv;
 CanvasStraightener::CanvasStraightener(Images images)
 {
     images_ = images;
-    straighten();
+    images_.inputQuad ? straightenToNewRectangle() : straighten();
 }
 
 // comparison function object
@@ -32,6 +32,12 @@ void CanvasStraightener::straighten()
     vector<vector<Point>> squares;
     findASquare(images_.canvas, squares, images_.square);
     warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth);
+}
+
+void CanvasStraightener::straightenToNewRectangle()
+{
+    // Do something
+    warpToNewRectangle(images_.photoCopy, images_.inputQuad, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth);
 }
 
 void CanvasStraightener::applyGrayscale(Mat &image)
@@ -138,17 +144,17 @@ struct ySortFunction {
     bool operator() (Point pt1, Point pt2) { return (pt1.y < pt2.y);}
 } vectorSorter_y;
 
-Point CanvasStraightener::convertToPixel(const cv::Mat &image, Point &point, const float imageWidth, const float imageHeight)
+Point CanvasStraightener::convertToPixel(float canvasWidth, float canvasHeight, Point &point, const float imageWidth, const float imageHeight)
 {
     Point convertedPoint;
-    convertedPoint.x = point.x / (double)image.size().width * (double)imageWidth;
-    convertedPoint.y = point.y / (double)image.size().height * (double)imageHeight;
+    convertedPoint.x = point.x / (double)canvasWidth * (double)imageWidth;
+    convertedPoint.y = point.y / (double)canvasHeight * (double)imageHeight;
     cout << "Point x here is " << convertedPoint.x << "\n";
     cout << "Point y here is " << convertedPoint.y << "\n";
     return convertedPoint;
 }
 
-double CanvasStraightener::getAspectRatio(const cv::Mat &image, vector<Point> &square, const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
+double CanvasStraightener::getAspectRatio(float canvasWidth, float canvasHeight, vector<Point> &square, const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
 {
     cout << "Image width is " << imageWidth << "\n";
     cout << "Image height is " << imageHeight << "\n";
@@ -157,18 +163,18 @@ double CanvasStraightener::getAspectRatio(const cv::Mat &image, vector<Point> &s
     Point corner1, corner2, corner3, corner4;
     sort(square.begin(), square.end(), vectorSorter_y);
     if (square[2].x < square[3].x) {
-        corner1 = convertToPixel(image, square[2], imageWidth, imageHeight);
-        corner2 = convertToPixel(image, square[3], imageWidth, imageHeight);
+        corner1 = convertToPixel(canvasWidth, canvasHeight, square[2], imageWidth, imageHeight);
+        corner2 = convertToPixel(canvasWidth, canvasHeight, square[3], imageWidth, imageHeight);
     } else {
-        corner1 = convertToPixel(image, square[3], imageWidth, imageHeight);
-        corner2 = convertToPixel(image, square[2], imageWidth, imageHeight);
+        corner1 = convertToPixel(canvasWidth, canvasHeight, square[3], imageWidth, imageHeight);
+        corner2 = convertToPixel(canvasWidth, canvasHeight, square[2], imageWidth, imageHeight);
     }
     if (square[0].x < square[1].x) {
-        corner3 = convertToPixel(image, square[0], imageWidth, imageHeight);
-        corner4 = convertToPixel(image, square[1], imageWidth, imageHeight);
+        corner3 = convertToPixel(canvasWidth, canvasHeight, square[0], imageWidth, imageHeight);
+        corner4 = convertToPixel(canvasWidth, canvasHeight, square[1], imageWidth, imageHeight);
     } else {
-        corner3 = convertToPixel(image, square[1], imageWidth, imageHeight);
-        corner4 = convertToPixel(image, square[0], imageWidth, imageHeight);
+        corner3 = convertToPixel(canvasWidth, canvasHeight, square[1], imageWidth, imageHeight);
+        corner4 = convertToPixel(canvasWidth, canvasHeight, square[0], imageWidth, imageHeight);
     }
     
     cout << "Corner 1 is " << corner1 << "\n";
@@ -264,7 +270,50 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
             images_.inputQuad[i] = inputQuad[i];
         }
         
-        float aspectRatio = getAspectRatio(image, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        float aspectRatio = getAspectRatio(image.size().width, image.size().height, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        
+        // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
+        float rectWidth, rectHeight;
+        if (aspectRatio > 1.0) {
+            rectWidth = 1000.0;
+            rectHeight = rectWidth / aspectRatio;
+        } else {
+            rectHeight = 1000.0;
+            rectWidth = rectHeight * aspectRatio;
+        }
+        
+        outputQuad[0] = Point2f(0,rectHeight);
+        outputQuad[1] = Point2f(rectWidth,rectHeight);
+        outputQuad[2] = Point2f(0,0);
+        outputQuad[3] = Point2f(rectWidth,0);
+        
+        cout << "New square points are ";
+        for ( int i = 0; i < 4; i++ ) {
+            cout << inputQuad[i] << ' ';
+        }
+        cout << endl;
+        cout << "Destination points are ";
+        for ( int i = 0; i < 4; i++ ) {
+            cout << outputQuad[i] << ' ';
+        }
+        cout << endl;
+        
+        Mat transformationMatrix = getPerspectiveTransform(inputQuad, outputQuad);
+        cout << "Transformation matrix is " << transformationMatrix << "\n";
+        Mat dstImage;
+        warpPerspective(originalImage, dstImage, transformationMatrix, Size(rectWidth, rectHeight), INTER_NEAREST);
+        images_.photoCopy = dstImage;
+    }
+}
+
+void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
+{
+    if (!originalImage.empty()) {
+        // get each corner of the square in order
+        Point2f outputQuad[4];
+        vector<Point> square(inputQuad, inputQuad + 4);
+
+        float aspectRatio = getAspectRatio(imageWidth, imageHeight, square, imageWidth, imageHeight, focalLength, sensorWidth);
         
         // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
         float rectWidth, rectHeight;

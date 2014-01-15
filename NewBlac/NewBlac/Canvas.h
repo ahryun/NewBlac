@@ -20,13 +20,14 @@
 
 @property (strong, nonatomic) UIImage *photo;
 @property (strong, nonatomic) UIImage *originalImage;
-@property (strong, nonatomic) NSArray *coordinates;
+@property (strong, nonatomic) NSArray *coordinates; // In percentage
 @property (nonatomic) BOOL orientationChanged;
 @property (nonatomic) float imageWidth;
 @property (nonatomic) float imageHeight;
 @property (nonatomic) float focalLength;
 @property (nonatomic) float apertureSize;
 
-- (void)straightenCanvas;
+- (id)initWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize;
+- (void)unskewWithCoordinates:(NSArray *)coordinates;
 
 @end
