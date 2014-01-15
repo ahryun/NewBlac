@@ -13,10 +13,21 @@
 @interface CornerCircle()
 
 @property (nonatomic) float circleDiameter;
+@property (nonatomic, readwrite) CGPoint centerPoint;
 
 @end
 
 @implementation CornerCircle
+
+- (CGPoint)centerPoint
+{
+    if (self.path) {
+        float circleRadius = self.circleDiameter / 2;
+        _centerPoint = CGPointMake(self.path.bounds.origin.x + circleRadius,
+                                       self.path.bounds.origin.y + circleRadius);
+    }
+    return _centerPoint;
+}
 
 - (float)circleDiameter
 {

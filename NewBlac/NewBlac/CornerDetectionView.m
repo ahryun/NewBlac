@@ -53,16 +53,6 @@
             [corner fill];
         }
     }
-    
-//    UIColor *tapColor = [self.delegate fillTapColorInView:self];
-//    if (noCorners) {
-//        for (NSUInteger index = 0; index < noCorners; index++) {
-//            UIBezierPath *corner = [self.delegate drawTaptargetInView:self atIndex:index];
-////            NSLog(@"Corner coordinate is %f, %f\n", corner.currentPoint.x, corner.currentPoint.y);
-//            [tapColor setFill];
-//            [corner fill];
-//        }
-//    }
 }
 
 @synthesize delegate;

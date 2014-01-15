@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSMutableArray *corners;
 @property (nonatomic, assign) NSUInteger selectedCornerIndex;
 @property (nonatomic, strong) CornerCircle *selectedCorner;
+@property (nonatomic, strong) NSMutableArray *coordinates;
+@property (nonatomic) BOOL coordinatesChanged;
 
 @end
 
@@ -27,14 +29,29 @@
 - (IBAction)doneEditingImage:(UIButton *)sender {
     
     // See if the coordinates have changed
-    
-    // If changed, save to the photos corners object in managed objects context
+    if (self.coordinatesChanged) [self updateCoordinatesInManagedObjects];
     
     // Send the new coordinates to the c++ file to recalculate the matrix
     
     // Apply the matrix to the image to unskew it again
     
+    // May need to prepareForSegue
     [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+}
+
+- (void)updateCoordinatesInManagedObjects
+{
+    // Update coordinates
+    self.photo.canvasRect.bottomLeftxPercent = [[self.coordinates objectAtIndex:0] objectAtIndex:0];
+    self.photo.canvasRect.bottomLeftyPercent = [[self.coordinates objectAtIndex:0] objectAtIndex:1];
+    self.photo.canvasRect.bottomRightxPercent = [[self.coordinates objectAtIndex:1] objectAtIndex:0];
+    self.photo.canvasRect.bottomRightyPercent = [[self.coordinates objectAtIndex:1] objectAtIndex:1];
+    self.photo.canvasRect.topLeftxPercent = [[self.coordinates objectAtIndex:2] objectAtIndex:0];
+    self.photo.canvasRect.topLeftyPercent = [[self.coordinates objectAtIndex:2] objectAtIndex:1];
+    self.photo.canvasRect.topRightxPercent = [[self.coordinates objectAtIndex:3] objectAtIndex:0];
+    self.photo.canvasRect.topRightyPercent = [[self.coordinates objectAtIndex:3] objectAtIndex:1];
+    
+    NSLog(@"The coordinates are %@", self.coordinates);
 }
 
 - (void)setPhoto:(Photo *)photo
@@ -42,8 +59,6 @@
     // Need to change to Core Data
     _photo = photo;
 }
-
-@synthesize selectedCornerIndex = _selectedCornerIndex;
 
 - (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
 {
@@ -59,7 +74,7 @@
 
 - (CornerCircle *)selectedCorner
 {
-    if (self.selectedCornerIndex == NSNotFound) {
+    if (self.selectedCornerIndex == NSNotFound || self.selectedCornerIndex > [self.corners count]) {
         return nil;
     }
     return [self.corners objectAtIndex:self.selectedCornerIndex];
@@ -70,6 +85,7 @@
     [super viewDidLoad];
     
     self.selectedCornerIndex = NSNotFound;
+    self.coordinatesChanged = NO;
     // Sets the controller as a delegate for CornerDetectionView
     [self displayPhoto];
     [self displayCorners];
@@ -132,14 +148,14 @@
 #pragma mark CornerDetectionView
 - (void)displayCorners
 {
-    NSArray *coordinates = [NSArray arrayWithObjects:
-                            [NSArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil],
-                            [NSArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil],
-                            [NSArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
-                            [NSArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
-                            , nil];
+    self.coordinates = [NSMutableArray arrayWithObjects:
+                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil],
+                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil],
+                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
+                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
+                        , nil];
     CornerDetectionView *cornerDetectionview = [[CornerDetectionView alloc] initWithFrame:self.originalImageView.bounds];
-    for (NSArray *coordinate in coordinates) {
+    for (NSArray *coordinate in self.coordinates) {
         CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:cornerDetectionview.bounds.size];
         [self.corners addObject:corner];
     }
@@ -164,19 +180,6 @@
 {
     return [self.corners count];
 }
-
-/* Delete the following two functions */
-- (UIBezierPath *)drawTaptargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
-{
-    CornerCircle *corner = [self.corners objectAtIndex:index];
-    return corner.tapTarget;
-}
-
-- (UIColor *)fillTapColorInView:(CornerDetectionView *)view
-{
-    return [UIColor yellowColor];
-}
-/* Delete the above two functions */
 
 #pragma mark Memory Management
 - (void)didReceiveMemoryWarning
@@ -218,9 +221,18 @@
             CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
             CGRect rectToRedraw = CGRectUnion(originalBounds, newBounds);
             
-            [self.selectedCorner moveBy:translation];
-            [self.cornerDetectionView reloadDataInRect:rectToRedraw];
-            [panRecognizer setTranslation:CGPointZero inView:self.originalImageView];
+            if (self.selectedCorner) {
+                [self.selectedCorner moveBy:translation];
+                [self.cornerDetectionView reloadDataInRect:rectToRedraw];
+                [panRecognizer setTranslation:CGPointZero inView:self.originalImageView];
+                
+                // At least one corner has changed its position
+                self.coordinatesChanged = YES;
+                
+                // Update coordinates of the corner selected
+                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x]];
+                [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y]];
+            }
         }
         default:
             break;

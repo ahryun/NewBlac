@@ -26,9 +26,6 @@
 - (UIColor *)fillColorInView:(CornerDetectionView *)view;
 - (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view;
 
-- (UIBezierPath *)drawTaptargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index;
-- (UIColor *)fillTapColorInView:(CornerDetectionView *)view;
-
 @end
 
 
