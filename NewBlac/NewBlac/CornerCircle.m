@@ -62,7 +62,7 @@
     }
     
     // Make the hit detection area 3 times bigger for people with fat fingers
-    UIBezierPath *tapTarget = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(path.bounds.origin.x - self.circleDiameter, path.bounds.origin.y - self.circleDiameter, self.circleDiameter * 3, self.circleDiameter * 3)];
+    UIBezierPath *tapTarget = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(path.bounds.origin.x - (self.circleDiameter * 2), path.bounds.origin.y - (self.circleDiameter * 2), self.circleDiameter * 5, self.circleDiameter * 5)];
     
     if (tapTarget == NULL) {
         return nil;

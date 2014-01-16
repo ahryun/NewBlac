@@ -29,37 +29,25 @@
 - (IBAction)doneEditingImage:(UIButton *)sender {
     
     // See if the coordinates have changed
-    if (self.coordinatesChanged) [self updateCoordinatesInManagedObjects];
-    
-    // Send the new coordinates to the c++ file to recalculate the matrix
-    [self.canvas unskewWithCoordinates:self.coordinates];
-    
-    // Replace the cropped image saved in file system
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
-    BOOL removeSucceeded = [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:nil];
-    if (removeSucceeded) {
-        BOOL writeSucceeded = [fileManager createFileAtPath:self.photo.croppedPhotoFilePath contents:imageData attributes:nil];
-        writeSucceeded ? NSLog(@"Replacing cropped photo file was a success") : NSLog(@"Hey I couldn't resave the new cropped photo");
+    if (self.coordinatesChanged) {
+        // Update the corner coordinates in core data
+        [self.photo.canvasRect photoCorners:self.coordinates];
+        // Send the new coordinates to the c++ file to recalculate the matrix
+        UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
+        [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage];
+        
+        // Replace the cropped image saved in file system
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
+        BOOL removeSucceeded = [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:nil];
+        if (removeSucceeded) {
+            BOOL writeSucceeded = [fileManager createFileAtPath:self.photo.croppedPhotoFilePath contents:imageData attributes:nil];
+            writeSucceeded ? NSLog(@"Replacing cropped photo file was a success") : NSLog(@"Hey I couldn't resave the new cropped photo");
+        }
     }
     
     // May need to prepareForSegue
     [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
-}
-
-- (void)updateCoordinatesInManagedObjects
-{
-    // Update coordinates
-    self.photo.canvasRect.bottomLeftxPercent = [[self.coordinates objectAtIndex:0] objectAtIndex:0];
-    self.photo.canvasRect.bottomLeftyPercent = [[self.coordinates objectAtIndex:0] objectAtIndex:1];
-    self.photo.canvasRect.bottomRightxPercent = [[self.coordinates objectAtIndex:1] objectAtIndex:0];
-    self.photo.canvasRect.bottomRightyPercent = [[self.coordinates objectAtIndex:1] objectAtIndex:1];
-    self.photo.canvasRect.topLeftxPercent = [[self.coordinates objectAtIndex:2] objectAtIndex:0];
-    self.photo.canvasRect.topLeftyPercent = [[self.coordinates objectAtIndex:2] objectAtIndex:1];
-    self.photo.canvasRect.topRightxPercent = [[self.coordinates objectAtIndex:3] objectAtIndex:0];
-    self.photo.canvasRect.topRightyPercent = [[self.coordinates objectAtIndex:3] objectAtIndex:1];
-    
-    NSLog(@"The coordinates are %@", self.coordinates);
 }
 
 - (void)setPhoto:(Photo *)photo
@@ -223,11 +211,13 @@
 {
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
+            NSLog(@"Pan began");
             CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
             self.selectedCornerIndex = [self hitTest:tapLocation];
             break;
         }
         case UIGestureRecognizerStateChanged: {
+            NSLog(@"Pan changed");
             CGPoint translation = [panRecognizer translationInView:self.originalImageView];
             CGRect originalBounds = self.selectedCorner.totalBounds;
             CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));

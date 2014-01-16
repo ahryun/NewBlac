@@ -52,7 +52,6 @@
         imageView.opaque = NO;
         [self.view insertSubview:imageView belowSubview:self.buttonView];
         self.croppedImageView = imageView;
-        
     }
 }
 
@@ -61,6 +60,8 @@
     [super viewWillAppear:animated];
     self.buttonView.opaque = NO;
     self.buttonView.backgroundColor = [UIColor clearColor];
+    
+    [self displayPhoto];
 }
 
 - (void)viewDidLoad
@@ -80,6 +81,7 @@
 - (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
 {
     // Nothing necessary to be done here
+    
 }
 
 - (IBAction)editImage:(UIGestureRecognizer *)gestureRecognizer
@@ -103,7 +105,16 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
+    
+    for (UIImageView *view in self.view.subviews) {
+        NSLog(@"This view is about to disappear");
+        if (view == self.croppedImageView) {
+            NSLog(@"I found the image view. I wanna delete it");
+            view.image = nil;
+            [view removeFromSuperview];
+        }
+    }
     self.croppedImageView = nil;
 }
 

@@ -29,6 +29,7 @@ public:
         float imageHeight;
         float focalLength;
         float sensorWidth;
+        bool initialStraighteningDone;
         std::vector<cv::Point> square;
         cv::Point2f inputQuad[4]; // coordinate corresponding to pixels in images_photoCopy
     } images_;

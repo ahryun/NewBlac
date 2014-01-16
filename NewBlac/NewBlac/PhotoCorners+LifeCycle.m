@@ -27,4 +27,16 @@
     return photoCorners;
 }
 
+- (void)photoCorners:(NSArray *)coordinates
+{
+    self.bottomLeftxPercent = coordinates[0][0];
+    self.bottomLeftyPercent = coordinates[0][1];
+    self.bottomRightxPercent = coordinates[1][0];
+    self.bottomRightyPercent = coordinates[1][1];
+    self.topLeftxPercent = coordinates[2][0];
+    self.topLeftyPercent = coordinates[2][1];
+    self.topRightxPercent = coordinates[3][0];
+    self.topRightyPercent = coordinates[3][1];
+}
+
 @end

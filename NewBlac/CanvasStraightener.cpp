@@ -14,7 +14,7 @@ using namespace cv;
 CanvasStraightener::CanvasStraightener(Images images)
 {
     images_ = images;
-    images_.inputQuad ? straightenToNewRectangle() : straighten();
+    images_.initialStraighteningDone ? straightenToNewRectangle() :straighten();
 }
 
 // comparison function object
@@ -311,7 +311,10 @@ void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const c
     if (!originalImage.empty()) {
         // get each corner of the square in order
         Point2f outputQuad[4];
-        vector<Point> square(inputQuad, inputQuad + 4);
+        vector<Point> square(4);
+        for (int i = 0; i < 4; i++) {
+            square[i] = cvPointFrom32f(inputQuad[i]);
+        }
 
         float aspectRatio = getAspectRatio(imageWidth, imageHeight, square, imageWidth, imageHeight, focalLength, sensorWidth);
         

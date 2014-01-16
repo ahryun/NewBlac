@@ -14,6 +14,6 @@
 #import <sys/utsname.h>
 
 
-@interface NewBlacViewController : UIViewController <UINavigationControllerDelegate ,UIImagePickerControllerDelegate>
+@interface NewBlacViewController : UIViewController <UINavigationControllerDelegate>
 
 @end

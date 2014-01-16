@@ -48,7 +48,6 @@
     if (noCorners) {
         for (NSUInteger index = 0; index < noCorners; index++) {
             UIBezierPath *corner = [self.delegate drawPathInView:self atIndex:index];
-//            NSLog(@"Corner coordinate is %f, %f\n", corner.currentPoint.x, corner.currentPoint.y);
             [color setFill];
             [corner fill];
         }

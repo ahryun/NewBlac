@@ -11,5 +11,6 @@
 @interface PhotoCorners (LifeCycle)
 
 + (PhotoCorners *)photoCorners:(NSArray *)coordinates withManagedObjectContext:(NSManagedObjectContext *)context;
+- (void)photoCorners:(NSArray *)coordinates;
 
 @end

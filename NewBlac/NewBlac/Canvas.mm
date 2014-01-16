@@ -129,7 +129,7 @@
     for (int i = 0; i < count; i++) {
         convertedArray[i] = cv::Point2f([[coordinates objectAtIndex:i][0] floatValue] * self.imageWidth,
                                         [[coordinates objectAtIndex:i][1] floatValue] * self.imageHeight);
-        NSLog(@"The point array is %f and %f", convertedArray[i].x, convertedArray[i].y);
+//        NSLog(@"The point array is %f and %f", convertedArray[i].x, convertedArray[i].y);
     }
     
     return convertedArray;
@@ -164,27 +164,30 @@
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
+    images.initialStraighteningDone = false;
     
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
 }
 
-- (void)unskewWithCoordinates:(NSArray *)coordinates
+- (void)unskewWithCoordinates:(NSArray *)coordinates withOriginalImage:(UIImage *)originalImage
 {
     CanvasStraightener::Images images;
     images.canvas = [self cvMatFromUIImage:self.photo];
-    images.photoCopy = [self cvMatFromUIImage:self.originalImage];
-    self.originalImage = nil;
+    images.photoCopy = [self cvMatFromUIImage:originalImage];
     images.imageWidth = self.imageWidth;
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
+    images.initialStraighteningDone = true;
     
     // Fill out the input quads of vertices in real pixel
     // Meaning the floating points are not in percentage form
+    cv::Point2f *floatArray = [self convertToPointArrayInRealPixel:coordinates];
     for (int i = 0; i < [coordinates count]; i++) {
-        images.inputQuad[i] = [self convertToPointArrayInRealPixel:coordinates][i];
+        images.inputQuad[i] = floatArray[i];
+        NSLog(@"Converted array is %f, %f\n", floatArray[i].x, floatArray[i].y);
     }
     
     CanvasStraightener canvasStraightener(images);
