@@ -157,9 +157,9 @@
     NSLog(@"Photo dimensions are %f by %f", self.imageWidth, self.imageHeight);
     
     CanvasStraightener::Images images;
-    images.canvas = [self cvMatFromUIImage:self.photo];
     images.photoCopy = [self cvMatFromUIImage:self.originalImage];
     self.originalImage = nil;
+    images.canvas = [self cvMatFromUIImage:self.photo];
     images.imageWidth = self.imageWidth;
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;
@@ -174,8 +174,8 @@
 - (void)unskewWithCoordinates:(NSArray *)coordinates withOriginalImage:(UIImage *)originalImage
 {
     CanvasStraightener::Images images;
-    images.canvas = [self cvMatFromUIImage:self.photo];
     images.photoCopy = [self cvMatFromUIImage:originalImage];
+    images.canvas = [self cvMatFromUIImage:self.photo];
     images.imageWidth = self.imageWidth;
     images.imageHeight = self.imageHeight;
     images.focalLength = self.focalLength;

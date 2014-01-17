@@ -194,7 +194,7 @@ double CanvasStraightener::getAspectRatio(float canvasWidth, float canvasHeight,
     cout << "Corner 3 matrix is " << m3 << "\n";
     cout << "Corner 4 matrix is " << m4 << "\n";
     
-    float k2, k3, u0, v0, focalLengthinPixel, s, aspectRatio;
+    float k2, k3, u0, v0, focalLengthinPixel, aspectRatio;
     Mat n2, n3, ratioMat;
     
     // Get k2 and k3
@@ -206,7 +206,6 @@ double CanvasStraightener::getAspectRatio(float canvasWidth, float canvasHeight,
     n3 = (k3*m3) - m1;
     
     // Estimate focal length
-    s = 1.0; // ratio of a pixel is usually 1 with modern cameras
     u0 = imageWidth / 2;
     v0 = imageHeight / 2;
     
@@ -216,8 +215,8 @@ double CanvasStraightener::getAspectRatio(float canvasWidth, float canvasHeight,
     focalLengthinPixel = focalLength / sensorWidth * MAX(imageWidth, imageHeight);
     
     Mat A = (cv::Mat_<float>(3,3) <<
-         focalLength, 0, u0,
-         0, focalLength, v0,
+         focalLengthinPixel, 0, u0,
+         0, focalLengthinPixel, v0,
          0,0,1);
     
     cout << "Matrix A is " << A;

@@ -12,8 +12,13 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <sys/utsname.h>
+#import "SharedManagedDocument.h"
+#import "Video+LifeCycle.h"
 
 
 @interface NewBlacViewController : UIViewController <UINavigationControllerDelegate>
+
+@property (nonatomic, strong) Video *video;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end

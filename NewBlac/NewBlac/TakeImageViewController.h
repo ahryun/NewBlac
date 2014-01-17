@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Video+LifeCycle.h"
 
 @interface TakeImageViewController : UIViewController
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
+@property (nonatomic, strong) Video *video;
 
 @end

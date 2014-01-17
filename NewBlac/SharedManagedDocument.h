@@ -15,8 +15,8 @@ typedef void (^OnDocumentReady) (UIManagedDocument *document);
 @interface SharedManagedDocument : NSObject
 
 @property (nonatomic, strong, readonly) TroubleshootManagedDocument *sharedDocument;
-
 + (SharedManagedDocument *)sharedInstance;
 - (void)performWithDocument:(OnDocumentReady)onDocumentReady;
+
 
 @end

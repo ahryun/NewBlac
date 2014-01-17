@@ -11,5 +11,7 @@
 @interface Photo (LifeCycle)
 
 + (Photo *)photoWithOriginalPhotoFilePath:(NSString *)path withCroppedPhotoFilePath:(NSString *)croppedPath withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSString *)saveUIImage:(UIImage *)image toFilePath:(NSString *)imgPath;
++ (void)deletePhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context;
 
 @end

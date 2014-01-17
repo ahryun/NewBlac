@@ -17,6 +17,7 @@
 		F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA968187A3BA60045E642 /* TroubleshootManagedDocument.m */; };
 		F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */; };
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
+		F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
 		F3C028AA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028A91843F5BD00FF08F1 /* Foundation.framework */; };
@@ -79,6 +80,8 @@
 		F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PhotoCorners+LifeCycle.m"; path = "NewBlac/PhotoCorners+LifeCycle.m"; sourceTree = "<group>"; };
 		F33EA991187BA1380045E642 /* EditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
+		F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Video+LifeCycle.h"; path = "NewBlac/Video+LifeCycle.h"; sourceTree = "<group>"; };
+		F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Video+LifeCycle.m"; path = "NewBlac/Video+LifeCycle.m"; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
 		F3B0ECCB1857A5AF00143044 /* CanvasStraightener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanvasStraightener.hpp; path = ../CanvasStraightener.hpp; sourceTree = "<group>"; };
 		F3B0ECD21857B93100143044 /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 				F3FEBF02187E0AD7000C1181 /* Photo.m */,
 				F3FEBEFB187E0AD7000C1181 /* Video.h */,
 				F3FEBEFC187E0AD7000C1181 /* Video.m */,
+				F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */,
+				F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */,
 				F33EA985187B5BE40045E642 /* PhotoCorners+LifeCycle.h */,
 				F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */,
 				F33EA961187A31D50045E642 /* Photo+LifeCycle.h */,
@@ -416,6 +421,7 @@
 				F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */,
 				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
+				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,

@@ -23,7 +23,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="CaK-cf-brN" kind="push" identifier="readyCamera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
+                                    <segue destination="CaK-cf-brN" kind="push" identifier="Ready Camera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -128,7 +128,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="G5E-Uu-kYz" kind="unwind" unwindAction="unwindAddToVideoBuffer:" id="H2M-6c-AVt"/>
+                                            <action selector="addImageToVideoAndSegue:" destination="OHR-e6-UtV" eventType="touchUpInside" id="2oD-IS-CcW"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-jD-sw6">
@@ -160,6 +160,7 @@
                     <connections>
                         <outlet property="buttonView" destination="iWx-eJ-FlG" id="coT-9I-ACa"/>
                         <segue destination="w2n-4r-LyO" kind="push" identifier="Edit Image" id="CCk-dF-AjU"/>
+                        <segue destination="G5E-Uu-kYz" kind="unwind" identifier="Add Image To Video" unwindAction="unwindAddToVideoBuffer:" id="rTq-Mz-IAh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="grq-Fp-EAk" userLabel="First Responder" sceneMemberID="firstResponder"/>

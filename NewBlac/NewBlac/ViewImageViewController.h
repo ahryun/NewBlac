@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "Photo+LifeCycle.h"
+#import "Video+LifeCycle.h"
 #import "Canvas.h"
 
 @interface ViewImageViewController : UIViewController
 
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic, strong) Canvas *canvas;
+@property (nonatomic, strong) Video *video;
 
 @end

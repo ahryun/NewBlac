@@ -99,18 +99,18 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			[self setVideoDeviceInput:videoDeviceInput];
 		}
 		
-		AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-		AVCaptureDeviceInput *audioDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
-		
-		if (error)
-		{
-			NSLog(@"%@", error);
-		}
-		
-		if ([session canAddInput:audioDeviceInput])
-		{
-			[session addInput:audioDeviceInput];
-		}
+//		AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+//		AVCaptureDeviceInput *audioDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
+//		
+//		if (error)
+//		{
+//			NSLog(@"%@", error);
+//		}
+//		
+//		if ([session canAddInput:audioDeviceInput])
+//		{
+//			[session addInput:audioDeviceInput];
+//		}
 		
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
 		if ([session canAddOutput:stillImageOutput])
@@ -124,8 +124,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if (!self.managedObjectContext) [self useDemoDocument];
-    
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
                   options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
@@ -148,13 +146,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		}]];
 		[[self session] startRunning];
 	});
-}
-
-- (void)useDemoDocument
-{
-    [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
-        self.managedObjectContext = document.managedObjectContext;
-    }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -210,8 +201,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     self.croppedImage = self.canvas.originalImage;
                     
                     NSString *imagePath, *croppedImagePath;
-                    imagePath = [self saveUIImage:image toFilePath:nil];
-                    croppedImagePath = [self saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
+                    imagePath = [Photo saveUIImage:image toFilePath:nil];
+                    croppedImagePath = [Photo saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
                         self.photo = [Photo photoWithOriginalPhotoFilePath:[imagePath stringByAppendingString:@".jpg"]
@@ -226,30 +217,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 	});
 }
 
-- (NSString *)saveUIImage:(UIImage *)image toFilePath:(NSString *)imgPath
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if (!imgPath) {
-        NSString *UUID = [[NSUUID UUID] UUIDString];
-        NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentPath =[documentPaths objectAtIndex:0];
-        NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"Images"];
-        [fileManager createDirectoryAtPath:originalImageDir withIntermediateDirectories:YES attributes:nil error:nil];
-        imgPath = [originalImageDir stringByAppendingPathComponent:UUID];
-    }
-    
-    NSString *imgPathWithFormat = [imgPath stringByAppendingString:@".jpg"];
-    if (![fileManager fileExistsAtPath:imgPathWithFormat]) {
-        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        BOOL success = [fileManager createFileAtPath:imgPathWithFormat contents:imageData attributes:nil];
-        if (!success) NSLog(@"Photo did NOT get saved correctly");
-    } else {
-        NSLog(@"File exists. Possibly UUID collision. This should never happen.\n");
-    }
-    return imgPath;
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"View Image"]) {
@@ -258,6 +225,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
             [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
+            [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
     }
 }
@@ -399,15 +369,7 @@ monitorSubjectAreaChange:NO];
 
 - (IBAction)unwindToRetakePhoto:(UIStoryboardSegue *)segue
 {
-    // Nothing needed here
-    [self.managedObjectContext performBlock:^{
-        // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSError *error = nil;
-        [fileManager removeItemAtPath:self.photo.originalPhotoFilePath error:&error];
-        [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:&error];
-        [self.managedObjectContext deleteObject:self.photo];
-    }];
+    [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
 }
 
 @end

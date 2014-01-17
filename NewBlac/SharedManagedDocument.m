@@ -54,4 +54,14 @@
     }
 }
 
+//+ (NSManagedObjectContext *)sharedManagedObjectContext
+//{
+//    __block NSManagedObjectContext *context;
+//    [[self sharedInstance] performWithDocument:^(UIManagedDocument *document){
+//        context = document.managedObjectContext;
+//    }];
+//    return context;
+//}
+
+
 @end

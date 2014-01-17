@@ -67,9 +67,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self displayPhoto];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -116,6 +113,16 @@
         }
     }
     self.croppedImageView = nil;
+}
+
+- (IBAction)addImageToVideoAndSegue:(UIButton *)sender {
+    
+    // I added a geneeral unwind segue from view controller to Exit sign by ctrl-drag - segue name is "Add Image To Video"
+    
+    // Add the photo to video
+    
+    // Do a manual segue
+    
 }
 
 @end
