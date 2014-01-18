@@ -31,8 +31,9 @@
     self = [super init];
     if (self) {
         NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        url = [url URLByAppendingPathComponent:@"Demo Document"];
+        url = [url URLByAppendingPathComponent:@"NewBlacPersistentStore"];
         self.sharedDocument = [[TroubleshootManagedDocument alloc] initWithFileURL:url];
+        
     }
     return self;
 }
@@ -40,6 +41,7 @@
 - (void)performWithDocument:(OnDocumentReady)onDocumentReady
 {
     void (^OnDocumentDidLoad)(BOOL) = ^(BOOL success) {
+        NSLog(@"success = %hhd", success);
         onDocumentReady(self.sharedDocument);
     };
     
@@ -51,17 +53,9 @@
         [self.sharedDocument openWithCompletionHandler:OnDocumentDidLoad];
     } else if (self.sharedDocument.documentState == UIDocumentStateNormal) {
         OnDocumentDidLoad(YES);
+    } else if (self.sharedDocument.documentState == UIDocumentStateSavingError) {
+        NSLog(@"Hey There is a problem saving document");
     }
 }
-
-//+ (NSManagedObjectContext *)sharedManagedObjectContext
-//{
-//    __block NSManagedObjectContext *context;
-//    [[self sharedInstance] performWithDocument:^(UIManagedDocument *document){
-//        context = document.managedObjectContext;
-//    }];
-//    return context;
-//}
-
 
 @end

@@ -97,6 +97,9 @@
         if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
             [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
         }
+        if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
+            [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
+        }
     }
 }
 
@@ -117,12 +120,11 @@
 
 - (IBAction)addImageToVideoAndSegue:(UIButton *)sender {
     
-    // I added a geneeral unwind segue from view controller to Exit sign by ctrl-drag - segue name is "Add Image To Video"
-    
     // Add the photo to video
+    [self.video addPhotosObject:self.photo];
     
     // Do a manual segue
-    
+    [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
 }
 
 @end

@@ -197,8 +197,13 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 // Save the original image to a file system and save URL to core data
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize];
+                    
+                    // Something wrong with it. I think it keeps on giving zero.
+                    
+                    float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
+                    self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
                     self.croppedImage = self.canvas.originalImage;
+                    [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
                     
                     NSString *imagePath, *croppedImagePath;
                     imagePath = [Photo saveUIImage:image toFilePath:nil];

@@ -30,6 +30,7 @@ public:
         float focalLength;
         float sensorWidth;
         bool initialStraighteningDone;
+        float screenAspectRatio;
         std::vector<cv::Point> square;
         cv::Point2f inputQuad[4]; // coordinate corresponding to pixels in images_photoCopy
     } images_;
@@ -48,9 +49,9 @@ private:
     void drawSquares(cv::Mat &image, const std::vector<cv::Point> &squares);
     cv::Point convertToPixel(float canvasWidth, float canvasHeight, cv::Point &point, const float imageWidth, const float imageHeight);
     double getAspectRatio(float canvasWidth, float canvasHeight, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
-    void warpToRectangle(const cv::Mat&image, const cv::Mat&originalImage, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
+    void warpToRectangle(const cv::Mat&image, const cv::Mat&originalImage, std::vector<cv::Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth, float screenAspectRatio);
     
     // If a user manually changes the corners
     void straightenToNewRectangle();
-    void warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth);
+    void warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth,  float screenAspectRatio);
 };

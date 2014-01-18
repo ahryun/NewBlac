@@ -31,13 +31,13 @@ void CanvasStraightener::straighten()
 
     vector<vector<Point>> squares;
     findASquare(images_.canvas, squares, images_.square);
-    warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth);
+    warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth, images_.screenAspectRatio);
 }
 
 void CanvasStraightener::straightenToNewRectangle()
 {
     // Do something
-    warpToNewRectangle(images_.photoCopy, images_.inputQuad, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth);
+    warpToNewRectangle(images_.photoCopy, images_.inputQuad, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth, images_.screenAspectRatio);
 }
 
 void CanvasStraightener::applyGrayscale(Mat &image)
@@ -229,7 +229,7 @@ double CanvasStraightener::getAspectRatio(float canvasWidth, float canvasHeight,
     return aspectRatio; // width / height
 }
 
-void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&originalImage, vector<Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
+void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&originalImage, vector<Point> &square,  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth, float screenAspectRatio)
 {
     if (!square.empty() && !image.empty() && !originalImage.empty()) {
         // get each corner of the square in order
@@ -269,16 +269,18 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
             images_.inputQuad[i] = inputQuad[i];
         }
         
-        float aspectRatio = getAspectRatio(image.size().width, image.size().height, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        if (!screenAspectRatio || screenAspectRatio == 0) {
+            images_.screenAspectRatio = getAspectRatio(image.size().width, image.size().height, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        }
         
         // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
         float rectWidth, rectHeight;
-        if (aspectRatio > 1.0) {
+        if (images_.screenAspectRatio > 1.0) {
             rectWidth = 1000.0;
-            rectHeight = rectWidth / aspectRatio;
+            rectHeight = rectWidth / images_.screenAspectRatio;
         } else {
             rectHeight = 1000.0;
-            rectWidth = rectHeight * aspectRatio;
+            rectWidth = rectHeight * images_.screenAspectRatio;
         }
         
         outputQuad[0] = Point2f(0,rectHeight);
@@ -305,7 +307,7 @@ void CanvasStraightener::warpToRectangle(const Mat &image, const cv::Mat&origina
     }
 }
 
-void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth)
+void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const cv::Point2f inputQuad[],  const float imageWidth, const float imageHeight, const float focalLength, const float sensorWidth,  float screenAspectRatio)
 {
     if (!originalImage.empty()) {
         // get each corner of the square in order
@@ -315,16 +317,18 @@ void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const c
             square[i] = cvPointFrom32f(inputQuad[i]);
         }
 
-        float aspectRatio = getAspectRatio(imageWidth, imageHeight, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        if (!screenAspectRatio || screenAspectRatio == 0) {
+            images_.screenAspectRatio = getAspectRatio(imageWidth, imageHeight, square, imageWidth, imageHeight, focalLength, sensorWidth);
+        }
         
         // Depending on whether the paper is wider or longer, max(width, height) is 1000.0
         float rectWidth, rectHeight;
-        if (aspectRatio > 1.0) {
+        if (images_.screenAspectRatio > 1.0) {
             rectWidth = 1000.0;
-            rectHeight = rectWidth / aspectRatio;
+            rectHeight = rectWidth / images_.screenAspectRatio;
         } else {
             rectHeight = 1000.0;
-            rectWidth = rectHeight * aspectRatio;
+            rectWidth = rectHeight * images_.screenAspectRatio;
         }
         
         outputQuad[0] = Point2f(0,rectHeight);

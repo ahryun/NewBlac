@@ -32,9 +32,16 @@
     if (self.coordinatesChanged) {
         // Update the corner coordinates in core data
         [self.photo.canvasRect photoCorners:self.coordinates];
+        
         // Send the new coordinates to the c++ file to recalculate the matrix
         UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
-        [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage];
+        if ([self.video.photos count] > 0) {
+            [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:NO];
+        } else {
+            [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:YES];
+        }
+        
+        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
         
         // Replace the cropped image saved in file system
         NSFileManager *fileManager = [NSFileManager defaultManager];

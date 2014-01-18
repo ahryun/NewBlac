@@ -7,6 +7,7 @@
 //
 
 #import "Video+LifeCycle.h"
+#import "Photo+LifeCycle.h"
 
 @implementation Video (LifeCycle)
 
@@ -60,6 +61,5 @@
     
     return videoPathWithFormat;
 }
-
 
 @end

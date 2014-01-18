@@ -136,7 +136,7 @@
 }
 
 // Designated init for Canvas object
-- (id)initWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize;
+- (id)initWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize withAspectRatio:(float)aspectRatio;
 {
     self = [super init];
     
@@ -146,6 +146,7 @@
     [self setImageHeight:photo.size.height];
     [self setFocalLength:focalLength];
     [self setApertureSize:apertureSize];
+    if (aspectRatio) [self setScreenAspect:aspectRatio];
     
     [self straightenCanvas];
     
@@ -165,13 +166,15 @@
     images.focalLength = self.focalLength;
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     images.initialStraighteningDone = false;
+    images.screenAspectRatio = self.screenAspect ? 0 : self.screenAspect;
     
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
+    if (!self.screenAspect) self.screenAspect = canvasStraightener.images_.screenAspectRatio;
 }
 
-- (void)unskewWithCoordinates:(NSArray *)coordinates withOriginalImage:(UIImage *)originalImage
+- (void)unskewWithCoordinates:(NSArray *)coordinates withOriginalImage:(UIImage *)originalImage ifFirstImage:(BOOL)ifFirstImage;
 {
     CanvasStraightener::Images images;
     images.photoCopy = [self cvMatFromUIImage:originalImage];
@@ -181,6 +184,8 @@
     images.focalLength = self.focalLength;
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     images.initialStraighteningDone = true;
+    // Screen aspect ratio needs to be recalculated so I pass zero into CanvasStraightener to force it to recalculate the aspect
+    images.screenAspectRatio = ifFirstImage ? 0 : self.screenAspect;
     
     // Fill out the input quads of vertices in real pixel
     // Meaning the floating points are not in percentage form
@@ -193,6 +198,8 @@
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = coordinates;
+    // Saves the new value for screen aspect ratio
+    self.screenAspect = canvasStraightener.images_.screenAspectRatio;
 }
 
 // Images captured by iPhone camera are rotated 90 degree automatically

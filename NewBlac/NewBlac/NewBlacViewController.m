@@ -12,6 +12,8 @@
 
 @interface NewBlacViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *addPhoto;
+
 @end
 
 @implementation NewBlacViewController
@@ -20,6 +22,7 @@
 - (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
 {
     // Add the photo to the buffer
+    
 }
 
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
@@ -42,23 +45,22 @@
 - (void)useDemoDocument
 {
     [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
-            self.managedObjectContext = document.managedObjectContext;
-        }];
+        self.managedObjectContext = document.managedObjectContext;
+        if (!self.video && self.managedObjectContext) {
+            // Put the path as nil, if you would Video object to create a random movie file path in Videos folder
+            self.video = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
+        }
+        [self.addPhoto setEnabled:YES];
+    }];
 }
 
-
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
+    if (self.video) NSLog(@"Video aspect ratio is %f", [self.video.screenRatio floatValue]);
     
     if (!self.managedObjectContext) [self useDemoDocument];
     
-    if (!self.video && self.managedObjectContext) {
-        // Put the path as nil, if you would Video object to create a random movie file path in Videos folder
-        self.video = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
-    }
 }
-
-
 
 @end
