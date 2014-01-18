@@ -21,7 +21,7 @@
 
 - (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
 {
-    // Add the photo to the buffer
+    
     
 }
 
@@ -58,8 +58,13 @@
 {
     [super viewWillAppear:animated];
     if (self.video) NSLog(@"Video aspect ratio is %f", [self.video.screenRatio floatValue]);
-    
     if (!self.managedObjectContext) [self useDemoDocument];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
     
 }
 
