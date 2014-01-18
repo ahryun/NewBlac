@@ -318,6 +318,7 @@ void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const c
         }
 
         if (!screenAspectRatio || screenAspectRatio == 0) {
+            
             images_.screenAspectRatio = getAspectRatio(imageWidth, imageHeight, square, imageWidth, imageHeight, focalLength, sensorWidth);
         }
         

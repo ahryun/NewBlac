@@ -99,19 +99,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			[self setVideoDeviceInput:videoDeviceInput];
 		}
 		
-//		AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-//		AVCaptureDeviceInput *audioDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
-//		
-//		if (error)
-//		{
-//			NSLog(@"%@", error);
-//		}
-//		
-//		if ([session canAddInput:audioDeviceInput])
-//		{
-//			[session addInput:audioDeviceInput];
-//		}
-		
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
 		if ([session canAddOutput:stillImageOutput])
 		{
@@ -197,9 +184,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 // Save the original image to a file system and save URL to core data
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    // Something wrong with it. I think it keeps on giving zero.
-                    
                     float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
                     self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
                     self.croppedImage = self.canvas.originalImage;

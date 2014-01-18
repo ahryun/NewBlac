@@ -146,6 +146,7 @@
     [self setImageHeight:photo.size.height];
     [self setFocalLength:focalLength];
     [self setApertureSize:apertureSize];
+    
     if (aspectRatio) [self setScreenAspect:aspectRatio];
     
     [self straightenCanvas];
@@ -166,7 +167,7 @@
     images.focalLength = self.focalLength;
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     images.initialStraighteningDone = false;
-    images.screenAspectRatio = self.screenAspect ? 0 : self.screenAspect;
+    images.screenAspectRatio = self.screenAspect ? self.screenAspect : 0;
     
     CanvasStraightener canvasStraightener(images);
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
