@@ -9,10 +9,12 @@
 #import "NewBlacViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "Canvas.h"
+#import "VideoCreator.h"
 
 @interface NewBlacViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *addPhoto;
+@property (strong, nonatomic) VideoCreator *videoCreator;
 
 @end
 
@@ -59,12 +61,14 @@
     [super viewWillAppear:animated];
     if (self.video) NSLog(@"Video aspect ratio is %f", [self.video.screenRatio floatValue]);
     if (!self.managedObjectContext) [self useDemoDocument];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     
+    if (self.video && [self.video.photos count] > 0) {
+        self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video];
+        
+        // Play the video
+        
+        
+    }
     
 }
 

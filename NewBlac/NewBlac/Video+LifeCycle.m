@@ -62,4 +62,10 @@
     return videoPathWithFormat;
 }
 
+- (NSArray *)imagesArrayInChronologicalOrder
+{
+    NSArray *imagesArray = [[self.photos allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeTaken" ascending:YES]]];
+    return imagesArray;
+}
+
 @end

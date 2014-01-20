@@ -12,6 +12,8 @@
 
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
 
+- (NSArray *)imagesArrayInChronologicalOrder;
+
 // Support functions
 + (NSString *)getRandomFilePath;
 

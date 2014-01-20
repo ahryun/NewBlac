@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) Video *video;
 
+- (id)initWithVideo:(Video *)video
+
 @end
