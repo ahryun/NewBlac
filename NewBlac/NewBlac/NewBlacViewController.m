@@ -10,16 +10,23 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "Canvas.h"
 #import "VideoCreator.h"
+#import "VideoPlayView.h"
 
 @interface NewBlacViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *addPhoto;
 @property (strong, nonatomic) VideoCreator *videoCreator;
+@property (strong, nonatomic) AVURLAsset *videoAsset;
+@property (strong, nonatomic) AVPlayerItem *playerItem;
+@property (strong, nonatomic) AVPlayer *player;
+@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 @end
 
 @implementation NewBlacViewController
 
+static const NSString *ItemStatusContext;
 
 - (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
 {
@@ -56,20 +63,83 @@
     }];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self syncUI];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     if (self.video) NSLog(@"Video aspect ratio is %f", [self.video.screenRatio floatValue]);
     if (!self.managedObjectContext) [self useDemoDocument];
-    
+    self.playButton.hidden = YES;
     if (self.video && [self.video.photos count] > 0) {
         self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video];
-        
-        // Play the video
-        
-        
+        [self loadAssetFromVideo];
+        if ([self.video.photos count] > 0) {
+            self.playButton.hidden = NO;
+        }
     }
     
 }
+
+- (void)syncUI {
+    if ((self.player.currentItem != nil) &&
+        ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
+        self.playButton.enabled = YES;
+    }
+    else {
+        self.playButton.enabled = NO;
+    }
+}
+
+- (void)loadAssetFromVideo {
+    // Play the video
+    NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
+    self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
+    NSString *tracksKey = @"tracks";
+    [self.videoAsset loadValuesAsynchronouslyForKeys:[NSArray arrayWithObjects:tracksKey, nil] completionHandler:^(){
+        NSError *error = nil;
+        switch ([self.videoAsset statusOfValueForKey:tracksKey error:&error]) {
+            case AVKeyValueStatusLoaded:
+                self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
+                [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(playerItemDidReachEnd:)
+                                                             name:AVPlayerItemDidPlayToEndTimeNotification
+                                                           object:self.playerItem];
+                self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
+                [self.playerView setPlayer:self.player];
+            default:
+                NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
+        }
+    }];
+}
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification {
+    [self.player seekToTime:kCMTimeZero];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context {
+    
+    if (context == &ItemStatusContext) {
+        dispatch_async(dispatch_get_main_queue(),
+           ^{
+               [self syncUI];
+           });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object
+                           change:change context:context];
+    return;
+}
+
+- (IBAction)play:sender {
+    [self.player play];
+}
+
 
 @end

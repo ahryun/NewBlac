@@ -22,6 +22,7 @@
 		F3A494F1188A256700CBAE82 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F0188A256700CBAE82 /* Photo.m */; };
 		F3A494F4188A256800CBAE82 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F3188A256800CBAE82 /* Video.m */; };
 		F3A494F7188B2ED300CBAE82 /* VideoCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F6188B2ED300CBAE82 /* VideoCreator.m */; };
+		F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */; };
 		F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */; };
 		F3B0ECD41857B93100143044 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B0ECD31857B93100143044 /* Canvas.mm */; };
 		F3C028AA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028A91843F5BD00FF08F1 /* Foundation.framework */; };
@@ -91,6 +92,8 @@
 		F3A494F3188A256800CBAE82 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
 		F3A494F5188B2ED300CBAE82 /* VideoCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCreator.h; sourceTree = "<group>"; };
 		F3A494F6188B2ED300CBAE82 /* VideoCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCreator.m; sourceTree = "<group>"; };
+		F3A494F8188DEF4E00CBAE82 /* VideoPlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayView.h; sourceTree = "<group>"; };
+		F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayView.m; sourceTree = "<group>"; };
 		F3B0ECCA1857A5AF00143044 /* CanvasStraightener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CanvasStraightener.cpp; path = ../CanvasStraightener.cpp; sourceTree = "<group>"; };
 		F3B0ECCB1857A5AF00143044 /* CanvasStraightener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanvasStraightener.hpp; path = ../CanvasStraightener.hpp; sourceTree = "<group>"; };
 		F3B0ECD21857B93100143044 /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 				F3FEBF0818809D85000C1181 /* CornerCircle.m */,
 				F3A494F5188B2ED300CBAE82 /* VideoCreator.h */,
 				F3A494F6188B2ED300CBAE82 /* VideoCreator.m */,
+				F3A494F8188DEF4E00CBAE82 /* VideoPlayView.h */,
+				F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */,
 				F3B0ECD51857B93C00143044 /* Models */,
 				F3B0ECCE1857A60300143044 /* C++ Classes */,
 				F33EA9221877A51D0045E642 /* Core Data */,
@@ -434,6 +439,7 @@
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
 				F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */,
 				F3A494F7188B2ED300CBAE82 /* VideoCreator.m in Sources */,
+				F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */,
 				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
