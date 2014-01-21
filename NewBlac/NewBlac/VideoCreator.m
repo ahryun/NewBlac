@@ -15,8 +15,6 @@
 
 @interface VideoCreator()
 
-@property (nonatomic) dispatch_queue_t queue;
-
 @end
 
 @implementation VideoCreator
@@ -25,29 +23,25 @@
 {
     self = [super init];
     self.video = video;
-    self.queue = dispatch_queue_create("Queue Up Images For Video", NULL);
-    
     // convert the photos related to this video object into a video
     ////////////////////// Establish video width and height //////////////////////
-    CGSize size = CGSizeMake(300, 400);
-    int duration = 1;
+    CGSize size = CGSizeMake(320, 568);
     ////////////////////// Establish video width and height //////////////////////
     
     NSArray *imagesArray = [self.video imagesArrayInChronologicalOrder];
-    [self writeImages:imagesArray ToVideotoPath:self.video.compFilePath size:size duration:duration];
+    [self writeImages:imagesArray ToVideotoPath:self.video.compFilePath size:size];
     
     return self;
 }
 
-- (void)writeImages:(NSArray *)imagesArray ToVideotoPath:(NSString*)path size:(CGSize)size duration:(int)duration
+- (void)writeImages:(NSArray *)imagesArray ToVideotoPath:(NSString*)path size:(CGSize)size
 {
     // Remove an existing video file if it exists
     NSError *removeError = nil;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:path]) {
-        [fileManager removeItemAtPath:path error:&removeError];
-    } else {
-        NSLog(@"Error occured while removing an existing file - %@", [removeError localizedDescription]);
+        BOOL removalSuccess = [fileManager removeItemAtPath:path error:&removeError];
+        if (!removalSuccess) NSLog(@"Error occured while removing an existing file - %@", [removeError localizedDescription]);
     }
     
     // Create Asset Writer
@@ -62,7 +56,12 @@
                                    [NSNumber numberWithInt:size.width], AVVideoWidthKey,
                                    [NSNumber numberWithInt:size.height], AVVideoHeightKey, nil];
     AVAssetWriterInput *writerInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSettings];
-    AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:writerInput sourcePixelBufferAttributes:nil];
+    
+    NSDictionary *pixelBufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
+                                           [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
+                                           nil];
+    AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:writerInput sourcePixelBufferAttributes:pixelBufferAttributes];
     NSParameterAssert(writerInput);
     
     // Add the Writer Input to Asset Writer
@@ -74,39 +73,41 @@
     [writer startWriting];
     [writer startSessionAtSourceTime:kCMTimeZero];
     
-    NSUInteger fps = 30;
-    double numberOfSecondsPerFrame = 6;
-    double frameDuration = fps * numberOfSecondsPerFrame;
-    for(int i = 0; i < [imagesArray count]; i++)
-    {
+    NSUInteger fps = 2;
+    double frameDuration = 1;
+    for(int i = 0; i < [imagesArray count]; i++) {
         @autoreleasepool {
-            [writerInput requestMediaDataWhenReadyOnQueue:self.queue usingBlock:^{
-                while ([writerInput isReadyForMoreMediaData]) {
-                    NSLog(@"Processing video frame %d out of %d",i,[imagesArray count]);
-                    Photo *photo = imagesArray[i];
-                    UIImage *image = [UIImage imageWithContentsOfFile:photo.croppedPhotoFilePath];
-                    CVPixelBufferRef buffer = [self pixelBufferFromCGImage:image.CGImage withSize:size];
-                    BOOL append_ok = NO;
-                    if (buffer) {
-                        CMTime frameTime = CMTimeMake(i*frameDuration,(int32_t) fps);
-                        append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
-                        if(!append_ok){
-                            NSError *error = writer.error;
-                            if(error!=nil) {
-                                NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
-                            }
-                        }
+            NSLog(@"Processing video frame %d out of %d",(i + 1),[imagesArray count]);
+            Photo *photo = imagesArray[i];
+            UIImage *image = [UIImage imageWithContentsOfFile:photo.croppedPhotoFilePath];
+            CVPixelBufferRef buffer = [self pixelBufferFromCGImage:image.CGImage withSize:size];
+            BOOL append_ok = NO;
+            int nthTry = 0;
+            int maximumTries = 30;
+            while (!append_ok && nthTry < maximumTries) {
+                if (buffer && adaptor.assetWriterInput.readyForMoreMediaData) {
+                    CMTime frameTime = CMTimeMake(frameDuration,(int32_t)fps);
+                    append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
+                    if(!append_ok){
+                        NSError *error = writer.error;
+                        if(error!=nil) NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
                     } else {
-                        [writerInput markAsFinished];
-                        break;
+                        NSLog(@"Pixel buffer %i was appended to adaptor successfully\n", i + 1);
                     }
+                } else {
+                    printf("adaptor not ready %d at %d-th try\n", i, nthTry);
+                    // There may be a better way
+                    [NSThread sleepForTimeInterval:0.1];
                 }
-            }];
+                nthTry++;
+            }
+//            CVPixelBufferRelease(buffer);
+//            buffer = nil;
         }
     }
     
     [writerInput markAsFinished];
-    [writer endSessionAtSourceTime:CMTimeMake(duration * [imagesArray count], 2)];
+    [writer endSessionAtSourceTime:CMTimeMake(frameDuration * [imagesArray count], (int32_t)fps)];
     [writer finishWritingWithCompletionHandler:^(){
         // Do something
         NSLog(@"Finished creating a video");
@@ -137,7 +138,7 @@
     NSParameterAssert(context);
     
     ///////////////////////// Change the position of image origin ////////////////////////////////
-    CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(cgImage), CGImageGetHeight(cgImage)), cgImage);
+    CGContextDrawImage(context, CGRectMake(0, 0, size.width, size.height), cgImage);
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);

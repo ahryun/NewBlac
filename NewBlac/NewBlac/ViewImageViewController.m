@@ -108,9 +108,7 @@
     [super viewWillDisappear:animated];
     
     for (UIImageView *view in self.view.subviews) {
-        NSLog(@"This view is about to disappear");
         if (view == self.croppedImageView) {
-            NSLog(@"I found the image view. I wanna delete it");
             view.image = nil;
             [view removeFromSuperview];
         }

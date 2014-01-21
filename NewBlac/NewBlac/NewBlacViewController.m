@@ -78,32 +78,35 @@ static const NSString *ItemStatusContext;
     if (self.video && [self.video.photos count] > 0) {
         self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video];
         [self loadAssetFromVideo];
-        if ([self.video.photos count] > 0) {
+        if ([self.video.photos count] > 1) {
             self.playButton.hidden = NO;
         }
     }
-    
 }
 
-- (void)syncUI {
+- (void)syncUI
+{
     if ((self.player.currentItem != nil) &&
         ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
         self.playButton.enabled = YES;
-    }
-    else {
+    } else {
         self.playButton.enabled = NO;
     }
 }
 
-- (void)loadAssetFromVideo {
+- (void)loadAssetFromVideo
+{
     // Play the video
     NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
     self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
     NSString *tracksKey = @"tracks";
-    [self.videoAsset loadValuesAsynchronouslyForKeys:[NSArray arrayWithObjects:tracksKey, nil] completionHandler:^(){
-        NSError *error = nil;
-        switch ([self.videoAsset statusOfValueForKey:tracksKey error:&error]) {
-            case AVKeyValueStatusLoaded:
+    NSLog(@"There are %i tracks in this video", [self.videoAsset.tracks count]);
+    [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error;
+            AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
+            NSLog(@"The AVKeyValueStatus is %i\n", status);
+            if (status == AVKeyValueStatusLoaded) {
                 self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
                 [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
                 [[NSNotificationCenter defaultCenter] addObserver:self
@@ -112,13 +115,16 @@ static const NSString *ItemStatusContext;
                                                            object:self.playerItem];
                 self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
                 [self.playerView setPlayer:self.player];
-            default:
+            } else {
+                // You should deal with the error appropriately.
                 NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
-        }
+            }
+        });
     }];
 }
 
-- (void)playerItemDidReachEnd:(NSNotification *)notification {
+- (void)playerItemDidReachEnd:(NSNotification *)notification
+{
     [self.player seekToTime:kCMTimeZero];
 }
 
@@ -126,20 +132,18 @@ static const NSString *ItemStatusContext;
                         change:(NSDictionary *)change context:(void *)context {
     
     if (context == &ItemStatusContext) {
-        dispatch_async(dispatch_get_main_queue(),
-           ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
                [self syncUI];
            });
         return;
     }
-    [super observeValueForKeyPath:keyPath ofObject:object
-                           change:change context:context];
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     return;
 }
 
-- (IBAction)play:sender {
+- (IBAction)play:sender
+{
     [self.player play];
 }
-
 
 @end

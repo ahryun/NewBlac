@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KSi-bi-8SJ" customClass="VideoPlayView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KSi-bi-8SJ" customClass="VideoPlayView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -34,7 +34,7 @@
                                     <segue destination="CaK-cf-brN" kind="push" identifier="Ready Camera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
                                 <rect key="frame" x="143" y="269" width="34" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Play!">
@@ -47,7 +47,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KSi-bi-8SJ" secondAttribute="trailing" id="D3L-C0-r0A"/>
                             <constraint firstItem="JbO-Eu-Wfg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="GnM-Tm-lQn"/>
+                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="HNi-MU-oY6"/>
+                            <constraint firstAttribute="bottom" secondItem="KSi-bi-8SJ" secondAttribute="bottom" id="XAx-Vg-Rk7"/>
+                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="centerY" secondItem="z3k-0s-l0L" secondAttribute="centerY" id="j8y-Du-WaF"/>
+                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="k87-o0-nps"/>
+                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="centerX" secondItem="z3k-0s-l0L" secondAttribute="centerX" id="l9v-BA-wk3"/>
                             <constraint firstAttribute="bottom" secondItem="JbO-Eu-Wfg" secondAttribute="bottom" constant="20" symbolic="YES" id="mRS-g5-JhU"/>
                         </constraints>
                     </view>
