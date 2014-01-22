@@ -16,11 +16,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KSi-bi-8SJ" customClass="VideoPlayView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
+                                <rect key="frame" x="143" y="269" width="34" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Play!">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="play:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xnz-3N-KKh"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbO-Eu-Wfg">
                                 <rect key="frame" x="20" y="518" width="74" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -34,34 +44,24 @@
                                     <segue destination="CaK-cf-brN" kind="push" identifier="Ready Camera" customClass="UIStoryboardPopoverSegue" id="GJP-u8-5g0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
-                                <rect key="frame" x="143" y="269" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Play!">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="play:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xnz-3N-KKh"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="KSi-bi-8SJ" secondAttribute="trailing" id="D3L-C0-r0A"/>
-                            <constraint firstItem="JbO-Eu-Wfg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="GnM-Tm-lQn"/>
-                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="HNi-MU-oY6"/>
-                            <constraint firstAttribute="bottom" secondItem="KSi-bi-8SJ" secondAttribute="bottom" id="XAx-Vg-Rk7"/>
-                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="centerY" secondItem="z3k-0s-l0L" secondAttribute="centerY" id="j8y-Du-WaF"/>
-                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="k87-o0-nps"/>
-                            <constraint firstItem="KSi-bi-8SJ" firstAttribute="centerX" secondItem="z3k-0s-l0L" secondAttribute="centerX" id="l9v-BA-wk3"/>
-                            <constraint firstAttribute="bottom" secondItem="JbO-Eu-Wfg" secondAttribute="bottom" constant="20" symbolic="YES" id="mRS-g5-JhU"/>
+                            <constraint firstItem="LPf-fR-IDb" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Ipt-4z-4Va"/>
+                            <constraint firstAttribute="bottom" secondItem="JbO-Eu-Wfg" secondAttribute="bottom" constant="20" symbolic="YES" id="Osf-BL-SBb"/>
+                            <constraint firstItem="z3k-0s-l0L" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="PX4-RW-mM2"/>
+                            <constraint firstItem="LPf-fR-IDb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="UdK-u4-t6K"/>
+                            <constraint firstItem="ymK-qy-8eQ" firstAttribute="top" secondItem="LPf-fR-IDb" secondAttribute="bottom" id="a7w-gx-pRU"/>
+                            <constraint firstItem="z3k-0s-l0L" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="j2e-45-5EA"/>
+                            <constraint firstAttribute="trailing" secondItem="LPf-fR-IDb" secondAttribute="trailing" id="uKb-Lm-cgj"/>
+                            <constraint firstItem="JbO-Eu-Wfg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="vPo-Ht-CNu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ldy-ft-yY8"/>
                     <connections>
                         <outlet property="addPhoto" destination="JbO-Eu-Wfg" id="eSU-Y1-wLQ"/>
                         <outlet property="playButton" destination="z3k-0s-l0L" id="1C8-Ab-gV2"/>
-                        <outlet property="playerView" destination="KSi-bi-8SJ" id="BHI-mp-jMq"/>
+                        <outlet property="playerView" destination="LPf-fR-IDb" id="qHz-tA-A8J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -118,6 +118,7 @@
                             <constraint firstItem="0z0-yS-VDR" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="l5x-QY-fKL"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="3LB-gN-lWE"/>
                     <connections>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>
                         <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="dAX-m9-GtR"/>
@@ -186,6 +187,7 @@
                             <outletCollection property="gestureRecognizers" destination="7rr-7v-1N5" appends="YES" id="OIt-ef-Hi9"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="ghD-nE-dkO"/>
                     <connections>
                         <outlet property="buttonView" destination="iWx-eJ-FlG" id="coT-9I-ACa"/>
                         <segue destination="w2n-4r-LyO" kind="push" identifier="Edit Image" id="CCk-dF-AjU"/>
@@ -234,6 +236,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="HK3-bL-O1N"/>
                     <connections>
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
                         <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="bnT-VU-buG"/>

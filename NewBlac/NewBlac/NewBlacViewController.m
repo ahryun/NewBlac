@@ -21,6 +21,7 @@
 @property (strong, nonatomic) AVPlayer *player;
 @property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (nonatomic) BOOL isCancelled;
 
 @end
 
@@ -28,10 +29,10 @@
 
 static const NSString *ItemStatusContext;
 
+#pragma mark - Segues
 - (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
 {
-    
-    
+    // Nothing needs to be done
 }
 
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
@@ -51,6 +52,38 @@ static const NSString *ItemStatusContext;
     }
 }
 
+#pragma mark - View Lifecycle
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSLog(@"Screen width and height in View Will Appear is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
+    
+    if (!self.managedObjectContext) [self useDemoDocument];
+    self.playButton.hidden = YES;
+    if (self.video && [self.video.photos count] > 0) {
+        if ([self.video.photos count] > 1) self.playButton.hidden = NO;
+        CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
+        if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
+        [self.videoCreator writeImagesToVideo];
+        [self loadAssetFromVideo];
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSLog(@"Screen width and height in View Did Load is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
+    [self syncUI];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.isCancelled = YES;
+}
+
+#pragma mark - Managed Object Context
 - (void)useDemoDocument
 {
     [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
@@ -63,27 +96,7 @@ static const NSString *ItemStatusContext;
     }];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self syncUI];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if (self.video) NSLog(@"Video aspect ratio is %f", [self.video.screenRatio floatValue]);
-    if (!self.managedObjectContext) [self useDemoDocument];
-    self.playButton.hidden = YES;
-    if (self.video && [self.video.photos count] > 0) {
-        self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video];
-        [self loadAssetFromVideo];
-        if ([self.video.photos count] > 1) {
-            self.playButton.hidden = NO;
-        }
-    }
-}
-
+#pragma mark - UI
 - (void)syncUI
 {
     if ((self.player.currentItem != nil) &&
@@ -94,6 +107,7 @@ static const NSString *ItemStatusContext;
     }
 }
 
+#pragma mark - Model
 - (void)loadAssetFromVideo
 {
     // Play the video
@@ -101,23 +115,28 @@ static const NSString *ItemStatusContext;
     self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
     NSString *tracksKey = @"tracks";
     NSLog(@"There are %i tracks in this video", [self.videoAsset.tracks count]);
+    self.isCancelled = NO;
     [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSError *error;
-            AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
-            NSLog(@"The AVKeyValueStatus is %i\n", status);
-            if (status == AVKeyValueStatusLoaded) {
-                self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
-                [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
-                [[NSNotificationCenter defaultCenter] addObserver:self
-                                                         selector:@selector(playerItemDidReachEnd:)
-                                                             name:AVPlayerItemDidPlayToEndTimeNotification
-                                                           object:self.playerItem];
-                self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-                [self.playerView setPlayer:self.player];
+            if (!self.isCancelled) {
+                NSError *error;
+                AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
+                NSLog(@"The AVKeyValueStatus is %i\n", status);
+                if (status == AVKeyValueStatusLoaded) {
+                    self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
+                    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
+                    [[NSNotificationCenter defaultCenter] addObserver:self
+                                                             selector:@selector(playerItemDidReachEnd:)
+                                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                                               object:self.playerItem];
+                    self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
+                    [self.playerView setPlayer:self.player];
+                } else {
+                    // You should deal with the error appropriately.
+                    NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
+                }
             } else {
-                // You should deal with the error appropriately.
-                NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
+                return;
             }
         });
     }];

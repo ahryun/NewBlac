@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) Video *video;
 
-- (id)initWithVideo:(Video *)video;
+- (id)initWithVideo:(Video *)video withScreenSize:(CGSize)size;
+- (void)writeImagesToVideo;
 
 @end
