@@ -170,6 +170,7 @@
     images.screenAspectRatio = self.screenAspect ? self.screenAspect : 0;
     
     CanvasStraightener canvasStraightener(images);
+//    self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.canvas];
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
     if (!self.screenAspect) self.screenAspect = canvasStraightener.images_.screenAspectRatio;

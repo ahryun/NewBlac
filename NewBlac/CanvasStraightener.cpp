@@ -26,7 +26,6 @@ bool compareContourAreas ( std::vector<cv::Point> contour1, std::vector<cv::Poin
 
 void CanvasStraightener::straighten()
 {
-    applyGrayscale(images_.canvas);
     applyGaussianBlur(images_.canvas, Size(5,5));
 
     vector<vector<Point>> squares;
@@ -38,13 +37,6 @@ void CanvasStraightener::straightenToNewRectangle()
 {
     // Do something
     warpToNewRectangle(images_.photoCopy, images_.inputQuad, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth, images_.screenAspectRatio);
-}
-
-void CanvasStraightener::applyGrayscale(Mat &image)
-{
-    if (!image.empty()) {
-        cvtColor(image, image, CV_BGR2GRAY);
-    }
 }
 
 void CanvasStraightener::applyGaussianBlur(Mat &image, Size kernel_size)
@@ -68,76 +60,96 @@ void CanvasStraightener::drawSquares(Mat &image, const vector<Point> &squares)
 {
     const Point* p = &squares[0];
     int n = (int)squares.size();
-    polylines(image, &p, &n, 1, true, Scalar(255), 1, CV_AA);
+    polylines(image, &p, &n, 1, true, Scalar(255, 255, 0), 2, CV_AA);
+    
 }
 
 void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &squares, vector<Point> &square)
 {
+    int thresh = 200, N = 2;
     squares.clear();
     square.clear();
     
-    Mat pyr, timg, gray;
+    Mat pyr, tempImg, grayChannel(image.size(), CV_8U), gray;
     
     // Further remove noise
     pyrDown(image, pyr, Size(image.cols/2, image.rows/2));
-    pyrUp(pyr, timg, image.size());
+    pyrUp(pyr, tempImg, image.size());
     vector<vector<Point>> contours;
     
-    // Adapative threshold to find the edges where the derivative of intensity is high
-    double const max_BINARY_value = 255.0;
-    int const block_size = 3;
-    double const constant_value = 1.0;
-    adaptiveThreshold(timg,
-                      gray,
-                      max_BINARY_value,
-                      ADAPTIVE_THRESH_GAUSSIAN_C,
-                      THRESH_BINARY_INV,
-                      block_size,
-                      constant_value);
-
-    // find contours and store them all as a list
-    findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-    
-    vector<Point> approx;
-    for( size_t i = 0; i < contours.size(); i++ )
-    {
-        approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true)*0.02, true);
-        
-        if( approx.size() == 4 &&
-           fabs(contourArea(Mat(approx))) > 1000 &&
-           isContourConvex(Mat(approx)) )
-        {
-            double maxCosine = 0;
-            
-            for( int j = 2; j < 5; j++ )
-            {
-                // find cosine of each angle
-                double cosine = fabs(getAngle(approx[j%4], approx[j-2], approx[j-1]));
-                maxCosine = MAX(maxCosine, cosine);
+    for (int colorPane = 0; colorPane < 3; colorPane++) {
+        int channel[] = {colorPane, 0};
+        mixChannels(&tempImg, // source matrix
+                    1, // number of matrix in source matrix
+                    &grayChannel, // destination matrix
+                    1, // number of matrix in destination matrix
+                    channel, // from_to array
+                    1); // number of pairs in from_to array
+        for( int l = 0; l < N; l++ ) {
+            if( l == 0 ) {
+                Canny(grayChannel, gray, 0, thresh, 5);
+                dilate(gray, gray, Mat(), Point(-1,-1));
+            } else {
+                gray = grayChannel >= (l+1)*255/N;
             }
             
-            // At least one of the angles is ~90 degree
-            if( maxCosine < 0.3 )
-                squares.push_back(approx);
+            // find contours and store them all as a list
+            findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+            vector<Point> approx;
+            for( size_t i = 0; i < contours.size(); i++ )
+            {
+                // WEED OUT of polygons that do NOT meet the CRITERIA //
+                
+                // 1. Check if the contour includes the center point
+                if (pointPolygonTest(Mat(contours[i]), Point2f(image.size().width / 2, image.size().height / 2), false) > 0) {
+                    
+                    // Convert a contour into a polygon
+                    approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true)*0.02, true);
+                    
+                    // 2. Check if the area is large enough
+                    // 3. Check if the polygon has 4 vertices
+                    // 4. Check if the polygon is convex
+                    if( approx.size() == 4 &&
+                       fabs(contourArea(Mat(approx))) > 10000 &&
+                       isContourConvex(Mat(approx)) ) {
+                        
+                        // 5. Check if at least one of the angles is approx 90 degree
+                        double maxCosine = 0;
+                        for( int j = 2; j < 5; j++ ) {
+                            // find cosine of each angle
+                            double cosine = fabs(getAngle(approx[j%4], approx[j-2], approx[j-1]));
+                            maxCosine = MAX(maxCosine, cosine);
+                        }
+                        // At least one of the angles is ~90 degree
+                        if( maxCosine < 0.3 ) squares.push_back(approx);
+                    }
+                }
+            }
         }
     }
     
-    if (squares.size() >= 2) {
+//    for (int i = 0; i < squares.size(); i++) {
+//        drawSquares(images_.canvas, squares[i]);
+//    }
+//    
+    if (squares.size() > 0) {
         // sort squares
-        sort(squares.begin(), squares.end(), compareContourAreas);
+        if (squares.size() > 1) sort(squares.begin(), squares.end(), compareContourAreas);
         // grab second largest contour
-        square = squares[squares.size()-2];
+        square = squares.size() == 1 ? squares[0] : squares[1];
+        
+//        drawSquares(images_.canvas, square);
         cout << "Largest contour area is " << square << "\n";
     } else {
         cout << "Hey. No square has been detected. Try again\n";
     }
     
-    if (!square.empty()) {
-        drawSquares(images_.canvas, square);
-    } else {
-        // Make the user try again
-        cout << "There is no square";
-    }
+//    if (!square.empty()) {
+//        drawSquares(images_.canvas, square);
+//    } else {
+//        // Make the user try again
+//        cout << "There is no square";
+//    }
 }
 
 struct ySortFunction {
@@ -355,10 +367,3 @@ void CanvasStraightener::warpToNewRectangle(const cv::Mat&originalImage, const c
         images_.photoCopy = dstImage;
     }
 }
-
-
-
-
-
-
-
