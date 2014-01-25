@@ -19,6 +19,7 @@
 		F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA968187A3BA60045E642 /* TroubleshootManagedDocument.m */; };
 		F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */; };
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
+		F3A37DBC18933C47003B530C /* CollectionViewButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */; };
 		F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */; };
 		F3A494EE188A256700CBAE82 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494ED188A256700CBAE82 /* PhotoCorners.m */; };
 		F3A494F1188A256700CBAE82 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F0188A256700CBAE82 /* Photo.m */; };
@@ -89,6 +90,8 @@
 		F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PhotoCorners+LifeCycle.m"; path = "NewBlac/PhotoCorners+LifeCycle.m"; sourceTree = "<group>"; };
 		F33EA991187BA1380045E642 /* EditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
+		F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewButtonsView.h; sourceTree = "<group>"; };
+		F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewButtonsView.m; sourceTree = "<group>"; };
 		F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Video+LifeCycle.h"; path = "NewBlac/Video+LifeCycle.h"; sourceTree = "<group>"; };
 		F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Video+LifeCycle.m"; path = "NewBlac/Video+LifeCycle.m"; sourceTree = "<group>"; };
 		F3A494EC188A256700CBAE82 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
@@ -180,6 +183,8 @@
 		F33BE995189309FB0021A5C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */,
+				F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
 				F33EA917187612140045E642 /* StillImagePreview.m */,
 				F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */,
@@ -465,6 +470,7 @@
 				F3A494F4188A256800CBAE82 /* Video.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
+				F3A37DBC18933C47003B530C /* CollectionViewButtonsView.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
