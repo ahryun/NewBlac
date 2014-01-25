@@ -1,48 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sni-8O-n05">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="b1C-WE-w9e">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Collection View Controller-->
-        <scene sceneID="tg3-0g-qCK">
-            <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="5G1-jq-s9h" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="cAK-pK-Z77">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hKa-Qj-sOg">
-                            <size key="itemSize" width="159" height="214"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hIz-hf-j86">
-                                <rect key="frame" x="0.0" y="0.0" width="159" height="214"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="159" height="214"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <size key="customSize" width="159" height="214"/>
-                                <connections>
-                                    <segue destination="vXZ-lx-hvc" kind="push" id="3cj-St-V3g"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="5G1-jq-s9h" id="7Sx-r1-6gA"/>
-                            <outlet property="delegate" destination="5G1-jq-s9h" id="muR-FY-VZU"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="C5w-hx-3Vv"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ROa-XC-cgn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928" y="38"/>
-        </scene>
         <!--New Blac View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -105,7 +66,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1360" y="38"/>
+            <point key="canvasLocation" x="1886" y="38"/>
         </scene>
         <!--Take Image View Controller-->
         <scene sceneID="6di-Lx-3l9">
@@ -172,7 +133,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1787" y="38"/>
+            <point key="canvasLocation" x="2313" y="38"/>
         </scene>
         <!--View Image View Controller-->
         <scene sceneID="efa-RJ-iCC">
@@ -241,7 +202,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2206" y="-50"/>
+            <point key="canvasLocation" x="2732" y="-50"/>
         </scene>
         <!--Edit Image View Controller-->
         <scene sceneID="Lez-Hp-WL0">
@@ -284,25 +245,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJj-xv-cx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Sue-xC-YhO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2625" y="-35"/>
+            <point key="canvasLocation" x="3151" y="-35"/>
+        </scene>
+        <!--Videos Collection View Controller-->
+        <scene sceneID="MVv-Q0-bKi">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="pAi-1x-Zlp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bBq-Yc-igI">
+                            <size key="itemSize" width="264" height="444"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo">
+                                <rect key="frame" x="28" y="0.0" width="264" height="444"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="264" height="444"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="wEj-N1-jhZ" id="uze-HZ-uLE"/>
+                            <outlet property="delegate" destination="wEj-N1-jhZ" id="ipI-o2-bcb"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="E50-xJ-2kS"/>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="push" identifier="View And Edit Video" id="IRz-KU-aB7"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1407" y="35"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="poh-tu-is8">
+        <scene sceneID="fWD-vo-sVC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="sni-8O-n05" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="b1C-WE-w9e" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sa0-4M-jvn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yan-Hc-wHo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="5G1-jq-s9h" kind="relationship" relationship="rootViewController" id="xC6-zD-JQb"/>
+                        <segue destination="wEj-N1-jhZ" kind="relationship" relationship="rootViewController" id="y22-0o-ODH"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zgb-6k-tt8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xbR-c8-hng" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="480" y="38"/>
+            <point key="canvasLocation" x="881" y="35"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -78,7 +78,7 @@
     double frameDuration = 5;
     for(int i = 0; i < [self.imagesArray count]; i++) {
         @autoreleasepool {
-            NSLog(@"Processing video frame %d out of %d",(i + 1),[self.imagesArray count]);
+            NSLog(@"Processing video frame %d out of %lu",(i + 1),(unsigned long)[self.imagesArray count]);
             Photo *photo = self.imagesArray[i];
             UIImage *image = [UIImage imageWithContentsOfFile:photo.croppedPhotoFilePath];
             // fix this
@@ -111,7 +111,7 @@
     [writer finishWritingWithCompletionHandler:^(){
         // Do something
         NSLog(@"Finished creating a video");
-        NSLog(@"No of tracks in this video is %d", [[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
+        NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
     }];
 }
 

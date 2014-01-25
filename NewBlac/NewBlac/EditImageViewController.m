@@ -211,7 +211,7 @@
     CGPoint touchLocation = [pressGesture locationInView:self.originalImageView];
     self.selectedCornerIndex = [self hitTest:touchLocation];
     NSLog(@"The tap location is %f, %f", touchLocation.x, touchLocation.y);
-    NSLog(@"The corner selected is %u", self.selectedCornerIndex);
+    NSLog(@"The corner selected is %lu", (unsigned long)self.selectedCornerIndex);
 }
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer

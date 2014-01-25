@@ -43,9 +43,6 @@ static const NSString *ItemStatusContext;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"Ready Camera"]) {
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
-        }
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
@@ -59,7 +56,6 @@ static const NSString *ItemStatusContext;
     
     NSLog(@"Screen width and height in View Will Appear is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
     
-    if (!self.managedObjectContext) [self useDemoDocument];
     self.playButton.hidden = YES;
     if (self.video && [self.video.photos count] > 0) {
         if ([self.video.photos count] > 1) self.playButton.hidden = NO;
@@ -83,19 +79,6 @@ static const NSString *ItemStatusContext;
     self.isCancelled = YES;
 }
 
-#pragma mark - Managed Object Context
-- (void)useDemoDocument
-{
-    [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
-        self.managedObjectContext = document.managedObjectContext;
-        if (!self.video && self.managedObjectContext) {
-            // Put the path as nil, if you would Video object to create a random movie file path in Videos folder
-            self.video = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
-        }
-        [self.addPhoto setEnabled:YES];
-    }];
-}
-
 #pragma mark - UI
 - (void)syncUI
 {
@@ -114,14 +97,14 @@ static const NSString *ItemStatusContext;
     NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
     self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
     NSString *tracksKey = @"tracks";
-    NSLog(@"There are %i tracks in this video", [self.videoAsset.tracks count]);
+    NSLog(@"There are %lu tracks in this video", (unsigned long)[self.videoAsset.tracks count]);
     self.isCancelled = NO;
     [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isCancelled) {
                 NSError *error;
                 AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
-                NSLog(@"The AVKeyValueStatus is %i\n", status);
+                NSLog(@"The AVKeyValueStatus is %li\n", (long)status);
                 if (status == AVKeyValueStatusLoaded) {
                     self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
                     [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
@@ -149,7 +132,6 @@ static const NSString *ItemStatusContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
-    
     if (context == &ItemStatusContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
                [self syncUI];
