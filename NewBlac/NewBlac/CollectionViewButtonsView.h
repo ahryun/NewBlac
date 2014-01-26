@@ -8,6 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CollectionViewButtonsView : UICollectionReusableView
+@protocol CollectionViewButtonDelegate;
+
+@interface CollectionViewButtonsView : UICollectionReusableView {
+    id<CollectionViewButtonDelegate> delegate;
+}
+
+@property (nonatomic) id<CollectionViewButtonDelegate> delegate;
++ (NSString *)kind;
 
 @end
+
+@protocol CollectionViewButtonDelegate <NSObject>
+
+// Protocols that this view's delegate needs to implement
+- (void)addTapGesture:(UIButton *)button;
+
+@end;

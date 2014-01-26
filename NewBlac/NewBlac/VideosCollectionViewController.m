@@ -10,6 +10,8 @@
 #import "NewBlacViewController.h"
 #import "VideoCollectionCell.h"
 #import "Video+LifeCycle.h"
+#import "VideosCollectionViewLayout.h"
+#import "CollectionViewButtonsView.h"
 
 @interface VideosCollectionViewController ()
 
@@ -24,6 +26,14 @@
 {
     [super viewDidLoad];
     [self initializeFetchedResultsController];
+    [self.collectionView setCollectionViewLayout:[[VideosCollectionViewLayout alloc] init]];
+    [self.view subviews];
+}
+
+- (void)addTapGesture:(UIButton *)button
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewVideo:)];
+    [button addGestureRecognizer:tap];
 }
 
 #pragma mark - Segues
@@ -40,6 +50,7 @@
     
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
     // Do manual segue "View And Edit Video"
+    [self performSegueWithIdentifier:@"View and Edit Video" sender:self];
 }
 
 #pragma mark - UICollectionView Delegate

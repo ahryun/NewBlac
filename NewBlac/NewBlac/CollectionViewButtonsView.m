@@ -10,22 +10,27 @@
 
 @implementation CollectionViewButtonsView
 
+const NSString *addVideoString = @"AddVideo";
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        [self setBackgroundColor:[UIColor whiteColor]];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setFrame:CGRectMake(0, 0, 100.0, 50.0)];
+        [button setBackgroundColor:[UIColor whiteColor]];
+        [button setTitle:@"Add a video" forState:UIControlStateNormal];
+        [self.delegate addTapGesture:button];
+        [self addSubview:button];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
++ (NSString *)kind
 {
-    // Drawing code
+    return (NSString *)addVideoString;
 }
-*/
 
 @end

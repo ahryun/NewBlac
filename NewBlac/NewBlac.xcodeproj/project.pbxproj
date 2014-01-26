@@ -20,6 +20,7 @@
 		F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */; };
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
 		F3A37DBC18933C47003B530C /* CollectionViewButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */; };
+		F3A37DBF18947425003B530C /* VideosCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */; };
 		F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */; };
 		F3A494EE188A256700CBAE82 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494ED188A256700CBAE82 /* PhotoCorners.m */; };
 		F3A494F1188A256700CBAE82 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F0188A256700CBAE82 /* Photo.m */; };
@@ -92,6 +93,8 @@
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewButtonsView.h; sourceTree = "<group>"; };
 		F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewButtonsView.m; sourceTree = "<group>"; };
+		F3A37DBD18947425003B530C /* VideosCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewLayout.h; sourceTree = "<group>"; };
+		F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideosCollectionViewLayout.m; sourceTree = "<group>"; };
 		F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Video+LifeCycle.h"; path = "NewBlac/Video+LifeCycle.h"; sourceTree = "<group>"; };
 		F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Video+LifeCycle.m"; path = "NewBlac/Video+LifeCycle.m"; sourceTree = "<group>"; };
 		F3A494EC188A256700CBAE82 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 		F33BE995189309FB0021A5C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3A37DBD18947425003B530C /* VideosCollectionViewLayout.h */,
+				F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */,
 				F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */,
 				F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
@@ -486,6 +491,7 @@
 				F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
 				F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */,
+				F3A37DBF18947425003B530C /* VideosCollectionViewLayout.m in Sources */,
 				F3A494EE188A256700CBAE82 /* PhotoCorners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

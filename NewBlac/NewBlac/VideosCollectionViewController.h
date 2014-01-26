@@ -7,7 +7,8 @@
 //
 
 #import "CoreDataCollectionViewController.h"
+#import "CollectionViewButtonsView.h"
 
-@interface VideosCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate>
+@interface VideosCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate, UIGestureRecognizerDelegate, CollectionViewButtonDelegate>
 
 @end
