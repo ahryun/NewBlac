@@ -7,12 +7,8 @@
 //
 
 #import "CoreDataCollectionViewController.h"
-//#import "SharedManagedDocument.h"
 
 @interface CoreDataCollectionViewController ()
-
-@property (nonatomic) BOOL suspendAutomaticTrackingOfChangesInManagedObjectContext;
-@property (nonatomic) BOOL beganUpdates;
 
 @end
 
@@ -35,23 +31,18 @@ static NSString *_cacheNameOfInterest = @"Master";
     _sectionChanges = [NSMutableArray array];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - UICollectionVIew
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    NSLog(@"Number of sections is %i\n", [[self.fetchedResultsController sections] count]);
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    NSLog(@"Number of items in section is %i\n", [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -60,28 +51,33 @@ static NSString *_cacheNameOfInterest = @"Master";
 {
     NSLog(@"Im in getFetchedREsultsController\n");
     if (self.managedObjectContext) NSLog(@"ManagedObjectContext exists\n");
-    if (_fetchedResultsController != nil) return _fetchedResultsController;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setFetchBatchSize:10];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:_cacheNameOfInterest];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    
-	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	}
+    if (!_fetchedResultsController) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setFetchBatchSize:10];
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
+        NSArray *sortDescriptors = @[sortDescriptor];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        // Delete cache name before making any change to the fetchedresultscontroller
+        [NSFetchedResultsController deleteCacheWithName:_cacheNameOfInterest];
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:_cacheNameOfInterest];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photos.@count > 0"];
+        [fetchRequest setPredicate:predicate];
+        aFetchedResultsController.delegate = self;
+        self.fetchedResultsController = aFetchedResultsController;
+        
+        NSError *error = nil;
+        [self.fetchedResultsController performFetch:&error];
+        NSLog(@"Fetch request turned up %i objects\n", [self.fetchedResultsController.fetchedObjects count]);
+        if (![self.fetchedResultsController performFetch:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+    }
     
     return _fetchedResultsController;
 }

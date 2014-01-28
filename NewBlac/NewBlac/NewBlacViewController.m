@@ -46,7 +46,21 @@ static const NSString *ItemStatusContext;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
+        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
+            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        }
     }
+}
+
+- (IBAction)returnToGallery:(UIButton *)sender {
+    if ([self.video.photos count] < 1) {
+        [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
+    } else {
+        // Save the video to child context, which pushes the changes to the parent context on main thread. This will eventually be saved to persistent store when the UIManagedDocument closes.
+        NSError *error;
+        [self.managedObjectContext save:&error];
+    }
+    [self performSegueWithIdentifier:@"Unwind To Gallery" sender:self];
 }
 
 #pragma mark - View Lifecycle

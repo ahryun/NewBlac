@@ -19,5 +19,6 @@
 @interface NewBlacViewController : UIViewController 
 
 @property (nonatomic, strong) Video *video;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end

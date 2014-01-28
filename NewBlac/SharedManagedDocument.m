@@ -44,14 +44,17 @@
         NSLog(@"success = %hhd", success);
         onDocumentReady(self.sharedDocument);
     };
-    
+    NSLog(@"I'm in trying to make the uimanageddocument\n");
     if (![[NSFileManager defaultManager] fileExistsAtPath:[self.sharedDocument.fileURL path]]) {
+        NSLog(@"Shared document does not exist\n");
         [self.sharedDocument saveToURL:self.sharedDocument.fileURL
                 forSaveOperation:UIDocumentSaveForCreating
                completionHandler:OnDocumentDidLoad];
     } else if (self.sharedDocument.documentState == UIDocumentStateClosed) {
+        NSLog(@"Shared document status is closed\n");
         [self.sharedDocument openWithCompletionHandler:OnDocumentDidLoad];
     } else if (self.sharedDocument.documentState == UIDocumentStateNormal) {
+        NSLog(@"Shared document status is normal\n");
         OnDocumentDidLoad(YES);
     } else if (self.sharedDocument.documentState == UIDocumentStateSavingError) {
         NSLog(@"Hey There is a problem saving document");

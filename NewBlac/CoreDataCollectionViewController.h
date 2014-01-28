@@ -12,7 +12,6 @@
 @interface CoreDataCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic) BOOL debug;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 - (void)initializeFetchedResultsController;
 

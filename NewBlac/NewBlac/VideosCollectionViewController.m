@@ -26,14 +26,15 @@
 {
     [super viewDidLoad];
     [self initializeFetchedResultsController];
-    [self.collectionView setCollectionViewLayout:[[VideosCollectionViewLayout alloc] init]];
-    [self.view subviews];
+    self.collectionView.collectionViewLayout = [[VideosCollectionViewLayout alloc] init];
+    [self.collectionView registerClass:[VideoCollectionCell class] forCellWithReuseIdentifier:@"Playable Video"];
+//    [self.collectionView registerClass:[CollectionViewButtonsView class] forSupplementaryViewOfKind:[CollectionViewButtonsView kind] withReuseIdentifier:@"Add a Video"];
 }
 
-- (void)addTapGesture:(UIButton *)button
-{
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewVideo:)];
-    [button addGestureRecognizer:tap];
+- (IBAction)addVideo:(UIButton *)sender {
+    self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
+    // Do manual segue "View And Edit Video"
+    [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
 }
 
 #pragma mark - Segues
@@ -43,14 +44,16 @@
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.selectedVideo];
         }
+        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
+            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        }
     }
 }
 
-- (IBAction)addNewVideo:(UIButton *)sender {
-    
-    self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
-    // Do manual segue "View And Edit Video"
-    [self performSegueWithIdentifier:@"View and Edit Video" sender:self];
+#pragma mark - Unwind Segues
+- (IBAction)unwindAddToVideos:(UIStoryboardSegue *)segue
+{
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionView Delegate
@@ -65,6 +68,7 @@
 #pragma mark - NSFetchedResultsController
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"I'm in cellForItemAtIndexPath\n");
     VideoCollectionCell *cell = (VideoCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Playable Video" forIndexPath:indexPath];
     
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -73,5 +77,14 @@
     
     return cell;
 }
+
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSLog(@"Kind is %@\n", kind);
+//    CollectionViewButtonsView *buttonView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"Add a Video" forIndexPath:indexPath];
+//    return buttonView;
+//}
+
+
 
 @end

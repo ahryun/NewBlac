@@ -25,6 +25,7 @@
 // Do all the calculations for cells, header/footer, decoration views
 - (void)prepareLayout
 {
+    NSLog(@"I'm in prepareLayout\n");
     [super prepareLayout];
     
 }
@@ -32,12 +33,14 @@
 // Return attributes of all items (cells, supplementary views, decoration views) that appear within this rect
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
+    NSLog(@"I'm in layoutAttributesForElementsInRect\n");
     NSMutableArray *allAttributes = [[NSMutableArray alloc] initWithCapacity:4];
     
-    [allAttributes addObject:[self layoutAttributesForDecorationViewOfKind:@"AddVideo" atIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]];
+    [allAttributes addObject:[self layoutAttributesForDecorationViewOfKind:[CollectionViewButtonsView kind] atIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]]];
     
     for (NSInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++)
     {
+        NSLog(@"Number of items in section 0 is %i\n", [self.collectionView numberOfItemsInSection:0]);
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
         UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
         [allAttributes addObject:layoutAttributes];
@@ -56,18 +59,21 @@
 // layout attributes for a specific decoration view
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind atIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"I'm in layoutAttributesForDecorationViewOfKind\n");
     UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:decorationViewKind withIndexPath:indexPath];
-    NSLog(@"Collection view content size width is %f and height is %f\n", self.collectionViewContentSize.width, self.collectionViewContentSize.height);
-    layoutAttributes.frame = CGRectMake(0.0, 0.0, self.collectionViewContentSize.width, self.collectionViewContentSize.height);
-    layoutAttributes.zIndex = 2;
+    layoutAttributes.frame = CGRectMake(0.0, 0.0, 100, 50);
+    layoutAttributes.zIndex = 5;
     return layoutAttributes;
 }
 
 // layout attributes for a specific header or footer
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
-    return attributes;
-}
+//- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSLog(@"I'm in layoutAttributesForSupplementaryViewOfKind\n");
+//    UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+//    attributes.frame = CGRectMake(0.0, 0.0, 100, 50);
+//    attributes.zIndex = 3;
+//    return attributes;
+//}
 
 @end

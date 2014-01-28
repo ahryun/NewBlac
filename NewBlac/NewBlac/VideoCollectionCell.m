@@ -19,6 +19,7 @@
         [player prepareToPlay];
         [player.view setFrame: self.bounds];  // player's frame must match parent's
         [self addSubview: player.view];
+        [self setBackgroundColor:[UIColor whiteColor]];
     }
     return self;
 }

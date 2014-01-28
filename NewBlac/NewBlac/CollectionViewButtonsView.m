@@ -10,27 +10,22 @@
 
 @implementation CollectionViewButtonsView
 
-const NSString *addVideoString = @"AddVideo";
-@synthesize delegate;
+const NSString *addVideoKind = @"AddVideo";
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        [self setBackgroundColor:[UIColor whiteColor]];
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [button setFrame:CGRectMake(0, 0, 100.0, 50.0)];
-        [button setBackgroundColor:[UIColor whiteColor]];
-        [button setTitle:@"Add a video" forState:UIControlStateNormal];
-        [self.delegate addTapGesture:button];
-        [self addSubview:button];
-    }
+    [self setBackgroundColor:[UIColor whiteColor]];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button setTitle:@"Add a Video" forState:UIControlStateNormal];
+    [button setFrame:self.frame];
+    [self addSubview:button];
     return self;
 }
 
 + (NSString *)kind
 {
-    return (NSString *)addVideoString;
+    return (NSString *)addVideoKind;
 }
 
 @end

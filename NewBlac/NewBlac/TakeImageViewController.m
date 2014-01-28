@@ -192,12 +192,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     NSString *imagePath, *croppedImagePath;
                     imagePath = [Photo saveUIImage:image toFilePath:nil];
                     croppedImagePath = [Photo saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
-                    [self.video.managedObjectContext performBlock:^{
+                    [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
                         self.photo = [Photo photoWithOriginalPhotoFilePath:[imagePath stringByAppendingString:@".jpg"]
                                                   withCroppedPhotoFilePath:[croppedImagePath stringByAppendingString:@".jpg"]
                                                            withCoordinates:self.canvas.coordinates
-                                                    inManagedObjectContext:self.video.managedObjectContext];
+                                                    inManagedObjectContext:self.managedObjectContext];
                         [self performSegueWithIdentifier:@"View Image" sender:self];
                     }];
                 });
@@ -358,7 +358,7 @@ monitorSubjectAreaChange:NO];
 
 - (IBAction)unwindToRetakePhoto:(UIStoryboardSegue *)segue
 {
-    [Photo deletePhoto:self.photo inContext:self.video.managedObjectContext];
+    [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
 }
 
 @end

@@ -11,6 +11,7 @@
 @interface Video (LifeCycle)
 
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;
 
 - (NSArray *)imagesArrayInChronologicalOrder;
 

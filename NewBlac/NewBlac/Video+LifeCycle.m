@@ -62,6 +62,19 @@
     return videoPathWithFormat;
 }
 
++ (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context
+{
+    if (video && context) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error;
+        BOOL success = [fileManager removeItemAtPath:video.compFilePath error:&error];
+        if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
+        [context deleteObject:video];
+    } else {
+        NSLog(@"Something went wrong while deleting the video");
+    }
+}
+
 - (NSArray *)imagesArrayInChronologicalOrder
 {
     NSArray *imagesArray = [[self.photos allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeTaken" ascending:YES]]];
