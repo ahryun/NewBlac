@@ -35,14 +35,14 @@ static NSString *_cacheNameOfInterest = @"Master";
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    NSLog(@"Number of sections is %i\n", [[self.fetchedResultsController sections] count]);
+    NSLog(@"Number of sections is %lu\n", (unsigned long)[[self.fetchedResultsController sections] count]);
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    NSLog(@"Number of items in section is %i\n", [sectionInfo numberOfObjects]);
+    NSLog(@"Number of items in section is %lu\n", (unsigned long)[sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -73,7 +73,7 @@ static NSString *_cacheNameOfInterest = @"Master";
         
         NSError *error = nil;
         [self.fetchedResultsController performFetch:&error];
-        NSLog(@"Fetch request turned up %i objects\n", [self.fetchedResultsController.fetchedObjects count]);
+        NSLog(@"Fetch request turned up %lu objects\n", (unsigned long)[self.fetchedResultsController.fetchedObjects count]);
         if (![self.fetchedResultsController performFetch:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }

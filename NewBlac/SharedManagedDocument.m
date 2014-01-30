@@ -41,7 +41,7 @@
 - (void)performWithDocument:(OnDocumentReady)onDocumentReady
 {
     void (^OnDocumentDidLoad)(BOOL) = ^(BOOL success) {
-        NSLog(@"success = %hhd", success);
+        NSLog(@"success = %i", success);
         onDocumentReady(self.sharedDocument);
     };
     NSLog(@"I'm in trying to make the uimanageddocument\n");

@@ -39,9 +39,19 @@
         imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         [self addSubview:imageView];
         self.contentMode = UIViewContentModeScaleAspectFit;
+        
+//        [self addDeleteView];
     }
 }
 
-
+//- (void)addDeleteView
+//{
+//    UIView *deleteView = [[UIView alloc] initWithFrame:self.bounds];
+//    // prob. should add an image with a big X on it
+//    [deleteView setBackgroundColor:[UIColor redColor]];
+//    deleteView.hidden = YES;
+//    [self addSubview:deleteView];
+//    self.deleteView = deleteView;
+//}
 
 @end

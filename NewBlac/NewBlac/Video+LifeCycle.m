@@ -75,6 +75,24 @@
     }
 }
 
++ (void)removeVideosInManagedContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Video"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    if ([matches count]) {
+        for (Video *video in matches) {
+            // If no photos, delete the video
+            if (![video.photos count]) [Video removeVideo:video inManagedContext:context];
+        }
+    } else {
+        // Handle Error
+        NSLog(@"No videos\n");
+    }
+
+}
+
 - (NSArray *)imagesArrayInChronologicalOrder
 {
     NSArray *imagesArray = [[self.photos allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeTaken" ascending:YES]]];

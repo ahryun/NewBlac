@@ -7,13 +7,16 @@
 //
 
 #import "TroubleshootManagedDocument.h"
+#import "Video+LifeCycle.h"
 
 @implementation TroubleshootManagedDocument
 
 // Prints to console whenever Core Data gets saved
 - (id)contentsForType:(NSString *)typeName error:(NSError *__autoreleasing *)outError
 {
-    NSLog(@"Auto-Saving Document");
+    NSLog(@"Auto-saving document");
+    // Core Data clean up. Delete all videos that have zero photos attached.
+    [Video removeVideosInManagedContext:self.managedObjectContext];
     return [super contentsForType:typeName error:outError];
 }
 

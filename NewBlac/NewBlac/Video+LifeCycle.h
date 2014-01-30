@@ -12,6 +12,7 @@
 
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;
++ (void)removeVideosInManagedContext:(NSManagedObjectContext *)context;
 
 - (NSArray *)imagesArrayInChronologicalOrder;
 
