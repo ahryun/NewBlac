@@ -29,9 +29,11 @@
         AVURLAsset *video = [[AVURLAsset alloc] initWithURL:self.videoURL options:nil];
         AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:video];
         imageGenerator.appliesPreferredTrackTransform = YES;
+        imageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+        imageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
         NSError *error = NULL;
-        CMTime time = CMTimeMake(1, 2);
-        CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:&error];
+        CMTime actualTime;
+        CGImageRef imageRef = [imageGenerator copyCGImageAtTime:video.duration actualTime:&actualTime error:&error];
         UIImage *image = [UIImage imageWithCGImage:imageRef];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);

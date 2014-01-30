@@ -81,7 +81,6 @@
             NSLog(@"Processing video frame %d out of %lu",(i + 1),(unsigned long)[self.imagesArray count]);
             Photo *photo = self.imagesArray[i];
             UIImage *image = [UIImage imageWithContentsOfFile:photo.croppedPhotoFilePath];
-            // fix this
             CVPixelBufferRef buffer = [self pixelBufferFromCGImage:image.CGImage withSize:self.screenSize];
             BOOL append_ok = NO;
             int nthTry = 0;
@@ -140,6 +139,9 @@
     
     ///////////////////////// Change the position of image origin ////////////////////////////////
     CGSize imageSize = [self getImageSizewithScreenSize:size];
+    // Below added to un-Blur the image
+    CGContextScaleCTM(context, imageSize.width/size.width, imageSize.height/size.height);
+    // Above added to un-Blur the image
     CGContextDrawImage(context, CGRectMake((size.width - imageSize.width) / 2, (size.height - imageSize.height) / 2, imageSize.width, imageSize.height), cgImage);
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);

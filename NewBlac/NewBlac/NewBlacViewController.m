@@ -75,16 +75,6 @@ static const NSString *ItemStatusContext;
     [super viewWillAppear:animated];
     
     NSLog(@"Screen width and height in View Will Appear is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
-//    NSLog(@"Video url = %@\n", self.video.compFilePath);
-    
-//    self.playButton.hidden = YES;
-//    if (self.video && [self.video.photos count] > 0) {
-//        if ([self.video.photos count] > 1) self.playButton.hidden = NO;
-//        CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
-//        if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
-//        [self.videoCreator writeImagesToVideo];
-//        [self loadAssetFromVideo];
-//    }
 }
 
 - (void)viewDidLoad
