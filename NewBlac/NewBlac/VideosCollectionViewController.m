@@ -10,8 +10,9 @@
 #import "NewBlacViewController.h"
 #import "VideoCollectionCell.h"
 #import "Video+LifeCycle.h"
-#import "VideosCollectionViewLayout.h"
 #import "CollectionViewButtonsView.h"
+#import "VideosCollectionViewLayout.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface VideosCollectionViewController ()
 
@@ -26,12 +27,12 @@
 {
     [super viewDidLoad];
     [self initializeFetchedResultsController];
-    self.collectionView.collectionViewLayout = [[VideosCollectionViewLayout alloc] init];
-    [self.collectionView registerClass:[VideoCollectionCell class] forCellWithReuseIdentifier:@"Playable Video"];
-//    [self.collectionView registerClass:[CollectionViewButtonsView class] forSupplementaryViewOfKind:[CollectionViewButtonsView kind] withReuseIdentifier:@"Add a Video"];
+    VideosCollectionViewLayout *layout = [[VideosCollectionViewLayout alloc] init];
+    self.collectionView.collectionViewLayout = layout;
 }
 
 - (IBAction)addVideo:(UIButton *)sender {
+    NSLog(@"I'm in addVideo\n");
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
     // Do manual segue "View And Edit Video"
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
@@ -40,6 +41,7 @@
 #pragma mark - Segues
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"Preparing for segue\n");
     if ([segue.identifier isEqualToString:@"View And Edit Video"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.selectedVideo];
@@ -59,10 +61,10 @@
 #pragma mark - UICollectionView Delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Fix the following
-//    self.selectedVideo = [[self.collectionView cellForItemAtIndexPath:indexPath] getVideo];
-    // Do manual segue "View And Edit Video"
-    [self performSegueWithIdentifier:@"View and Edit Video" sender:self];
+    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSLog(@"Video url = %@\n", video.compFilePath);
+    self.selectedVideo = video;
+    [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
 }
 
 #pragma mark - NSFetchedResultsController
@@ -70,21 +72,24 @@
 {
     NSLog(@"I'm in cellForItemAtIndexPath\n");
     VideoCollectionCell *cell = (VideoCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Playable Video" forIndexPath:indexPath];
-    
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSURL *videoURL = [NSURL fileURLWithPath:video.compFilePath];
+    NSLog(@"Video URL is %@\n", videoURL.description);
     [cell setVideoURL:videoURL];
-    
+    [cell displayVideo];
     return cell;
 }
 
-//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSLog(@"Kind is %@\n", kind);
-//    CollectionViewButtonsView *buttonView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"Add a Video" forIndexPath:indexPath];
-//    return buttonView;
-//}
-
-
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Kind is %@\n", kind);
+    UICollectionReusableView *reusableview = nil;
+    if (kind == UICollectionElementKindSectionHeader) {
+        CollectionViewButtonsView *buttonView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Add a Video" forIndexPath:indexPath];
+        reusableview = buttonView;
+    }
+    
+    return reusableview;
+}
 
 @end

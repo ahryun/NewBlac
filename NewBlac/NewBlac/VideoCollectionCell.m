@@ -7,21 +7,39 @@
 //
 
 #import "VideoCollectionCell.h"
-#import <MediaPlayer/MPMoviePlayerController.h>
+#import <AVFoundation/AVFoundation.h>
 
 @implementation VideoCollectionCell
 
-- (id)initWithFrame:(CGRect)frame
+// Since the cell is registered through Storyboard, I need to use initWithCoder instead of initWithFrame
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithFrame:frame];
+    NSLog(@"Hey I'm in awakeFromNib\n");
+    self = [super initWithCoder:aDecoder];
+    
     if (self) {
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:self.videoURL];
-        [player prepareToPlay];
-        [player.view setFrame: self.bounds];  // player's frame must match parent's
-        [self addSubview: player.view];
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self setBackgroundColor:[UIColor greenColor]];
     }
     return self;
 }
+
+- (void)displayVideo
+{
+    if (self.videoURL) {
+        AVURLAsset *video = [[AVURLAsset alloc] initWithURL:self.videoURL options:nil];
+        AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:video];
+        imageGenerator.appliesPreferredTrackTransform = YES;
+        NSError *error = NULL;
+        CMTime time = CMTimeMake(1, 2);
+        CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:&error];
+        UIImage *image = [UIImage imageWithCGImage:imageRef];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+        [self addSubview:imageView];
+        self.contentMode = UIViewContentModeScaleAspectFit;
+    }
+}
+
+
 
 @end

@@ -8,9 +8,9 @@
 
 #import "CoreDataCollectionViewController.h"
 
-@interface CoreDataCollectionViewController ()
-
-@end
+//@interface CoreDataCollectionViewController ()
+//
+//@end
 
 static NSString *_entityNameOfInterest = @"Video";
 static NSString *_propertyNameOfInterest = @"dateCreated";
@@ -49,8 +49,8 @@ static NSString *_cacheNameOfInterest = @"Master";
 #pragma mark - Fetched results controller
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    NSLog(@"Im in getFetchedREsultsController\n");
-    if (self.managedObjectContext) NSLog(@"ManagedObjectContext exists\n");
+//    NSLog(@"Im in getFetchedREsultsController\n");
+//    if (self.managedObjectContext) NSLog(@"ManagedObjectContext exists\n");
     
     if (!_fetchedResultsController) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

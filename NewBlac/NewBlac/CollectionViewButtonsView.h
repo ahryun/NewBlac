@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface CollectionViewButtonsView : UICollectionReusableView
 
-+ (NSString *)kind;
 
 @end
