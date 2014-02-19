@@ -36,18 +36,9 @@
     
     // Navigation Bar Buttons configuration
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MenuButton"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuModally)];
-    UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addaVideo)];
+    UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addVideo)];
     self.navigationItem.leftBarButtonItem = menuButton;
     self.navigationItem.rightBarButtonItem = addVideoButton;
-    
-#warning Below not needed any more
-    // Will be swipe down to delete
-    UILongPressGestureRecognizer *longPress= [[UILongPressGestureRecognizer alloc]
-                                              initWithTarget:self action:@selector(handleLongPress:)];
-    longPress.minimumPressDuration = .5; //seconds
-    longPress.delegate = self;
-    longPress.delaysTouchesBegan = YES;
-    [self.collectionView addGestureRecognizer:longPress];
 }
 
 - (void)presentMenuModally
@@ -55,12 +46,8 @@
     // Do something
 }
 
-- (void)addaVideo
+- (void)addVideo
 {
-    // Do something
-}
-
-- (IBAction)addVideo:(UIButton *)sender {
     NSLog(@"I'm in addVideo\n");
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
     // Do manual segue "View And Edit Video"
@@ -121,26 +108,14 @@
     NSURL *videoURL = [NSURL fileURLWithPath:video.compFilePath];
     NSLog(@"Video URL is %@\n", videoURL.description);
     [cell setVideoURL:videoURL];
+    [cell.layer setCornerRadius:10.0f];
     [cell displayVideo];
     return cell;
-}
-
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"Kind is %@\n", kind);
-    UICollectionReusableView *reusableview = nil;
-    if (kind == UICollectionElementKindSectionHeader) {
-        CollectionViewButtonsView *buttonView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Add a Video" forIndexPath:indexPath];
-        reusableview = buttonView;
-    }
-    
-    return reusableview;
 }
 
 #pragma mark - Gesture Recognizers
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    NSLog(@"Gesture recognizer state is %ld\n", gestureRecognizer.state);
     if (gestureRecognizer.state != UIGestureRecognizerStateBegan) return;
     CGPoint point = [gestureRecognizer locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];

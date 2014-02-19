@@ -8,12 +8,12 @@
           "width" : 2
         },
         "capInsets" : {
-          "right" : 0,
-          "left" : 0
+          "right" : 10,
+          "left" : 1
         }
       },
       "idiom" : "universal",
-      "filename" : "NavigationBarTile.png",
+      "filename" : "ToolBarTile.png",
       "scale" : "1x"
     },
     {
@@ -21,15 +21,15 @@
         "mode" : "3-part-horizontal",
         "center" : {
           "mode" : "fill",
-          "width" : 2
+          "width" : 3
         },
         "capInsets" : {
-          "right" : 0,
-          "left" : 0
+          "right" : 330,
+          "left" : 4
         }
       },
       "idiom" : "universal",
-      "filename" : "NavigationBarTile@2x.png",
+      "filename" : "ToolBarTile@2x.png",
       "scale" : "2x"
     }
   ],

@@ -12,8 +12,9 @@
 @interface VideosCollectionViewLayout()
 
 @property (nonatomic) NSDictionary *layoutInformation;
-@property (nonatomic) NSArray *headerLayoutInformation;
 @property (nonatomic) NSInteger maxNumRows;
+@property (nonatomic) NSInteger x_inset;
+@property (nonatomic) NSInteger y_inset;
 
 @end
 
@@ -21,52 +22,40 @@
 
 #define X_SPACING               (10.0)
 #define Y_SPACING               (10.0)
-
-#define CELL_WIDTH              (250)
-#define CELL_HEIGHT             (250)
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-//        [self registerClass:[CollectionViewButtonsView class] forDecorationViewOfKind:[CollectionViewButtonsView kind]];
-        self.headerReferenceSize = CGSizeMake(100, 100);
-    }
-    return self;
-}
+#define CELL_WIDTH              (230.0)
+#define CELL_HEIGHT             (330.0)
 
 #pragma mark - cells, header/footer, decoration views layout
+- (NSInteger)x_inset
+{
+    return (self.collectionView.frame.size.width - CELL_WIDTH) / 2;
+}
+
+- (NSInteger)y_inset
+{
+    return (self.collectionView.frame.size.height - CELL_HEIGHT) / 2;
+}
 
 // Do all the calculations for cells, header/footer, decoration views
 - (void)prepareLayout
 {
     NSLog(@"I'm in prepareLayout\n");
     NSMutableDictionary *layoutInformation = [NSMutableDictionary dictionary];
-    NSMutableDictionary *headerLayoutInformation = [NSMutableDictionary dictionary];
     NSMutableDictionary *cellInformation = [NSMutableDictionary dictionary];
     NSIndexPath *indexPath;
     NSInteger numSections = [self.collectionView numberOfSections];
-    NSInteger totalWidth = 0;
-
-    // Header Attributes
-    UICollectionViewLayoutAttributes *headerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    headerAttributes.frame = CGRectMake(X_SPACING, Y_SPACING, CELL_WIDTH, CELL_HEIGHT);
-    headerAttributes.alpha = 0.5;
-    NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-    headerLayoutInformation[headerIndexPath] = headerAttributes;
-    [layoutInformation setObject:headerLayoutInformation forKey:UICollectionElementKindSectionHeader];
-    totalWidth += headerAttributes.frame.size.width + X_SPACING;
+    NSInteger totalWidth = self.x_inset;
     
     // Main cell attributes
-    for(NSInteger section = 0; section < numSections; section++){
+    for (NSInteger section = 0; section < numSections; section++) {
         NSInteger numItems = [self.collectionView numberOfItemsInSection:section];
-        for(NSInteger item = 0; item < numItems; item++){
+        for (NSInteger item = 0; item < numItems; item++){
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             [cellInformation setObject:attributes forKey:indexPath];
         }
     }
-    for(NSInteger section = numSections - 1; section >= 0; section--) {
+    for (NSInteger section = numSections - 1; section >= 0; section--) {
         NSInteger numItems = [self.collectionView numberOfItemsInSection:section];
         for(NSInteger item = 0; item < numItems; item++){
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
@@ -87,8 +76,8 @@
 - (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath withTotalWidth:(NSInteger)totalWidth
 {
     CGRect rect = CGRectZero;
-    rect.origin.x = totalWidth + X_SPACING;
-    rect.origin.y = (CELL_HEIGHT + Y_SPACING) * (indexPath.section) + Y_SPACING;
+    rect.origin.x = totalWidth;
+    rect.origin.y = (CELL_HEIGHT + Y_SPACING) * (indexPath.section) + self.y_inset;
     rect.size.width = CELL_WIDTH;
     rect.size.height = CELL_HEIGHT;
     
@@ -124,14 +113,6 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.layoutInformation[@"VideoCells"][indexPath];
-}
-
-// layout attributes for a specific header or footer
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"Kind for supplementary view is %@\n", kind);
-    NSLog(@"I'm in layoutAttributesForSupplementaryViewOfKind\n");
-    return self.layoutInformation[kind][indexPath];
 }
 
 @end
