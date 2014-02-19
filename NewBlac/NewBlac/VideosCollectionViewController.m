@@ -18,7 +18,8 @@
 @interface VideosCollectionViewController ()
 
 @property (nonatomic, strong) Video *selectedVideo;
-@property (nonatomic, weak) DeleteView *deleteView;
+@property (weak, nonatomic) IBOutlet DeleteView *deleteView;
+@property (nonatomic) BOOL shouldDelete;
 
 @end
 
@@ -30,20 +31,33 @@
     [super viewDidLoad];
     [self initializeFetchedResultsController];
     VideosCollectionViewLayout *layout = [[VideosCollectionViewLayout alloc] init];
+    self.shouldDelete = NO;
     self.collectionView.collectionViewLayout = layout;
     
-    DeleteView *deleteView = [[DeleteView alloc] init];
-    deleteView.hidden = YES;
-    self.deleteView = deleteView;
-    UITapGestureRecognizer *deleteTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteVideo:)];
-    [self.deleteView addGestureRecognizer:deleteTapGesture];
+    // Navigation Bar Buttons configuration
+    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MenuButton"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuModally)];
+    UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addaVideo)];
+    self.navigationItem.leftBarButtonItem = menuButton;
+    self.navigationItem.rightBarButtonItem = addVideoButton;
     
+#warning Below not needed any more
+    // Will be swipe down to delete
     UILongPressGestureRecognizer *longPress= [[UILongPressGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = .5; //seconds
     longPress.delegate = self;
     longPress.delaysTouchesBegan = YES;
     [self.collectionView addGestureRecognizer:longPress];
+}
+
+- (void)presentMenuModally
+{
+    // Do something
+}
+
+- (void)addaVideo
+{
+    // Do something
 }
 
 - (IBAction)addVideo:(UIButton *)sender {
@@ -76,10 +90,26 @@
 #pragma mark - UICollectionView Delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // if the x button is shown, delete the video. Otherwise do the segue.
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSLog(@"Video url = %@\n", video.compFilePath);
     self.selectedVideo = video;
-    [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+    if (self.shouldDelete) {
+        // Popup with do you want to delete? needs to pop up.
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Do you want to delete this video?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+        [alertView show];
+    } else {
+        self.selectedVideo = video;
+        [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        return;
+    } else if (buttonIndex == 1) {
+        [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
+    }
 }
 
 #pragma mark - NSFetchedResultsController
@@ -110,51 +140,36 @@
 #pragma mark - Gesture Recognizers
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    if (gestureRecognizer.state != UIGestureRecognizerStateEnded) return;
+    NSLog(@"Gesture recognizer state is %ld\n", gestureRecognizer.state);
+    if (gestureRecognizer.state != UIGestureRecognizerStateBegan) return;
     CGPoint point = [gestureRecognizer locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
     if (indexPath == nil){
         NSLog(@"couldn't find index path");
     } else {
         // get the cell at indexPath (the one you long pressed)
-        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        // Make the hidden deleteView fade in
-        if ([cell isKindOfClass:[VideoCollectionCell class]]) {
-            [self.deleteView setFrame:cell.frame];
-            [self.view addSubview:self.deleteView];
-            [self.view bringSubviewToFront:self.deleteView];
-            self.deleteView.hidden = NO;
-            [self fadeOutDeleteView];
-        } else {
-            NSLog(@"Non-cell view has been selected with long press\n");
-        }
+        VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        [UIImageView animateWithDuration:1 animations:^{
+                                  cell.imageView.alpha = 1.0;
+                              } completion:^(BOOL finished) {
+                                  NSLog(@"X button appeared\n");
+                                  self.shouldDelete = YES;
+                                  [self fadeOutDeleteView:cell.imageView];
+                              }];
     }
 }
 
-- (void)deleteVideo:(UITapGestureRecognizer *)tapGesture
+- (void)fadeOutDeleteView:(UIImageView *)imageView
 {
-    // delete the video
-    if (tapGesture.state != UIGestureRecognizerStateEnded) return;
-    CGPoint point = [tapGesture locationInView:self.collectionView];
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
-    if (indexPath == nil){
-        NSLog(@"couldn't find index path");
-    } else {
-        // get the cell at indexPath (the one you long pressed)
-        Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [Video removeVideo:video inManagedContext:self.managedObjectContext];
-    }
-}
-
-- (void)fadeOutDeleteView
-{
-    [UIView animateWithDuration:1 delay:3
-                        options:UIViewAnimationOptionBeginFromCurrentState
+    NSLog(@"I'm in fadeOutDeleteView\n");
+    [UIImageView animateWithDuration:1 delay:3
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         [self.deleteView setAlpha:0.0];
+                         imageView.alpha = 0.0;
                      }
                      completion:^(BOOL finished){
-                         self.deleteView.hidden = YES;
+                         self.shouldDelete = NO;
+                         NSLog(@"X button disappeared\n");
                      }];
 }
 

@@ -11,7 +11,7 @@
 @interface VideoCollectionCell : UICollectionViewCell
 
 @property (nonatomic, strong) NSURL *videoURL;
-//@property (nonatomic, weak) UIView *deleteView;
+@property (nonatomic, strong) UIImageView *imageView;
 - (void)displayVideo;
 
 @end

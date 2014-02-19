@@ -33,7 +33,6 @@
         NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
         url = [url URLByAppendingPathComponent:@"NewBlacPersistentStore"];
         self.sharedDocument = [[TroubleshootManagedDocument alloc] initWithFileURL:url];
-        
     }
     return self;
 }

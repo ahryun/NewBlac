@@ -18,7 +18,13 @@
     self = [super initWithCoder:aDecoder];
     
     if (self) {
-        [self setBackgroundColor:[UIColor greenColor]];
+        NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"delete_image" ofType:@"png"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imagePath]];
+        [imageView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]];
+        imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+        [self addSubview:imageView];
+        self.imageView = imageView;
+        self.imageView.alpha = 0.0;
     }
     return self;
 }
@@ -39,19 +45,8 @@
         imageView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         [self addSubview:imageView];
         self.contentMode = UIViewContentModeScaleAspectFit;
-        
-//        [self addDeleteView];
+        [self bringSubviewToFront:self.imageView];
     }
 }
-
-//- (void)addDeleteView
-//{
-//    UIView *deleteView = [[UIView alloc] initWithFrame:self.bounds];
-//    // prob. should add an image with a big X on it
-//    [deleteView setBackgroundColor:[UIColor redColor]];
-//    deleteView.hidden = YES;
-//    [self addSubview:deleteView];
-//    self.deleteView = deleteView;
-//}
 
 @end

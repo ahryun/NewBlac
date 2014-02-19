@@ -4,23 +4,23 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--New Blac View Controller-->
+        <!--New Blac View Controller - pieces-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="NewBlacViewController" sceneMemberID="viewController">
+                <viewController title="pieces" id="vXZ-lx-hvc" customClass="NewBlacViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ab2-QT-uUp"/>
                         <viewControllerLayoutGuide type="bottom" id="ymK-qy-8eQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
                                         <rect key="frame" x="143" y="269" width="34" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Play!">
@@ -31,7 +31,8 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="z3k-0s-l0L" firstAttribute="centerY" secondItem="LPf-fR-IDb" secondAttribute="centerY" id="UW0-do-VQe"/>
                                     <constraint firstItem="z3k-0s-l0L" firstAttribute="centerX" secondItem="LPf-fR-IDb" secondAttribute="centerX" id="qBN-VP-bCe"/>
@@ -48,7 +49,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbO-Eu-Wfg">
-                                <rect key="frame" x="20" y="518" width="74" height="30"/>
+                                <rect key="frame" x="20" y="454" width="74" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <bool key="isElement" value="NO"/>
@@ -84,20 +85,20 @@
             </objects>
             <point key="canvasLocation" x="2938" y="38"/>
         </scene>
-        <!--Take Image View Controller-->
+        <!--Take Image View Controller - pieces-->
         <scene sceneID="6di-Lx-3l9">
             <objects>
-                <viewController id="CaK-cf-brN" customClass="TakeImageViewController" sceneMemberID="viewController">
+                <viewController title="pieces" id="CaK-cf-brN" customClass="TakeImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6yN-KB-rff"/>
                         <viewControllerLayoutGuide type="bottom" id="qsQ-gn-Wcs"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AOS-x5-JgC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tab to snap a photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jko-oZ-EY4">
@@ -119,7 +120,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="XHt-7x-vgi" appends="YES" id="mwS-hT-boS"/>
@@ -151,20 +152,20 @@
             </objects>
             <point key="canvasLocation" x="3365" y="38"/>
         </scene>
-        <!--View Image View Controller-->
+        <!--View Image View Controller - pieces-->
         <scene sceneID="efa-RJ-iCC">
             <objects>
-                <viewController id="OHR-e6-UtV" customClass="ViewImageViewController" sceneMemberID="viewController">
+                <viewController title="pieces" id="OHR-e6-UtV" customClass="ViewImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9EZ-fN-2Ef"/>
                         <viewControllerLayoutGuide type="bottom" id="x47-ya-0bH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ppV-eC-b9u">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWx-eJ-FlG">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-qn-P0e">
@@ -188,7 +189,8 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -220,16 +222,16 @@
             </objects>
             <point key="canvasLocation" x="3784" y="-50"/>
         </scene>
-        <!--Edit Image View Controller-->
+        <!--Edit Image View Controller - pieces-->
         <scene sceneID="Lez-Hp-WL0">
             <objects>
-                <viewController id="w2n-4r-LyO" customClass="EditImageViewController" sceneMemberID="viewController">
+                <viewController title="pieces" id="w2n-4r-LyO" customClass="EditImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pD9-Sk-35B"/>
                         <viewControllerLayoutGuide type="bottom" id="Z0a-Vu-8QF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gP9-9I-sK7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
@@ -249,12 +251,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loupe.png" translatesAutoresizingMaskIntoConstraints="NO" id="Al3-Er-6S7">
+                                <rect key="frame" x="182" y="80" width="130" height="130"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="HK3-bL-O1N"/>
                     <connections>
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
+                        <outlet property="loupeView" destination="Al3-Er-6S7" id="4m9-Dv-8JA"/>
                         <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="bnT-VU-buG"/>
                     </connections>
                 </viewController>
@@ -272,27 +280,30 @@
                         <viewControllerLayoutGuide type="bottom" id="K9e-D8-Fyw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yg6-qe-qbC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="F2m-OU-fyU"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <segue destination="wEj-N1-jhZ" kind="push" identifier="Go To Rootview" id="mUM-aN-d9z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SaC-bA-1G9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2141" y="27"/>
+            <point key="canvasLocation" x="2087" y="33"/>
         </scene>
-        <!--Videos Collection View Controller-->
+        <!--Videos Collection View Controller - pieces-->
         <scene sceneID="MVv-Q0-bKi">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" title="pieces" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="pAi-1x-Zlp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bBq-Yc-igI">
                             <size key="itemSize" width="264" height="444"/>
                             <size key="headerReferenceSize" width="250" height="250"/>
@@ -300,8 +311,8 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="VideoCollectionCell">
-                                <rect key="frame" x="250" y="0.0" width="250" height="250"/>
+                            <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="VideoCollectionCell">
+                                <rect key="frame" x="250" y="127" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
@@ -312,11 +323,11 @@
                                 <size key="customSize" width="250" height="250"/>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="infinite" reuseIdentifier="Add a Video" id="mgb-yp-moJ" customClass="CollectionViewButtonsView">
-                            <rect key="frame" x="0.0" y="0.0" width="250" height="568"/>
+                        <collectionReusableView key="sectionHeaderView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="infinite" reuseIdentifier="Add a Video" id="mgb-yp-moJ" customClass="CollectionViewButtonsView">
+                            <rect key="frame" x="0.0" y="0.0" width="250" height="504"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5d-oz-Ay4">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5d-oz-Ay4">
                                     <rect key="frame" x="99" y="269" width="53" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" title="+ Video">
@@ -338,7 +349,8 @@
                             <outlet property="delegate" destination="wEj-N1-jhZ" id="ipI-o2-bcb"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="E50-xJ-2kS"/>
+                    <navigationItem key="navigationItem" title="pieces" id="E50-xJ-2kS"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="push" identifier="View And Edit Video" id="Nh1-DV-0Gg"/>
                     </connections>
@@ -347,25 +359,43 @@
             </objects>
             <point key="canvasLocation" x="2552" y="27"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Pieces Navigation Controller-->
         <scene sceneID="aNY-VK-qoL">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="g6k-0e-5hS" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController hidesBottomBarWhenPushed="YES" toolbarHidden="NO" id="g6k-0e-5hS" customClass="PiecesNavigationController" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="P1O-IY-jNH">
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="P1O-IY-jNH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.70588235290000001" blue="0.65098039220000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.094117647060000004" green="0.70588235290000001" blue="0.65098039220000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="34"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Jhu-Gf-9aw">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </toolbar>
                     <connections>
                         <segue destination="gpB-UF-YqU" kind="relationship" relationship="rootViewController" id="M2e-jb-sY1"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1615" y="27"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="loupe.png" width="160" height="160"/>
+    </resources>
+    <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

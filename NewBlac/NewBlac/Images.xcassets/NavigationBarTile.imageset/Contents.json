@@ -1,0 +1,40 @@
+{
+  "images" : [
+    {
+      "resizing" : {
+        "mode" : "3-part-horizontal",
+        "center" : {
+          "mode" : "stretch",
+          "width" : 2
+        },
+        "capInsets" : {
+          "right" : 1,
+          "left" : 1
+        }
+      },
+      "idiom" : "universal",
+      "filename" : "NavigationBarTile.png",
+      "scale" : "1x"
+    },
+    {
+      "resizing" : {
+        "mode" : "3-part-horizontal",
+        "center" : {
+          "mode" : "stretch",
+          "width" : 2
+        },
+        "capInsets" : {
+          "right" : 1,
+          "left" : 1
+        }
+      },
+      "idiom" : "universal",
+      "filename" : "NavigationBarTile@2x.png",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

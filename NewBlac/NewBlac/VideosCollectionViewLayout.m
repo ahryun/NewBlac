@@ -81,7 +81,7 @@
     }
     [layoutInformation setObject:cellInformation forKey:@"VideoCells"]; // 5
     self.layoutInformation = layoutInformation;
-    NSLog(@"Content size is %i\n", self.maxNumRows);
+    NSLog(@"Content size is %li\n", (long)self.maxNumRows);
 }
 
 - (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath withTotalWidth:(NSInteger)totalWidth

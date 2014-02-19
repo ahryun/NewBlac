@@ -13,12 +13,17 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    NSLog(@"I'm trying to draw the x button\n");
     if (self) {
-        // Custom initialization
-        NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"delete_image" ofType:@"png"];
-        UIImage *deleteImage = [[UIImage alloc] initWithContentsOfFile:imagePath];
-        [self setImage:deleteImage];
+        // Initialization
     }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    NSLog(@"I'm in initWithCoder\n");
     return self;
 }
 
@@ -26,7 +31,6 @@
 // An empty implementation adversely affects performance during animation.
 //- (void)drawRect:(CGRect)rect
 //{
-//    
 //}
 
 @end

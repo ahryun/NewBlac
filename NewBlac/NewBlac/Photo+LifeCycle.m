@@ -47,6 +47,9 @@
         NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentPath =[documentPaths objectAtIndex:0];
         NSString *originalImageDir = [documentPath stringByAppendingPathComponent:@"Images"];
+#warning Configure attributes for image encryption
+        NSDictionary *fileProtectionAttributes = [NSDictionary dictionaryWithObject:NSFileProtectionComplete forKey:NSFileProtectionKey];
+        
         [fileManager createDirectoryAtPath:originalImageDir withIntermediateDirectories:YES attributes:nil error:nil];
         imgPath = [originalImageDir stringByAppendingPathComponent:UUID];
     }

@@ -56,7 +56,7 @@ static NSString *_cacheNameOfInterest = @"Master";
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
         [fetchRequest setEntity:entity];
-        [fetchRequest setFetchBatchSize:10];
+        [fetchRequest setFetchBatchSize:20];
         
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
         NSArray *sortDescriptors = @[sortDescriptor];

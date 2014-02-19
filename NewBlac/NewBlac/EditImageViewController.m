@@ -10,10 +10,12 @@
 #import "CornerDetectionView.h"
 #import "PhotoCorners+LifeCycle.h"
 #import "CornerCircle.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface EditImageViewController () <CornerDetectionViewDelegate>
 
 @property (weak, nonatomic) UIImageView *originalImageView;
+@property (weak, nonatomic) CALayer *zoomLayer;
 @property (weak, nonatomic) CornerDetectionView *cornerDetectionView;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (nonatomic, strong) NSMutableArray *corners;
@@ -21,8 +23,13 @@
 @property (nonatomic, strong) CornerCircle *selectedCorner;
 @property (nonatomic, strong) NSMutableArray *coordinates;
 @property (nonatomic) BOOL coordinatesChanged;
+@property (weak, nonatomic) IBOutlet UIImageView *loupeView;
+@property (nonatomic) CGPoint loupeLocation;
 
 @end
+
+#define ZOOM_FACTOR 4.0
+#define LOUPE_BEZEL_WIDTH 18.0
 
 @implementation EditImageViewController
 
@@ -35,11 +42,8 @@
         
         // Send the new coordinates to the c++ file to recalculate the matrix
         UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
-        if ([self.video.photos count] > 0) {
-            [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:NO];
-        } else {
-            [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:YES];
-        }
+        BOOL isFirstImage = [self.video.photos count] > 0 ? NO : YES;
+        [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:isFirstImage];
         
         [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
         
@@ -55,16 +59,6 @@
     
     // May need to prepareForSegue
     [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
-}
-
-- (void)setPhoto:(Photo *)photo
-{
-    _photo = photo;
-}
-
-- (void)setCanvas:(Canvas *)canvas
-{
-    _canvas = canvas;
 }
 
 - (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
@@ -87,6 +81,7 @@
     return [self.corners objectAtIndex:self.selectedCornerIndex];
 }
 
+#pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -99,11 +94,8 @@
     self.cornerDetectionView.delegate = self;
     [self.cornerDetectionView reloadData];
     
-    UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressDetected:)];
-    self.originalImageView.userInteractionEnabled = YES;
-    [self.originalImageView addGestureRecognizer:pressGesture];
-    
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
+    self.originalImageView.userInteractionEnabled = YES;
     [self.originalImageView addGestureRecognizer:panGesture];
 }
 
@@ -114,6 +106,44 @@
     self.buttonView.opaque = NO;
     [self.buttonView setBackgroundColor:[UIColor clearColor]];
 }
+
+- (void)viewDidLayoutSubviews
+{
+    CALayer *contentLayer = [CALayer layer];
+    contentLayer.frame = self.loupeView.bounds;
+    contentLayer.backgroundColor = [[UIColor blackColor] CGColor];
+    
+    // The content layer has a circular mask applied.
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = contentLayer.bounds;
+    
+    CGMutablePathRef circlePath = CGPathCreateMutable();
+    CGPathAddEllipseInRect(circlePath, NULL, CGRectInset(self.loupeView.layer.bounds, LOUPE_BEZEL_WIDTH , LOUPE_BEZEL_WIDTH));
+    
+    maskLayer.path = circlePath;
+    CGPathRelease(circlePath);
+    contentLayer.mask = maskLayer;
+    
+    // Set up the zoom AVPlayerLayer.
+    CGSize zoomSize = CGSizeMake(self.originalImageView.frame.size.width * ZOOM_FACTOR, self.originalImageView.frame.size.height * ZOOM_FACTOR);
+    CALayer *zoomLayer = [CALayer layer];
+    NSLog(@"Zoom size width is %f and height is %f\n", zoomSize.width, zoomSize.height);
+    zoomLayer.frame = CGRectMake((contentLayer.bounds.size.width /2) - (zoomSize.width /2),
+                                      (contentLayer.bounds.size.height /2) - (zoomSize.height /2),
+                                      zoomSize.width,
+                                      zoomSize.height);
+    UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
+    zoomLayer.contents = (id)originalImage.CGImage;
+    zoomLayer.contentsGravity = kCAGravityResizeAspectFill;
+    [contentLayer addSublayer:zoomLayer];
+    self.zoomLayer = zoomLayer;
+    [self.loupeView.layer addSublayer:contentLayer];
+    
+    // Four corners layer
+    CALayer *cornersLayer = [CALayer layer];
+    cornersLayer.frame = self.zoomLayer.frame;
+}
+
 
 - (NSMutableArray *)corners
 {
@@ -128,7 +158,6 @@
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
         NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
-        
         UIImage *image = [UIImage imageWithData:photoData];
         float widthRatio = self.view.bounds.size.width / image.size.width;
         float heightRatio = self.view.bounds.size.height / image.size.height;
@@ -188,13 +217,6 @@
     return [self.corners count];
 }
 
-#pragma mark Memory Management
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -206,25 +228,44 @@
 
 #pragma mark - Touch handling
 
-- (void)pressDetected:(UILongPressGestureRecognizer *)pressGesture
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    CGPoint touchLocation = [pressGesture locationInView:self.originalImageView];
-    self.selectedCornerIndex = [self hitTest:touchLocation];
-    NSLog(@"The tap location is %f, %f", touchLocation.x, touchLocation.y);
-    NSLog(@"The corner selected is %lu", (unsigned long)self.selectedCornerIndex);
+    NSLog(@"Touches began\n");
+    [self.nextResponder touchesBegan:touches withEvent:event];
+    if ([touches count] > 1) {
+        return;
+    } else if ([touches count] == 1) {
+        CGPoint touchPoint = [[touches anyObject] locationInView:self.originalImageView];
+        float viewWidth = self.view.frame.size.width;
+        float offset = 30.0;
+        float loupeWidth = self.loupeView.frame.size.width;
+        CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
+        self.loupeLocation = loupeLocation;
+        [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, self.loupeView.frame.size.width, self.loupeView.frame.size.height)];
+        [self.loupeView setHidden:NO];
+        self.zoomLayer.position = CGPointMake((self.originalImageView.center.x - touchPoint.x) * ZOOM_FACTOR,
+                                              (self.originalImageView.center.y - touchPoint.y) * ZOOM_FACTOR);
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"Touches ended\n");
+    [self.loupeView setHidden:YES];
 }
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
+    NSLog(@"Pan recognizer state is %li\n", panRecognizer.state);
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
-            NSLog(@"Pan began");
+            NSLog(@"Pan began\n");
             CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
             self.selectedCornerIndex = [self hitTest:tapLocation];
             break;
         }
         case UIGestureRecognizerStateChanged: {
-            NSLog(@"Pan changed");
+            NSLog(@"Pan changed\n");
             CGPoint translation = [panRecognizer translationInView:self.originalImageView];
             CGRect originalBounds = self.selectedCorner.totalBounds;
             CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
@@ -242,6 +283,21 @@
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x / self.originalImageView.bounds.size.width]];
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y / self.originalImageView.bounds.size.height]];
             }
+            
+            // Loupe
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            self.zoomLayer.position = CGPointMake(self.zoomLayer.position.x - translation.x * ZOOM_FACTOR,
+                                                  self.zoomLayer.position.y - translation.y * ZOOM_FACTOR);
+            [CATransaction commit];
+
+        }
+        case UIGestureRecognizerStateEnded: {
+            // Pan gesture state ended is called multiple times even though I still have a finger on the screen
+            // So I check how many fingers I have on the screen
+            if (panRecognizer.numberOfTouches < 1) [self.loupeView setHidden:YES];
+            NSLog(@"Number of touches is %lu\n", (unsigned long)panRecognizer.numberOfTouches);
+            NSLog(@"Pan ended\n");
         }
         default:
             break;
