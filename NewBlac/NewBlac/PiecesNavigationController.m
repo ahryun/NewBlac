@@ -14,25 +14,15 @@
 
 @implementation PiecesNavigationController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-}
+    // Setting the attributes of the title in Navigation Bar
+    NSDictionary *titleTextAttributes = [NSDictionary dictionaryWithObjects:@[[UIFont fontWithName:@"HelveticaNeue-Light" size:24.0f], [UIColor whiteColor]] forKeys:@[NSFontAttributeName, NSForegroundColorAttributeName]];
+    [self.navigationBar setTitleTextAttributes:titleTextAttributes];
+    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavigationBarTile"] forBarMetrics:UIBarMetricsDefault];
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
