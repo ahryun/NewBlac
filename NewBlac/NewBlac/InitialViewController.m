@@ -24,7 +24,15 @@ static NSString *_SegueIdentifier = @"Go To Rootview";
 {
     [super viewDidLoad];
     [self addObserver:self forKeyPath:_ManagedObjectContextChanged options:NSKeyValueObservingOptionNew context:NULL];
+    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setToolbarHidden:YES];
     [self useDemoDocument];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setToolbarHidden:NO];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

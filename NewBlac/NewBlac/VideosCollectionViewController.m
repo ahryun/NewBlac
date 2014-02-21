@@ -17,6 +17,7 @@
 @interface VideosCollectionViewController () <ScrollingCellDelegate>
 
 @property (nonatomic, strong) Video *selectedVideo;
+@property (nonatomic, strong) VideoCollectionCell *deleteCandidateCell;
 
 @end
 
@@ -99,19 +100,24 @@
 #pragma mark - ScrollingCellDelegate
 - (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell
 {
-    
+    if (!self.deleteCandidateCell) {
+        self.deleteCandidateCell = cell;
+    } else if (self.deleteCandidateCell != cell) {
+        [self.deleteCandidateCell reset];
+        self.deleteCandidateCell = cell;
+    }
 }
 
-- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset
-{
-    
-}
-
-- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell
-{
-    
-}
-
+//- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset
+//{
+//    
+//}
+//
+//- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell
+//{
+//    
+//}
+//
 - (void)deleteButtonPressed:(VideoCollectionCell *)cell
 {
     NSLog(@"Doh! I was told to delete this video\n");

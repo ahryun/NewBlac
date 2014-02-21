@@ -101,9 +101,9 @@
         self.pulling = YES;
     }
     if (self.pulling) {
-        CGFloat pullOffset = MAX(0, offset);
         self.deleteButton.alpha = offset / OFFSET_TOP;
-        [self.delegate scrollingCell:self didChangePullOffset:pullOffset];
+//        CGFloat pullOffset = MAX(0, offset);
+//        [self.delegate scrollingCell:self didChangePullOffset:pullOffset];
     }
 }
 
@@ -122,7 +122,7 @@
 
 - (void)scrollingEnded
 {
-    [self.delegate scrollingDidEndPulling:self];
+//    [self.delegate scrollingDidEndPulling:self];
     self.pulling = NO;
 }
 
@@ -143,7 +143,7 @@
 - (void)reset
 {
     self.pulling = NO;
-    
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
 }
 
 @end

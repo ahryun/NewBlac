@@ -20,14 +20,15 @@
 
 - (void)displayVideo;
 - (void)prepareScrollView;
+- (void)reset;
 
 @end
 
 @protocol ScrollingCellDelegate <NSObject>
 
 - (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell;
-- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset;
-- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell;
+//- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset;
+//- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell;
 - (void)deleteButtonPressed:(VideoCollectionCell *)cell;
 
 @end
