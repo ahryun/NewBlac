@@ -30,6 +30,8 @@
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
         scrollView.delaysContentTouches = YES;
         scrollView.delegate = self;
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectCell)];
+        [scrollView addGestureRecognizer:tapGesture];
         [self.contentView addSubview:scrollView];
         self.scrollView = scrollView;
         self.pulling = NO;
@@ -69,6 +71,11 @@
     [self.delegate deleteButtonPressed:self];
 }
 
+- (void)selectCell
+{
+    [self.delegate selectItemAtIndexPath:self];
+}
+
 - (void)displayVideo
 {
     if (self.videoURL) {
@@ -100,11 +107,7 @@
         [self.delegate scrollingCellDidBeginPulling:self];
         self.pulling = YES;
     }
-    if (self.pulling) {
-        self.deleteButton.alpha = offset / OFFSET_TOP;
-//        CGFloat pullOffset = MAX(0, offset);
-//        [self.delegate scrollingCell:self didChangePullOffset:pullOffset];
-    }
+    if (self.pulling) self.deleteButton.alpha = offset / OFFSET_TOP;
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
@@ -120,22 +123,16 @@
     }
 }
 
-- (void)scrollingEnded
-{
-//    [self.delegate scrollingDidEndPulling:self];
-    self.pulling = NO;
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
-        [self scrollingEnded];
+        self.pulling = NO;
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self scrollingEnded];
+    self.pulling = NO;
 }
 
 #pragma mark - Convenience Functions

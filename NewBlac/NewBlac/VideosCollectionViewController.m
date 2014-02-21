@@ -30,6 +30,7 @@
     [self initializeFetchedResultsController];
     VideosCollectionViewLayout *layout = [[VideosCollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
+    self.collectionView.delegate = self;
     
     // Navigation Bar Buttons configuration
     UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MenuButton"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuModally)];
@@ -72,12 +73,27 @@
 }
 
 #pragma mark - UICollectionView Delegate
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSLog(@"I selected an item number %@i", indexPath);
+//    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    self.selectedVideo = video;
+//    [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+//}
+
+- (void)selectItemAtIndexPath:(VideoCollectionCell *)cell
 {
-    NSLog(@"I selected an item number %@i", indexPath);
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.selectedVideo = video;
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.deleteCandidateCell) {
+        [self.deleteCandidateCell reset];
+    }
 }
 
 #pragma mark - NSFetchedResultsController
@@ -97,6 +113,7 @@
     
     return cell;
 }
+
 #pragma mark - ScrollingCellDelegate
 - (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell
 {
@@ -108,16 +125,6 @@
     }
 }
 
-//- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset
-//{
-//    
-//}
-//
-//- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell
-//{
-//    
-//}
-//
 - (void)deleteButtonPressed:(VideoCollectionCell *)cell
 {
     NSLog(@"Doh! I was told to delete this video\n");
@@ -126,6 +133,8 @@
     self.selectedVideo = video;
     [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
 }
+
+
 
 
 @end
