@@ -21,9 +21,8 @@
 @implementation VideosCollectionViewLayout
 
 #define X_SPACING               (10.0)
-#define Y_SPACING               (10.0)
-#define CELL_WIDTH              (230.0)
 #define CELL_HEIGHT             (330.0)
+#define CELL_WIDTH              (230.0)
 
 #pragma mark - cells, header/footer, decoration views layout
 - (NSInteger)x_inset
@@ -77,9 +76,9 @@
 {
     CGRect rect = CGRectZero;
     rect.origin.x = totalWidth;
-    rect.origin.y = (CELL_HEIGHT + Y_SPACING) * (indexPath.section) + self.y_inset;
+    rect.origin.y = self.y_inset + (indexPath.section) * (self.y_inset + CELL_HEIGHT);
     rect.size.width = CELL_WIDTH;
-    rect.size.height = CELL_HEIGHT;
+    rect.size.height = self.collectionView.frame.size.height - self.y_inset;
     
     return rect;
 }
@@ -104,8 +103,8 @@
 }
 
 - (CGSize)collectionViewContentSize {
-    CGFloat width = self.maxNumRows + X_SPACING;
-    CGFloat height = self.collectionView.numberOfSections * (CELL_HEIGHT + Y_SPACING) + Y_SPACING;
+    CGFloat width = self.maxNumRows + (self.x_inset - X_SPACING);
+    CGFloat height = self.collectionView.numberOfSections * self.collectionView.frame.size.height;
     return CGSizeMake(width, height);
 }
 

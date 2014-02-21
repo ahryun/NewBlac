@@ -9,19 +9,19 @@
             <objects>
                 <viewController title="pieces" id="vXZ-lx-hvc" customClass="NewBlacViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ab2-QT-uUp"/>
-                        <viewControllerLayoutGuide type="bottom" id="ymK-qy-8eQ"/>
+                        <viewControllerLayoutGuide type="top" id="XJV-dv-9wX"/>
+                        <viewControllerLayoutGuide type="bottom" id="cPU-Fr-dGs"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="402"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
-                                        <rect key="frame" x="143" y="269" width="34" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z3k-0s-l0L">
+                                        <rect key="frame" x="143" y="215" width="34" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Play!">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,12 +33,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="z3k-0s-l0L" firstAttribute="centerY" secondItem="LPf-fR-IDb" secondAttribute="centerY" id="UW0-do-VQe"/>
-                                    <constraint firstItem="z3k-0s-l0L" firstAttribute="centerX" secondItem="LPf-fR-IDb" secondAttribute="centerX" id="qBN-VP-bCe"/>
-                                </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiD-n0-UES">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiD-n0-UES">
                                 <rect key="frame" x="20" y="20" width="48" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Gallery">
@@ -64,12 +60,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LPf-fR-IDb" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Ipt-4z-4Va"/>
-                            <constraint firstAttribute="bottom" secondItem="JbO-Eu-Wfg" secondAttribute="bottom" constant="20" symbolic="YES" id="Osf-BL-SBb"/>
-                            <constraint firstItem="LPf-fR-IDb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="UdK-u4-t6K"/>
-                            <constraint firstItem="ymK-qy-8eQ" firstAttribute="top" secondItem="LPf-fR-IDb" secondAttribute="bottom" id="a7w-gx-pRU"/>
-                            <constraint firstAttribute="trailing" secondItem="LPf-fR-IDb" secondAttribute="trailing" id="uKb-Lm-cgj"/>
-                            <constraint firstItem="JbO-Eu-Wfg" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="vPo-Ht-CNu"/>
+                            <constraint firstItem="BiD-n0-UES" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="20" symbolic="YES" id="1iX-i0-1Qw"/>
+                            <constraint firstItem="JbO-Eu-Wfg" firstAttribute="top" secondItem="LPf-fR-IDb" secondAttribute="bottom" constant="8" symbolic="YES" id="33c-8t-vJ5"/>
+                            <constraint firstItem="LPf-fR-IDb" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="80O-jM-6cA"/>
+                            <constraint firstItem="BiD-n0-UES" firstAttribute="leading" secondItem="JbO-Eu-Wfg" secondAttribute="leading" id="NEn-50-NKA"/>
+                            <constraint firstItem="LPf-fR-IDb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="NJr-xN-Jzl"/>
+                            <constraint firstAttribute="bottom" secondItem="JbO-Eu-Wfg" secondAttribute="bottom" constant="20" symbolic="YES" id="Tlw-mD-qUh"/>
+                            <constraint firstAttribute="trailing" secondItem="LPf-fR-IDb" secondAttribute="trailing" id="ant-uj-2ze"/>
+                            <constraint firstItem="BiD-n0-UES" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="j2Z-dK-XDT"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -91,14 +89,14 @@
             <objects>
                 <viewController title="pieces" id="CaK-cf-brN" customClass="TakeImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6yN-KB-rff"/>
-                        <viewControllerLayoutGuide type="bottom" id="qsQ-gn-Wcs"/>
+                        <viewControllerLayoutGuide type="top" id="fH5-Qu-5iS"/>
+                        <viewControllerLayoutGuide type="bottom" id="m0Y-Rl-CcA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AOS-x5-JgC">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -129,12 +127,6 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="0z0-yS-VDR" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="3gz-TF-806"/>
-                            <constraint firstAttribute="trailing" secondItem="0z0-yS-VDR" secondAttribute="trailing" id="Rfy-75-bg3"/>
-                            <constraint firstAttribute="bottom" secondItem="0z0-yS-VDR" secondAttribute="bottom" id="W3n-ve-8b5"/>
-                            <constraint firstItem="0z0-yS-VDR" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="l5x-QY-fKL"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3LB-gN-lWE"/>
                     <connections>
@@ -158,8 +150,8 @@
             <objects>
                 <viewController title="pieces" id="OHR-e6-UtV" customClass="ViewImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9EZ-fN-2Ef"/>
-                        <viewControllerLayoutGuide type="bottom" id="x47-ya-0bH"/>
+                        <viewControllerLayoutGuide type="top" id="lv2-Sc-wyo"/>
+                        <viewControllerLayoutGuide type="bottom" id="uuG-ow-bg1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ppV-eC-b9u">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
@@ -169,7 +161,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-qn-P0e">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-qn-P0e">
                                         <rect key="frame" x="232" y="359" width="36" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="I like!">
@@ -179,7 +171,7 @@
                                             <action selector="addImageToVideoAndSegue:" destination="OHR-e6-UtV" eventType="touchUpInside" id="2oD-IS-CcW"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-jD-sw6">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-jD-sw6">
                                         <rect key="frame" x="56" y="359" width="40" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Meh~">
@@ -192,15 +184,21 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="sF1-jD-sw6" firstAttribute="leading" secondItem="iWx-eJ-FlG" secondAttribute="leading" constant="56" id="0S8-xu-Rbf"/>
+                                    <constraint firstAttribute="trailing" secondItem="LvJ-qn-P0e" secondAttribute="trailing" constant="52" id="2xx-HK-kMI"/>
+                                    <constraint firstAttribute="bottom" secondItem="sF1-jD-sw6" secondAttribute="bottom" constant="71" id="Irr-BQ-wNR"/>
+                                    <constraint firstAttribute="bottom" secondItem="LvJ-qn-P0e" secondAttribute="bottom" constant="71" id="wrl-wH-GIN"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="iWx-eJ-FlG" firstAttribute="top" secondItem="ppV-eC-b9u" secondAttribute="top" id="OzL-9O-tlo"/>
-                            <constraint firstItem="iWx-eJ-FlG" firstAttribute="leading" secondItem="ppV-eC-b9u" secondAttribute="leading" id="YaO-C7-w8b"/>
-                            <constraint firstAttribute="bottom" secondItem="iWx-eJ-FlG" secondAttribute="bottom" id="YcV-cS-5Uc"/>
-                            <constraint firstAttribute="trailing" secondItem="iWx-eJ-FlG" secondAttribute="trailing" id="pKO-ND-kCf"/>
+                            <constraint firstItem="iWx-eJ-FlG" firstAttribute="top" secondItem="ppV-eC-b9u" secondAttribute="top" id="Eub-YK-jJP"/>
+                            <constraint firstItem="iWx-eJ-FlG" firstAttribute="leading" secondItem="ppV-eC-b9u" secondAttribute="leading" id="I9g-Oq-so0"/>
+                            <constraint firstAttribute="bottom" secondItem="iWx-eJ-FlG" secondAttribute="bottom" id="V6B-sW-eTx"/>
+                            <constraint firstAttribute="trailing" secondItem="iWx-eJ-FlG" secondAttribute="trailing" id="fbl-Xe-k0c"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="7rr-7v-1N5" appends="YES" id="OIt-ef-Hi9"/>
@@ -228,8 +226,8 @@
             <objects>
                 <viewController title="pieces" id="w2n-4r-LyO" customClass="EditImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pD9-Sk-35B"/>
-                        <viewControllerLayoutGuide type="bottom" id="Z0a-Vu-8QF"/>
+                        <viewControllerLayoutGuide type="top" id="ddQ-Sm-kRN"/>
+                        <viewControllerLayoutGuide type="bottom" id="wdL-cH-2iN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gP9-9I-sK7">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
@@ -277,8 +275,8 @@
             <objects>
                 <viewController id="gpB-UF-YqU" customClass="InitialViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="EFx-tP-Xie"/>
-                        <viewControllerLayoutGuide type="bottom" id="K9e-D8-Fyw"/>
+                        <viewControllerLayoutGuide type="top" id="wjm-kB-a5C"/>
+                        <viewControllerLayoutGuide type="bottom" id="v9L-sm-mO0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yg6-qe-qbC">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
@@ -299,8 +297,8 @@
         <!--Videos Collection View Controller - pieces-->
         <scene sceneID="MVv-Q0-bKi">
             <objects>
-                <collectionViewController title="pieces" clearsSelectionOnViewWillAppear="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="pAi-1x-Zlp">
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" title="pieces" automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="pAi-1x-Zlp">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -312,7 +310,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="VideoCollectionCell">
+                            <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="VideoCollectionCell">
                                 <rect key="frame" x="0.0" y="105" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -320,7 +318,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="customSize" width="250" height="250"/>
                             </collectionViewCell>
                         </cells>
@@ -350,7 +347,6 @@
         <!--Pieces Navigation Controller-->
         <scene sceneID="aNY-VK-qoL">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController toolbarHidden="NO" id="g6k-0e-5hS" customClass="PiecesNavigationController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
@@ -378,6 +374,7 @@
                         <segue destination="gpB-UF-YqU" kind="relationship" relationship="rootViewController" id="M2e-jb-sY1"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1615" y="27"/>
         </scene>

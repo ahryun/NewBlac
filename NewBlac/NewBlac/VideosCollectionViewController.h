@@ -9,5 +9,5 @@
 #import "CoreDataCollectionViewController.h"
 
 @interface VideosCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource,
-    UIGestureRecognizerDelegate, UIAlertViewDelegate>
+    UIGestureRecognizerDelegate>
 @end

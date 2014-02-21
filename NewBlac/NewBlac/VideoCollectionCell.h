@@ -8,10 +8,27 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ScrollingCellDelegate;
+
 @interface VideoCollectionCell : UICollectionViewCell
 
 @property (nonatomic, strong) NSURL *videoURL;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIButton *deleteButton;
+@property (nonatomic, weak) id<ScrollingCellDelegate> delegate;
+
 - (void)displayVideo;
+- (void)prepareScrollView;
 
 @end
+
+@protocol ScrollingCellDelegate <NSObject>
+
+- (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell;
+- (void)scrollingCell:(VideoCollectionCell *)cell didChangePullOffset:(CGFloat)offset;
+- (void)scrollingDidEndPulling:(VideoCollectionCell *)cell;
+- (void)deleteButtonPressed:(VideoCollectionCell *)cell;
+
+@end
+
