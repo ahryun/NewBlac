@@ -97,20 +97,21 @@
     }
 }
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    // Manually calculate indexpath
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:*targetContentOffset];
-    NSLog(@"Index path that scroll will land on is %@\n", indexPath);
-    if (!indexPath) {
-        CGPoint point = CGPointMake(targetContentOffset->x, targetContentOffset->y);
-        indexPath = [self.collectionView indexPathForItemAtPoint:point];
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    // if decelerating, let scrollViewDidEndDecelerating: handle it
+    if (decelerate == NO) {
+        [self centerCell];
     }
-    if (indexPath) {
-        VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        CGPoint centerPoint = CGPointMake(cell.center.x - self.collectionView.bounds.size.width / 2, cell.center.y);
-        [self.collectionView setContentOffset:centerPoint];
-    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self centerCell];
+}
+
+- (void)centerCell {
+    NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+    
+    [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
 
 #pragma mark - NSFetchedResultsController
