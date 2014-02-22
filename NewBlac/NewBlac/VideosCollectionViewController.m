@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) Video *selectedVideo;
 @property (nonatomic, strong) VideoCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) VideoCollectionCell *centerCell;
 
 @end
 
@@ -37,6 +38,12 @@
     UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addVideo)];
     self.navigationItem.leftBarButtonItem = menuButton;
     self.navigationItem.rightBarButtonItem = addVideoButton;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self centerACell];
 }
 
 - (void)presentMenuModally
@@ -73,14 +80,6 @@
 }
 
 #pragma mark - UICollectionView Delegate
-//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSLog(@"I selected an item number %@i", indexPath);
-//    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    self.selectedVideo = video;
-//    [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
-//}
-
 - (void)selectItemAtIndexPath:(VideoCollectionCell *)cell
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
@@ -92,32 +91,34 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.deleteCandidateCell) [self.deleteCandidateCell reset];
-    for (UICollectionViewCell *cell in self.collectionView.visibleCells) {
-        // Do something????
-    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     // if decelerating, let scrollViewDidEndDecelerating: handle it
     if (decelerate == NO) {
-        [self centerCell];
+        [self centerACell];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self centerCell];
+    [self centerACell];
 }
 
-- (void)centerCell {
+- (void)centerACell {
     NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
-    
     [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
+        self.centerCell.maskView.alpha = 0.5;
+        VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
+        cell.maskView.alpha = 0.0;
+        self.centerCell = cell;
+    }
 }
 
 #pragma mark - NSFetchedResultsController
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"I'm in cellForItemAtIndexPath\n");
+    NSLog(@"I'm in cellForItemAtIndexPath %@\n", indexPath);
     VideoCollectionCell *cell = (VideoCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Playable Video" forIndexPath:indexPath];
     cell.delegate = self;
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
