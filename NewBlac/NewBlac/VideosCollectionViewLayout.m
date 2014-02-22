@@ -39,6 +39,8 @@
 - (void)prepareLayout
 {
     NSLog(@"I'm in prepareLayout\n");
+    [super prepareLayout];
+    
     NSMutableDictionary *layoutInformation = [NSMutableDictionary dictionary];
     NSMutableDictionary *cellInformation = [NSMutableDictionary dictionary];
     NSIndexPath *indexPath;
@@ -63,24 +65,12 @@
             cellInformation[indexPath] = attributes;
             totalWidth += attributes.frame.size.width + X_SPACING;
         }
-        if(section == 0){
-            self.maxNumRows = totalWidth; // 4
-        }
+        if(section == 0) self.maxNumRows = totalWidth; // 4
     }
     [layoutInformation setObject:cellInformation forKey:@"VideoCells"]; // 5
     self.layoutInformation = layoutInformation;
-    NSLog(@"Content size is %li\n", (long)self.maxNumRows);
-}
-
-- (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath withTotalWidth:(NSInteger)totalWidth
-{
-    CGRect rect = CGRectZero;
-    rect.origin.x = totalWidth;
-    rect.origin.y = self.y_inset + (indexPath.section) * (self.y_inset + CELL_HEIGHT);
-    rect.size.width = CELL_WIDTH;
-    rect.size.height = self.collectionView.frame.size.height - self.y_inset;
     
-    return rect;
+    NSLog(@"Content size is %li\n", (long)self.maxNumRows);
 }
 
 // Return attributes of all items (cells, supplementary views, decoration views) that appear within this rect
@@ -100,6 +90,34 @@
         }
     }
     return myAttributes;
+}
+
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    UIScrollView *scrollView = self.collectionView;
+    CGFloat delta = newBounds.origin.x - scrollView.bounds.origin.x;
+    
+    for (UIAttachmentBehavior *spring in self.dynamicAnimator.behaviors) {
+        UICollectionViewLayoutAttributes *item = [spring.items firstObject];
+        CGPoint center = item.center;
+        center.x += delta;
+        item.center = center;
+        
+        [self.dynamicAnimator updateItemUsingCurrentState:item];
+    }
+    
+    return NO;
+}
+
+- (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath withTotalWidth:(NSInteger)totalWidth
+{
+    CGRect rect = CGRectZero;
+    rect.origin.x = totalWidth;
+    rect.origin.y = self.y_inset + (indexPath.section) * (self.y_inset + CELL_HEIGHT);
+    rect.size.width = CELL_WIDTH;
+    rect.size.height = self.collectionView.frame.size.height - self.y_inset;
+    
+    return rect;
 }
 
 - (CGSize)collectionViewContentSize {

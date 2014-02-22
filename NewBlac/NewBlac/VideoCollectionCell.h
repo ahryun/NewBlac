@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *deleteButton;
+@property (nonatomic, strong) UIView *maskView;
 @property (nonatomic, weak) id<ScrollingCellDelegate> delegate;
 
 - (void)displayVideo;

@@ -10,5 +10,7 @@
 
 @interface VideosCollectionViewLayout : UICollectionViewFlowLayout
 
+@property (nonatomic, strong) UIDynamicAnimator *dynamicAnimator;
+
 @end
 

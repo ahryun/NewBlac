@@ -91,8 +91,25 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.deleteCandidateCell) {
-        [self.deleteCandidateCell reset];
+    if (self.deleteCandidateCell) [self.deleteCandidateCell reset];
+    for (UICollectionViewCell *cell in self.collectionView.visibleCells) {
+        // Do something????
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    // Manually calculate indexpath
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:*targetContentOffset];
+    NSLog(@"Index path that scroll will land on is %@\n", indexPath);
+    if (!indexPath) {
+        CGPoint point = CGPointMake(targetContentOffset->x, targetContentOffset->y);
+        indexPath = [self.collectionView indexPathForItemAtPoint:point];
+    }
+    if (indexPath) {
+        VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        CGPoint centerPoint = CGPointMake(cell.center.x - self.collectionView.bounds.size.width / 2, cell.center.y);
+        [self.collectionView setContentOffset:centerPoint];
     }
 }
 
