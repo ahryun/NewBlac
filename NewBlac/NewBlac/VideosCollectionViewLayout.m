@@ -7,7 +7,6 @@
 //
 
 #import "VideosCollectionViewLayout.h"
-#import "CollectionViewButtonsView.h"
 
 @interface VideosCollectionViewLayout()
 

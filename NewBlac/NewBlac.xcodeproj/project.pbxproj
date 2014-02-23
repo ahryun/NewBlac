@@ -22,7 +22,6 @@
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
 		F367D4DF189B0941007DF795 /* delete_image.png in Resources */ = {isa = PBXBuildFile; fileRef = F367D4DE189B0941007DF795 /* delete_image.png */; };
 		F367D4E318A16AB4007DF795 /* loupe.png in Resources */ = {isa = PBXBuildFile; fileRef = F367D4E218A16AB4007DF795 /* loupe.png */; };
-		F3A37DBC18933C47003B530C /* CollectionViewButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */; };
 		F3A37DBF18947425003B530C /* VideosCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */; };
 		F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */; };
 		F3A494EE188A256700CBAE82 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494ED188A256700CBAE82 /* PhotoCorners.m */; };
@@ -99,8 +98,6 @@
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		F367D4DE189B0941007DF795 /* delete_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_image.png; sourceTree = "<group>"; };
 		F367D4E218A16AB4007DF795 /* loupe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loupe.png; sourceTree = "<group>"; };
-		F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewButtonsView.h; sourceTree = "<group>"; };
-		F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewButtonsView.m; sourceTree = "<group>"; };
 		F3A37DBD18947425003B530C /* VideosCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewLayout.h; sourceTree = "<group>"; };
 		F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideosCollectionViewLayout.m; sourceTree = "<group>"; };
 		F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Video+LifeCycle.h"; path = "NewBlac/Video+LifeCycle.h"; sourceTree = "<group>"; };
@@ -200,8 +197,6 @@
 				F3A37DBE18947425003B530C /* VideosCollectionViewLayout.m */,
 				F33BE9921892F70A0021A5C1 /* VideoCollectionCell.h */,
 				F33BE9931892F70A0021A5C1 /* VideoCollectionCell.m */,
-				F3A37DBA18933C47003B530C /* CollectionViewButtonsView.h */,
-				F3A37DBB18933C47003B530C /* CollectionViewButtonsView.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
 				F33EA917187612140045E642 /* StillImagePreview.m */,
 				F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */,
@@ -503,7 +498,6 @@
 				F330D95418972C7C009265EC /* InitialViewController.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
-				F3A37DBC18933C47003B530C /* CollectionViewButtonsView.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,

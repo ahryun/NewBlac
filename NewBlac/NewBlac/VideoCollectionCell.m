@@ -101,7 +101,7 @@
         if (!self.maskView) {
             self.maskView = [[UIView alloc] initWithFrame:imageView.bounds];
             self.maskView.backgroundColor = [UIColor blackColor];
-            self.maskView.alpha = 0.5;
+            self.maskView.alpha = 0.3;
             [imageView addSubview:self.maskView];
         }
         

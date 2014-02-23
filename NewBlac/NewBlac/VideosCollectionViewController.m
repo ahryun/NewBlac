@@ -10,7 +10,6 @@
 #import "NewBlacViewController.h"
 #import "VideoCollectionCell.h"
 #import "Video+LifeCycle.h"
-#import "CollectionViewButtonsView.h"
 #import "VideosCollectionViewLayout.h"
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -94,7 +93,6 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    // if decelerating, let scrollViewDidEndDecelerating: handle it
     if (decelerate == NO) {
         [self centerACell];
     }
@@ -108,7 +106,7 @@
     NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
     [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-        self.centerCell.maskView.alpha = 0.5;
+        self.centerCell.maskView.alpha = 0.3;
         VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
         cell.maskView.alpha = 0.0;
         self.centerCell = cell;
