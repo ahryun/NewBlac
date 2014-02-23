@@ -32,7 +32,7 @@
 
 - (NSArray *)imagesArray
 {
-    return [self.video imagesArrayInChronologicalOrder];
+    return [self.video imagesArrayInOrder];
 }
 
 - (void)writeImagesToVideo
@@ -80,7 +80,7 @@
         @autoreleasepool {
             NSLog(@"Processing video frame %d out of %lu",(i + 1),(unsigned long)[self.imagesArray count]);
             Photo *photo = self.imagesArray[i];
-            UIImage *image = [UIImage imageWithContentsOfFile:photo.croppedPhotoFilePath];
+            UIImage *image = [UIImage imageWithData:photo.croppedPhoto];
             CVPixelBufferRef buffer = [self pixelBufferFromCGImage:image.CGImage withSize:self.screenSize];
             BOOL append_ok = NO;
             int nthTry = 0;

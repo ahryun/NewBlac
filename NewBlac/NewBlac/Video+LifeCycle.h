@@ -14,7 +14,7 @@
 + (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;
 + (void)removeVideosInManagedContext:(NSManagedObjectContext *)context;
 
-- (NSArray *)imagesArrayInChronologicalOrder;
+- (NSArray *)imagesArrayInOrder;
 
 // Support functions
 + (NSString *)getRandomFilePath;

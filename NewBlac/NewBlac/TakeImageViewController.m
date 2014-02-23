@@ -189,15 +189,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     self.croppedImage = self.canvas.originalImage;
                     [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
                     
-                    NSString *imagePath, *croppedImagePath;
-                    imagePath = [Photo saveUIImage:image toFilePath:nil];
-                    croppedImagePath = [Photo saveUIImage:self.croppedImage toFilePath:[imagePath stringByAppendingString:@"_cropped"]];
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-                        self.photo = [Photo photoWithOriginalPhotoFilePath:[imagePath stringByAppendingString:@".jpg"]
-                                                  withCroppedPhotoFilePath:[croppedImagePath stringByAppendingString:@".jpg"]
-                                                           withCoordinates:self.canvas.coordinates
-                                                    inManagedObjectContext:self.managedObjectContext];
+                        self.photo = [Photo photoWithOriginalPhoto:image
+                                                  withCroppedPhoto:self.croppedImage
+                                                   withCoordinates:self.canvas.coordinates
+                                            inManagedObjectContext:self.managedObjectContext];
                         [self performSegueWithIdentifier:@"View Image" sender:self];
                     }];
                 });

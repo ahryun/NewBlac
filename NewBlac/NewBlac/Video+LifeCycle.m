@@ -93,10 +93,16 @@
 
 }
 
-- (NSArray *)imagesArrayInChronologicalOrder
+- (NSArray *)imagesArrayInOrder
 {
-    NSArray *imagesArray = [[self.photos allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeTaken" ascending:YES]]];
-    return imagesArray;
+    return [self.photos array];
+}
+
+// this overwrites the original addPhotosObjectfunction to get around the known bug
+- (void)addPhotosObject:(Photo *)photo {
+    NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.photos];
+    [tempSet addObject:photo];
+    self.photos = tempSet;
 }
 
 @end

@@ -41,20 +41,15 @@
         [self.photo.canvasRect photoCorners:self.coordinates];
         
         // Send the new coordinates to the c++ file to recalculate the matrix
-        UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
+        UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
         BOOL isFirstImage = [self.video.photos count] > 0 ? NO : YES;
         [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:isFirstImage];
         
         [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
         
-        // Replace the cropped image saved in file system
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+        // Replace the cropped image saved in core data
         NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
-        BOOL removeSucceeded = [fileManager removeItemAtPath:self.photo.croppedPhotoFilePath error:nil];
-        if (removeSucceeded) {
-            BOOL writeSucceeded = [fileManager createFileAtPath:self.photo.croppedPhotoFilePath contents:imageData attributes:nil];
-            writeSucceeded ? NSLog(@"Replacing cropped photo file was a success") : NSLog(@"Hey I couldn't resave the new cropped photo");
-        }
+        [self.photo setCroppedPhoto:imageData];
     }
     
     // May need to prepareForSegue
@@ -132,7 +127,7 @@
                                       (contentLayer.bounds.size.height /2) - (zoomSize.height /2),
                                       zoomSize.width,
                                       zoomSize.height);
-    UIImage *originalImage = [UIImage imageWithContentsOfFile:self.photo.originalPhotoFilePath];
+    UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
     zoomLayer.contents = (id)originalImage.CGImage;
     zoomLayer.contentsGravity = kCAGravityResizeAspectFill;
     [contentLayer addSublayer:zoomLayer];
@@ -157,8 +152,7 @@
 {
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
-        NSData *photoData = [NSData dataWithContentsOfFile:self.photo.originalPhotoFilePath];
-        UIImage *image = [UIImage imageWithData:photoData];
+        UIImage *image = [UIImage imageWithData:self.photo.originalPhoto];
         float widthRatio = self.view.bounds.size.width / image.size.width;
         float heightRatio = self.view.bounds.size.height / image.size.height;
         float scale = MIN(widthRatio, heightRatio);
@@ -256,7 +250,7 @@
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
-    NSLog(@"Pan recognizer state is %li\n", panRecognizer.state);
+    NSLog(@"Pan recognizer state is %i\n", panRecognizer.state);
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             NSLog(@"Pan began\n");

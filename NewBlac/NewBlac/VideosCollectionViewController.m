@@ -103,13 +103,20 @@
 }
 
 - (void)centerACell {
-    NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
-    [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-    if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-        self.centerCell.maskView.alpha = 0.3;
-        VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
-        cell.maskView.alpha = 0.0;
-        self.centerCell = cell;
+    for (NSInteger sectionNumber = 0; sectionNumber < [self.collectionView numberOfSections]; sectionNumber++) {
+        if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
+            NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+            [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
+                self.centerCell.maskView.alpha = 0.3;
+                VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
+                cell.maskView.alpha = 0.0;
+                self.centerCell = cell;
+            }
+        } else {
+            // Create a blank video
+            NSLog(@"No video!");
+        }
     }
 }
 

@@ -34,9 +34,7 @@
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
         
-        NSData *photoData = [NSData dataWithContentsOfFile:self.photo.croppedPhotoFilePath];
-        
-        UIImage *image = [UIImage imageWithData:photoData];
+        UIImage *image = [UIImage imageWithData:self.photo.croppedPhoto];
         float widthRatio = self.view.bounds.size.width / image.size.width;
         float heightRatio = self.view.bounds.size.height / image.size.height;
         float scale = MIN(widthRatio, heightRatio);

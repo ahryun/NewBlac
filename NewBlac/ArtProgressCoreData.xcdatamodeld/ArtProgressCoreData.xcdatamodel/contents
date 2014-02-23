@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Photo" representedClassName="Photo" syncable="YES">
-        <attribute name="croppedPhotoFilePath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalPhotoFilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="croppedPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="originalPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="timeTaken" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="canvasRect" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PhotoCorners" inverseName="originalPhoto" inverseEntity="PhotoCorners" syncable="YES"/>
         <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="photos" inverseEntity="Video" syncable="YES"/>
@@ -23,7 +23,7 @@
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="screenRatio" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="video" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Photo" inverseName="video" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
         <element name="Photo" positionX="0" positionY="0" width="0" height="0"/>
