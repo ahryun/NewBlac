@@ -14,8 +14,8 @@
 + (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context
 {
     Photo *photo = nil;
-    NSData *originalPhotoData = UIImageJPEGRepresentation(originalPhoto, 1.0f);
-    NSData *croppedPhotoData = UIImageJPEGRepresentation(croppedPhoto, 1.0f);
+    NSData *originalPhotoData = UIImageJPEGRepresentation(originalPhoto, 0);
+    NSData *croppedPhotoData = UIImageJPEGRepresentation(croppedPhoto, 0);
     photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
     [photo setOriginalPhoto:originalPhotoData];
     [photo setCroppedPhoto:croppedPhotoData];

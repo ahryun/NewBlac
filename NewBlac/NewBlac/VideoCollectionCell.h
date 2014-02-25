@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoPlayView.h"
 
 @protocol ScrollingCellDelegate;
 
@@ -17,11 +18,14 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *deleteButton;
 @property (nonatomic, strong) UIView *maskView;
+@property (nonatomic, strong) VideoPlayView *playerLayer;
 @property (nonatomic, weak) id<ScrollingCellDelegate> delegate;
 
 - (void)displayVideo;
 - (void)prepareScrollView;
 - (void)reset;
+- (void)prepareVideoLayer:(AVPlayer *)videoPlayer;
+- (void)removeVideoLayer;
 
 @end
 

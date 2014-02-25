@@ -67,9 +67,12 @@
     if (video && context) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
-        BOOL success = [fileManager removeItemAtPath:video.compFilePath error:&error];
-        if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
+        if ([fileManager fileExistsAtPath:video.compFilePath]) {
+            BOOL success = [fileManager removeItemAtPath:video.compFilePath error:&error];
+            if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
+        }
         [context deleteObject:video];
+        NSLog(@"You went back to gallery without saving the video. It's been deleted\n");
     } else {
         NSLog(@"Something went wrong while deleting the video");
     }

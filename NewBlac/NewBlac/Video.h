@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSDate * dateCreated;
 @property (nonatomic, retain) NSNumber * screenRatio;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * framesPerSecond;
 @property (nonatomic, retain) NSOrderedSet *photos;
 @end
 

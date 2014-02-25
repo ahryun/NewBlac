@@ -16,6 +16,7 @@
 @dynamic dateCreated;
 @dynamic screenRatio;
 @dynamic title;
+@dynamic framesPerSecond;
 @dynamic photos;
 
 @end

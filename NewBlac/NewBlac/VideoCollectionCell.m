@@ -82,17 +82,8 @@
 
 - (void)displayVideo
 {
-    if (self.videoURL && !self.imageView) {
-        AVURLAsset *video = [[AVURLAsset alloc] initWithURL:self.videoURL options:nil];
-        AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:video];
-        imageGenerator.appliesPreferredTrackTransform = YES;
-        imageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
-        imageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
-        NSError *error = NULL;
-        CMTime actualTime;
-        CGImageRef imageRef = [imageGenerator copyCGImageAtTime:video.duration actualTime:&actualTime error:&error];
-        UIImage *image = [UIImage imageWithCGImage:imageRef];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    if (!self.imageView) {
+        UIImageView *imageView = [[UIImageView alloc] init];
         [imageView setFrame:CGRectMake(0, OFFSET_TOP, self.bounds.size.width, CELL_HEIGHT)];
         [imageView.layer setCornerRadius:15.0f];
         imageView.clipsToBounds = YES;
@@ -109,6 +100,23 @@
         self.imageView = imageView;
     }
 }
+
+- (void)prepareVideoLayer:(AVPlayer *)videoPlayer
+{
+    if (!self.playerLayer) {
+        VideoPlayView *playerLayer = [[VideoPlayView alloc] initWithFrame:self.imageView.bounds];
+        [playerLayer setPlayer:videoPlayer];
+        [self.imageView addSubview:playerLayer];
+        self.playerLayer = playerLayer;
+    }
+}
+
+- (void)removeVideoLayer
+{
+    if (self.playerLayer) [self.playerLayer removeFromSuperview];
+    self.playerLayer = nil;
+}
+
 
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

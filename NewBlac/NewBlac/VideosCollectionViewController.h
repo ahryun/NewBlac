@@ -7,7 +7,11 @@
 //
 
 #import "CoreDataCollectionViewController.h"
+#import "VideoCollectionCell.h"
 
 @interface VideosCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource,
     UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) VideoCollectionCell *centerCell;
+
 @end

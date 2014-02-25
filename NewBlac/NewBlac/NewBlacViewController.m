@@ -7,32 +7,47 @@
 //
 
 #import "NewBlacViewController.h"
-#import <MobileCoreServices/MobileCoreServices.h>
+//#import <MobileCoreServices/MobileCoreServices.h>
 #import "Canvas.h"
 #import "VideoCreator.h"
 #import "VideoPlayView.h"
+#import "MotionVideoPlayer.h"
 
 @interface NewBlacViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *addPhoto;
 @property (strong, nonatomic) VideoCreator *videoCreator;
-@property (strong, nonatomic) AVURLAsset *videoAsset;
-@property (strong, nonatomic) AVPlayerItem *playerItem;
-@property (strong, nonatomic) AVPlayer *player;
 @property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (nonatomic) BOOL isCancelled;
+@property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
 
 @end
 
 @implementation NewBlacViewController
 
-static const NSString *ItemStatusContext;
+static const NSString *PlayerReadyContext;
 
 - (void)setVideo:(Video *)video
 {
     _video = video;
+}
+
+#pragma mark - View Lifecycle
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSLog(@"Screen width and height in View Did Load is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
+    [self.navigationItem.backBarButtonItem setTarget:self];
+    [self.navigationItem.backBarButtonItem setAction:@selector(cleanUpAndReturnToGallery)];
     [self loadAssetFromVideo];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.videoPlayer unregisterNotification];
+    [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
+    self.videoPlayer.isCancelled = YES;
 }
 
 #pragma mark - Segues
@@ -58,7 +73,13 @@ static const NSString *ItemStatusContext;
     }
 }
 
-- (IBAction)returnToGallery:(UIButton *)sender {
+- (IBAction)returnToGallery:(UIButton *)sender
+{
+    [self cleanUpAndReturnToGallery];
+}
+
+- (void)cleanUpAndReturnToGallery
+{
     if ([self.video.photos count] < 1) {
         [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
     } else {
@@ -67,38 +88,6 @@ static const NSString *ItemStatusContext;
         [self.managedObjectContext save:&error];
     }
     [self performSegueWithIdentifier:@"Unwind To Gallery" sender:self];
-}
-
-#pragma mark - View Lifecycle
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    NSLog(@"Screen width and height in View Will Appear is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    NSLog(@"Screen width and height in View Did Load is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
-    [self syncUI];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.isCancelled = YES;
-}
-
-#pragma mark - UI
-- (void)syncUI
-{
-    if ((self.player.currentItem != nil) &&
-        ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-        self.playButton.enabled = YES;
-    } else {
-        self.playButton.enabled = NO;
-    }
 }
 
 #pragma mark - Model
@@ -117,49 +106,22 @@ static const NSString *ItemStatusContext;
 
 - (void)loadAssetFromVideo
 {
-    // Play the video
+    if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
     NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
-    self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
-    NSString *tracksKey = @"tracks";
-    NSLog(@"There are %lu tracks in this video", (unsigned long)[self.videoAsset.tracks count]);
-    self.isCancelled = NO;
-    [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.isCancelled) {
-                NSError *error;
-                AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
-                NSLog(@"The AVKeyValueStatus is %li\n", (long)status);
-                if (status == AVKeyValueStatusLoaded) {
-                    self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
-                    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
-                    [[NSNotificationCenter defaultCenter] addObserver:self
-                                                             selector:@selector(playerItemDidReachEnd:)
-                                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                                               object:self.playerItem];
-                    self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-                    [self.playerView setPlayer:self.player];
-                } else {
-                    // You should deal with the error appropriately.
-                    NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
-                }
-            } else {
-                return;
-            }
-        });
-    }];
-}
-
-- (void)playerItemDidReachEnd:(NSNotification *)notification
-{
-    [self.player seekToTime:kCMTimeZero];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
+        [self.videoPlayer loadAssetFromVideo:videoURL];
+        [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
+    } else {
+        // Video data object exists but no video saved yet
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
-    if (context == &ItemStatusContext) {
+    if (context == &PlayerReadyContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
-               [self syncUI];
-           });
+            [self setPlayerInLayer:self.videoPlayer.player];
+        });
         return;
     }
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -168,7 +130,19 @@ static const NSString *ItemStatusContext;
 
 - (IBAction)play:sender
 {
-    [self.player play];
+    [self.videoPlayer playVideo];
+}
+
+- (void)setPlayerInLayer:(AVPlayer *)player
+{
+    if ((self.videoPlayer.playerIsReady) &&
+        ([self.videoPlayer.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
+        NSLog(@"Setting the video layer\n");
+        [self.playerView setPlayer:player];
+        [self.videoPlayer playVideo];
+    } else {
+        NSLog(@"Video not ready to play\n");
+    }
 }
 
 @end

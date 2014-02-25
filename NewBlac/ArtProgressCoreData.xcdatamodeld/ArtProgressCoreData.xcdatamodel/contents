@@ -21,6 +21,7 @@
     <entity name="Video" representedClassName="Video" syncable="YES">
         <attribute name="compFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="framesPerSecond" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="1" defaultValueString="1" syncable="YES"/>
         <attribute name="screenRatio" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Photo" inverseName="video" inverseEntity="Photo" syncable="YES"/>

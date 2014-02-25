@@ -8,20 +8,23 @@
 
 #import "VideosCollectionViewController.h"
 #import "NewBlacViewController.h"
-#import "VideoCollectionCell.h"
 #import "Video+LifeCycle.h"
 #import "VideosCollectionViewLayout.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Photo+LifeCycle.h"
+#import "MotionVideoPlayer.h"
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate>
 
 @property (nonatomic, strong) Video *selectedVideo;
 @property (nonatomic, strong) VideoCollectionCell *deleteCandidateCell;
-@property (nonatomic, strong) VideoCollectionCell *centerCell;
+@property (nonatomic, strong) MotionVideoPlayer *videoPlayerObj;
 
 @end
 
 @implementation VideosCollectionViewController
+
+static const NSString *PlayerReadyContext;
 
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
@@ -43,6 +46,14 @@
 {
     [super viewDidAppear:animated];
     [self centerACell];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.videoPlayerObj removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
+    [self.videoPlayerObj unregisterNotification];
+    self.videoPlayerObj.isCancelled = YES;
 }
 
 - (void)presentMenuModally
@@ -90,6 +101,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.deleteCandidateCell) [self.deleteCandidateCell reset];
+    if (self.videoPlayerObj) [self.videoPlayerObj pauseVideo];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -102,22 +114,74 @@
     [self centerACell];
 }
 
+#pragma mark - Configure Video
 - (void)centerACell {
     for (NSInteger sectionNumber = 0; sectionNumber < [self.collectionView numberOfSections]; sectionNumber++) {
         if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
             NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-            if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-                self.centerCell.maskView.alpha = 0.3;
+            if ([self.collectionView indexPathForCell:self.centerCell] == pathForCenterCell) {
+                // If after scrolling, the user ended up on the same video, resume the video
+                [self.videoPlayerObj playVideo];
+            } else {
+                if (self.centerCell) {
+                    // Old center cell
+                    self.centerCell.maskView.alpha = 0.3;
+                    [self resetVideo];
+                }
+                // New center cell
                 VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
                 cell.maskView.alpha = 0.0;
                 self.centerCell = cell;
+                [self.videoPlayerObj replacePlayerItem:self.centerCell.videoURL];
+                [self loadAssetFromVideo];
             }
         } else {
             // Create a blank video
             NSLog(@"No video!");
         }
     }
+}
+
+- (void)loadAssetFromVideo
+{
+    if (!self.videoPlayerObj) self.videoPlayerObj = [[MotionVideoPlayer alloc] init];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self.centerCell.videoURL path]]) {
+        [self.videoPlayerObj loadAssetFromVideo:self.centerCell.videoURL];
+        [self.videoPlayerObj addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
+    } else {
+        // Video data object exists but no video saved yet
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context {
+    if (context == &PlayerReadyContext) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setPlayerInLayer:self.videoPlayerObj.player];
+        });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
+}
+
+- (void)setPlayerInLayer:(AVPlayer *)player
+{
+    if ((self.videoPlayerObj.playerIsReady) &&
+        ([self.videoPlayerObj.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
+        NSLog(@"Setting the video layer\n");
+        [self.centerCell prepareVideoLayer:player];
+        [self.videoPlayerObj playVideo];
+    } else {
+        NSLog(@"Video not ready to play\n");
+    }
+}
+
+- (void)resetVideo
+{
+    // Reset video to photo
+    [self.centerCell removeVideoLayer];
 }
 
 #pragma mark - NSFetchedResultsController
@@ -132,6 +196,8 @@
     [cell setVideoURL:videoURL];
     [cell prepareScrollView];
     [cell displayVideo];
+    Photo *photo = [video.photos lastObject];
+    cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
     
     NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
     
@@ -147,6 +213,9 @@
         [self.deleteCandidateCell reset];
         self.deleteCandidateCell = cell;
     }
+    
+    // Pause the video if the user tries to delete any video while it's playing
+    [self.videoPlayerObj pauseVideo];
 }
 
 - (void)deleteButtonPressed:(VideoCollectionCell *)cell
@@ -156,8 +225,8 @@
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.selectedVideo = video;
     [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
+    [self centerACell];
 }
-
 
 
 
