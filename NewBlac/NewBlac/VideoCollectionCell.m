@@ -101,23 +101,6 @@
     }
 }
 
-- (void)prepareVideoLayer:(AVPlayer *)videoPlayer
-{
-    if (!self.playerLayer) {
-        VideoPlayView *playerLayer = [[VideoPlayView alloc] initWithFrame:self.imageView.bounds];
-        [playerLayer setPlayer:videoPlayer];
-        [self.imageView addSubview:playerLayer];
-        self.playerLayer = playerLayer;
-    }
-}
-
-- (void)removeVideoLayer
-{
-    if (self.playerLayer) [self.playerLayer removeFromSuperview];
-    self.playerLayer = nil;
-}
-
-
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

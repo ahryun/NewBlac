@@ -21,6 +21,7 @@
 - (void)playVideo;
 - (void)pauseVideo;
 - (void)replayVideo;
+- (void)registerNotification;
 - (void)unregisterNotification;
 
 @end

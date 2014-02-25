@@ -36,11 +36,7 @@ static const NSString *ItemStatusContext;
                 if (status == AVKeyValueStatusLoaded) {
                     self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
                     self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-                    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
-                    [[NSNotificationCenter defaultCenter] addObserver:self
-                                                             selector:@selector(replayVideo)
-                                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                                               object:self.playerItem];
+                    [self registerNotification];
                 } else {
                     // You should deal with the error appropriately.
                     NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
@@ -74,21 +70,27 @@ static const NSString *ItemStatusContext;
 - (void)playVideo
 {
     if (!self.isCancelled) {
-        NSLog(@"I am trying to play the video\n");
         [self.player play];
     }
 }
 
 - (void)pauseVideo
 {
-    // Pause the video
     [self.player pause];
 }
 
 - (void)replayVideo
 {
     if (!self.isCancelled) [self.player seekToTime:kCMTimeZero];
-    //[self playVideo];
+}
+
+- (void)registerNotification
+{
+    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(replayVideo)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:self.playerItem];
 }
 
 - (void)unregisterNotification

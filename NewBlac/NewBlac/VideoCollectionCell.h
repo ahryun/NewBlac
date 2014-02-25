@@ -13,7 +13,6 @@
 
 @interface VideoCollectionCell : UICollectionViewCell
 
-@property (nonatomic, strong) NSURL *videoURL;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *deleteButton;
@@ -24,8 +23,6 @@
 - (void)displayVideo;
 - (void)prepareScrollView;
 - (void)reset;
-- (void)prepareVideoLayer:(AVPlayer *)videoPlayer;
-- (void)removeVideoLayer;
 
 @end
 

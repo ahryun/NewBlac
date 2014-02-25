@@ -71,7 +71,9 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" id="Ldy-ft-yY8"/>
+                    <navigationItem key="navigationItem" id="Ldy-ft-yY8">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="mLa-Tb-TRd"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="addPhoto" destination="JbO-Eu-Wfg" id="eSU-Y1-wLQ"/>
                         <outlet property="playButton" destination="z3k-0s-l0L" id="1C8-Ab-gV2"/>
