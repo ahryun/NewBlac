@@ -35,6 +35,9 @@
                     <toolbarItems>
                         <barButtonItem title="1FPS" id="NDb-dV-NWY">
                             <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="chooseFramesPerSecond:" destination="vXZ-lx-hvc" id="win-09-BzW"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="tZ3-xF-ZUW"/>
                         <barButtonItem enabled="NO" image="PlayButton" style="done" id="Qu1-78-XJm">
@@ -54,6 +57,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="framesPerSecond" destination="NDb-dV-NWY" id="1bB-Dh-tMo"/>
                         <outlet property="playButton" destination="Qu1-78-XJm" id="1dV-Hv-Tne"/>
                         <outlet property="playerView" destination="LPf-fR-IDb" id="qHz-tA-A8J"/>
                         <segue destination="MYG-T5-p4Y" kind="unwind" identifier="Unwind To Gallery" unwindAction="unwindAddToVideos:" id="DaF-0w-TrM"/>

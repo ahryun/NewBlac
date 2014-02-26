@@ -13,12 +13,15 @@
 #import "VideoPlayView.h"
 #import "MotionVideoPlayer.h"
 
-@interface NewBlacViewController ()
+@interface NewBlacViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
 @property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
+@property (strong, nonatomic) UIPickerView *pickerView;
+@property (nonatomic) BOOL videoIsEmpty;
 
 @end
 
@@ -35,33 +38,41 @@ static const NSString *PlayerReadyContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"Screen width and height in View Did Load is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
+    self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
-    UIImage *playButtonImg = [UIImage imageNamed:@"PlayButton"];
-    playButtonImg = [playButtonImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
+                              imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.playButton.image = playButtonImg;
+    [self prepareFramesPerSecondPickerView];
+}
+
+- (void)prepareFramesPerSecondPickerView
+{
+    // set the frame to zero
+    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    pickerView.showsSelectionIndicator = YES;
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    pickerView.hidden = YES;
+    [self.view addSubview:pickerView];
+    self.pickerView = pickerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if ([self.video.photos count] > 1) self.playButton.enabled = YES;
-}
-
-- (void)bringUpCamera
-{
-    // Bring up camera
+    if ([self.video.photos count] > 0) self.playButton.enabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.videoPlayer unregisterNotification];
-    [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
-    self.videoPlayer.isCancelled = YES;
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        [self cleanUpBeforeReturningToGallery];
+    if (!self.videoIsEmpty) {
+        [self.videoPlayer unregisterNotification];
+        [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
     }
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
+    self.videoPlayer.isCancelled = YES;
 }
 
 #pragma mark - Segues
@@ -72,7 +83,7 @@ static const NSString *PlayerReadyContext;
 
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
 {
-    [self compileVideo];
+//    [self compileVideo];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -117,6 +128,7 @@ static const NSString *PlayerReadyContext;
     if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
     NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
+        self.videoIsEmpty = NO;
         [self.videoPlayer loadAssetFromVideo:videoURL];
         [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
     } else {
@@ -125,7 +137,8 @@ static const NSString *PlayerReadyContext;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                        change:(NSDictionary *)change context:(void *)context {
+                        change:(NSDictionary *)change context:(void *)context
+{
     if (context == &PlayerReadyContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setPlayerInLayer:self.videoPlayer.player];
@@ -134,11 +147,6 @@ static const NSString *PlayerReadyContext;
     }
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     return;
-}
-
-- (IBAction)play:sender
-{
-    [self.videoPlayer playVideo];
 }
 
 - (void)setPlayerInLayer:(AVPlayer *)player
@@ -151,6 +159,42 @@ static const NSString *PlayerReadyContext;
     } else {
         NSLog(@"Video not ready to play\n");
     }
+}
+
+- (IBAction)play:sender {
+    [self.videoPlayer playVideo];
+}
+
+#pragma mark - UIPickerView
+- (IBAction)chooseFramesPerSecond:(UIBarButtonItem *)sender
+{
+    
+}
+
+#pragma mark - UIPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 3;
+}
+
+#pragma mark - UIPickerViewDelegate
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *item = [NSString stringWithFormat:@"%d Frames Per Second", row+1];
+    return item;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // perform some action
+    NSNumber *framesPerSecond = [NSNumber numberWithInteger:row + 1];
+    [self.video setFramesPerSecond:framesPerSecond];
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%d FPS", [framesPerSecond integerValue]]];
 }
 
 @end

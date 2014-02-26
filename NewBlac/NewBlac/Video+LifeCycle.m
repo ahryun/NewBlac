@@ -93,7 +93,6 @@
         // Handle Error
         NSLog(@"No videos\n");
     }
-
 }
 
 - (NSArray *)imagesArrayInOrder
