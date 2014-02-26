@@ -20,10 +20,8 @@
 
 - (void)setPlayer:(AVPlayer *)player {
     AVPlayerLayer *layer = (AVPlayerLayer *)[self layer];
-    layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    layer.videoGravity = AVLayerVideoGravityResizeAspect;
     [layer setPlayer:player];
 }
-
-
 
 @end

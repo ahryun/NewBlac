@@ -8,18 +8,17 @@
 
 #import "NewBlacViewController.h"
 //#import <MobileCoreServices/MobileCoreServices.h>
-#import "Canvas.h"
+//#import "Canvas.h"
 #import "VideoCreator.h"
 #import "VideoPlayView.h"
 #import "MotionVideoPlayer.h"
 
 @interface NewBlacViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton *addPhoto;
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
-@property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 
 @end
 
@@ -37,9 +36,21 @@ static const NSString *PlayerReadyContext;
 {
     [super viewDidLoad];
     NSLog(@"Screen width and height in View Did Load is %f x %f\n", self.view.frame.size.width, self.view.frame.size.height);
-    [self.navigationItem.backBarButtonItem setTarget:self];
-    [self.navigationItem.backBarButtonItem setAction:@selector(cleanUpAndReturnToGallery)];
     [self loadAssetFromVideo];
+    UIImage *playButtonImg = [UIImage imageNamed:@"PlayButton"];
+    playButtonImg = [playButtonImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.playButton.image = playButtonImg;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ([self.video.photos count] > 1) self.playButton.enabled = YES;
+}
+
+- (void)bringUpCamera
+{
+    // Bring up camera
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -48,6 +59,9 @@ static const NSString *PlayerReadyContext;
     [self.videoPlayer unregisterNotification];
     [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
     self.videoPlayer.isCancelled = YES;
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        [self cleanUpBeforeReturningToGallery];
+    }
 }
 
 #pragma mark - Segues
@@ -63,6 +77,7 @@ static const NSString *PlayerReadyContext;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"I'm in segue\n");
     if ([segue.identifier isEqualToString:@"Ready Camera"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
@@ -73,13 +88,9 @@ static const NSString *PlayerReadyContext;
     }
 }
 
-- (IBAction)returnToGallery:(UIButton *)sender
+- (void)cleanUpBeforeReturningToGallery
 {
-    [self cleanUpAndReturnToGallery];
-}
-
-- (void)cleanUpAndReturnToGallery
-{
+    NSLog(@"I'm in clean up\n");
     if ([self.video.photos count] < 1) {
         [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
     } else {
@@ -87,16 +98,13 @@ static const NSString *PlayerReadyContext;
         NSError *error;
         [self.managedObjectContext save:&error];
     }
-    [self performSegueWithIdentifier:@"Unwind To Gallery" sender:self];
 }
 
 #pragma mark - Model
 
 - (void)compileVideo
 {
-    self.playButton.hidden = YES;
     if (self.video && [self.video.photos count] > 0) {
-        if ([self.video.photos count] > 1) self.playButton.hidden = NO;
         CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
         if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
         [self.videoCreator writeImagesToVideo];

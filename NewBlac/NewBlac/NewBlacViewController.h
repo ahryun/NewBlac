@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <opencv2/highgui/cap_ios.h>
+//#import <opencv2/highgui/cap_ios.h>
 #import <AVFoundation/AVFoundation.h>
 //#import <AssetsLibrary/AssetsLibrary.h>
 //#import <ImageIO/ImageIO.h>
 //#import <sys/utsname.h>
-#import "SharedManagedDocument.h"
+//#import "SharedManagedDocument.h"
 #import "Video+LifeCycle.h"
 
 

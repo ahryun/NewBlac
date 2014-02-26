@@ -10,7 +10,7 @@
 #import "NewBlacViewController.h"
 #import "Video+LifeCycle.h"
 #import "VideosCollectionViewLayout.h"
-#import <MediaPlayer/MediaPlayer.h>
+//#import <MediaPlayer/MediaPlayer.h>
 #import "Photo+LifeCycle.h"
 #import "MotionVideoPlayer.h"
 
@@ -39,17 +39,13 @@ static const NSString *PlayerReadyContext;
     UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addVideo)];
     self.navigationItem.leftBarButtonItem = menuButton;
     self.navigationItem.rightBarButtonItem = addVideoButton;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self centerACell];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 - (void)presentMenuModally

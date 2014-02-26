@@ -24,6 +24,7 @@
     [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavigationBarTile"] forBarMetrics:UIBarMetricsDefault];
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolBarTile"] forToolbarPosition:UIBarPositionBottom barMetrics:UIBarMetricsDefault];
     [self.interactivePopGestureRecognizer setEnabled:NO];
+    
 }
 
 @end
