@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Ahryun Moon. All rights reserved.
 //
 
-#import "NewBlacViewController.h"
+#import "FramesCollectionViewController.h"
 #import "VideoCreator.h"
 #import "VideoPlayView.h"
 #import "MotionVideoPlayer.h"
 
-@interface NewBlacViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation NewBlacViewController
+@implementation FramesCollectionViewController
 
 static const NSString *PlayerReadyContext;
 

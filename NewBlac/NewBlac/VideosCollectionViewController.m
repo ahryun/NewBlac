@@ -7,7 +7,7 @@
 //
 
 #import "VideosCollectionViewController.h"
-#import "NewBlacViewController.h"
+#import "FramesCollectionViewController.h"
 #import "Video+LifeCycle.h"
 #import "CollectionViewLayout.h"
 #import "Photo+LifeCycle.h"
@@ -34,10 +34,6 @@ static const NSString *PlayerReadyContext;
     self.collectionView.delegate = self;
     
     // Navigation Bar Buttons configuration
-    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MenuButton"] style:UIBarButtonItemStylePlain target:self action:@selector(presentMenuModally)];
-    UIBarButtonItem *addVideoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"AddVideoButton"] style:UIBarButtonItemStylePlain target:self action:@selector(addVideo)];
-    self.navigationItem.leftBarButtonItem = menuButton;
-    self.navigationItem.rightBarButtonItem = addVideoButton;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
@@ -47,12 +43,12 @@ static const NSString *PlayerReadyContext;
     [self centerACell];
 }
 
-- (void)presentMenuModally
+- (IBAction)presentMenuModally:(UIBarButtonItem *)sender
 {
     // Do something
 }
 
-- (void)addVideo
+- (IBAction)addVideo:(UIBarButtonItem *)sender
 {
     NSLog(@"I'm in addVideo\n");
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];

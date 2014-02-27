@@ -4,72 +4,15 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--New Blac View Controller - pieces-->
-        <scene sceneID="ufC-wZ-h7g">
-            <objects>
-                <viewController title="pieces" id="vXZ-lx-hvc" customClass="NewBlacViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XJV-dv-9wX"/>
-                        <viewControllerLayoutGuide type="bottom" id="cPU-Fr-dGs"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-fR-IDb" customClass="VideoPlayView">
-                                <rect key="frame" x="0.0" y="347" width="320" height="113"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <toolbarItems>
-                        <barButtonItem id="NDb-dV-NWY">
-                            <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="chooseFramesPerSecond:" destination="vXZ-lx-hvc" id="win-09-BzW"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="tZ3-xF-ZUW"/>
-                        <barButtonItem enabled="NO" image="PlayButton" style="done" id="Qu1-78-XJm">
-                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="play:" destination="vXZ-lx-hvc" id="oyc-qB-jcx"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="nbZ-va-Zwo"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="pieces" id="Ldy-ft-yY8">
-                        <barButtonItem key="rightBarButtonItem" image="CameraButton" id="Ycg-ZP-xtG">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <segue destination="CaK-cf-brN" kind="push" identifier="Ready Camera" id="djM-BZ-hzo"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="framesPerSecond" destination="NDb-dV-NWY" id="1bB-Dh-tMo"/>
-                        <outlet property="playButton" destination="Qu1-78-XJm" id="1dV-Hv-Tne"/>
-                        <outlet property="playerView" destination="LPf-fR-IDb" id="qHz-tA-A8J"/>
-                        <segue destination="MYG-T5-p4Y" kind="unwind" identifier="Unwind To Gallery" unwindAction="unwindAddToVideos:" id="DaF-0w-TrM"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-                <exit id="MYG-T5-p4Y" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="2955" y="27"/>
-        </scene>
-        <!--Collection View Controller-->
+        <!--Frames Collection View Controller - pieces-->
         <scene sceneID="an7-qO-TVF">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="Tgz-jk-S1w" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="42j-la-4jy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="Tgz-jk-S1w" customClass="FramesCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="42j-la-4jy">
+                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BWY-cu-Zdb">
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BWY-cu-Zdb">
                             <size key="itemSize" width="243" height="379"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -77,13 +20,16 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Video Frame" id="NbV-nL-PTg">
-                                <rect key="frame" x="39" y="0.0" width="243" height="379"/>
+                                <rect key="frame" x="0.0" y="41" width="243" height="379"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="243" height="379"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="w2n-4r-LyO" kind="push" id="hgz-Ac-Mri"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -91,10 +37,40 @@
                             <outlet property="delegate" destination="Tgz-jk-S1w" id="66O-Xp-AO2"/>
                         </connections>
                     </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems>
+                        <barButtonItem title="FPS" id="mCg-Eb-YDg">
+                            <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="chooseFramesPerSecond:" destination="Tgz-jk-S1w" id="ERd-Jy-wTo"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="JGP-Xv-itm"/>
+                        <barButtonItem enabled="NO" image="PlayButton" style="done" id="YZr-ds-ZGa">
+                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="play:" destination="Tgz-jk-S1w" id="dVA-b2-PIG"/>
+                                <segue destination="9rq-fX-s1X" kind="modal" id="HtA-5B-62j"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="v7k-y8-3aY"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="pieces" id="jQr-tK-ufg">
+                        <barButtonItem key="rightBarButtonItem" image="CameraButton" id="x5f-XP-HxK">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="CaK-cf-brN" kind="modal" identifier="Ready Camera" modalTransitionStyle="coverVertical" id="ub5-mc-iii"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="framesPerSecond" destination="mCg-Eb-YDg" id="bgT-KI-DZL"/>
+                        <outlet property="playButton" destination="YZr-ds-ZGa" id="uhN-dr-MWb"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTh-Sg-Wp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2798" y="714"/>
+            <point key="canvasLocation" x="2967" y="-4"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Qbk-1r-Wny">
@@ -126,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rKd-x0-bOA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3182" y="714"/>
+            <point key="canvasLocation" x="3365" y="767"/>
         </scene>
         <!--Take Image View Controller - pieces-->
         <scene sceneID="6di-Lx-3l9">
@@ -137,11 +113,11 @@
                         <viewControllerLayoutGuide type="bottom" id="m0Y-Rl-CcA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AOS-x5-JgC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tab to snap a photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jko-oZ-EY4">
@@ -187,7 +163,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3386" y="8"/>
+            <point key="canvasLocation" x="3234" y="-978"/>
         </scene>
         <!--View Image View Controller - pieces-->
         <scene sceneID="efa-RJ-iCC">
@@ -198,15 +174,15 @@
                         <viewControllerLayoutGuide type="bottom" id="uuG-ow-bg1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ppV-eC-b9u">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWx-eJ-FlG">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-qn-P0e">
-                                        <rect key="frame" x="232" y="359" width="36" height="30"/>
+                                        <rect key="frame" x="232" y="467" width="36" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="I like!">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -216,7 +192,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF1-jD-sw6">
-                                        <rect key="frame" x="56" y="359" width="40" height="30"/>
+                                        <rect key="frame" x="56" y="467" width="40" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Meh~">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -263,7 +239,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3784" y="-50"/>
+            <point key="canvasLocation" x="3674" y="-978"/>
         </scene>
         <!--Edit Image View Controller - pieces-->
         <scene sceneID="Lez-Hp-WL0">
@@ -312,9 +288,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJj-xv-cx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Sue-xC-YhO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4203" y="-35"/>
+            <point key="canvasLocation" x="3529" y="-4"/>
         </scene>
-        <!--Initial View Controller-->
+        <!--Initial View Controller - pieces-->
         <scene sceneID="9mc-R1-S8v">
             <objects>
                 <viewController id="gpB-UF-YqU" customClass="InitialViewController" sceneMemberID="viewController">
@@ -328,7 +304,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="F2m-OU-fyU"/>
+                    <navigationItem key="navigationItem" title="pieces" id="F2m-OU-fyU"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <segue destination="wEj-N1-jhZ" kind="push" identifier="Go To Rootview" id="mUM-aN-d9z"/>
@@ -336,12 +312,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SaC-bA-1G9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2087" y="33"/>
+            <point key="canvasLocation" x="2117" y="-4"/>
         </scene>
         <!--Videos Collection View Controller - pieces-->
         <scene sceneID="MVv-Q0-bKi">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" title="pieces" automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="wEj-N1-jhZ" customClass="VideosCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="pAi-1x-Zlp">
                         <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -362,6 +338,9 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <size key="customSize" width="250" height="250"/>
+                                <connections>
+                                    <segue destination="Tgz-jk-S1w" kind="push" identifier="View And Edit Video" id="0e2-kc-aJa"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -377,15 +356,25 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="pieces" id="E50-xJ-2kS"/>
+                    <navigationItem key="navigationItem" title="pieces" id="E50-xJ-2kS">
+                        <barButtonItem key="leftBarButtonItem" image="MenuButton" id="5V4-To-Vtj">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="presentMenuModally:" destination="wEj-N1-jhZ" id="WKh-HA-aw4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="AddVideoButton" id="nAl-s9-iYy">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="addVideo:" destination="wEj-N1-jhZ" id="cVN-yF-NdI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <connections>
-                        <segue destination="vXZ-lx-hvc" kind="push" identifier="View And Edit Video" id="Nh1-DV-0Gg"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2552" y="27"/>
+            <point key="canvasLocation" x="2546" y="-4"/>
         </scene>
         <!--Pieces Navigation Controller-->
         <scene sceneID="aNY-VK-qoL">
@@ -419,11 +408,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1615" y="27"/>
+            <point key="canvasLocation" x="1687" y="-4"/>
         </scene>
     </scenes>
     <resources>
+        <image name="AddVideoButton" width="30" height="30"/>
         <image name="CameraButton" width="30" height="30"/>
+        <image name="MenuButton" width="30" height="30"/>
         <image name="PlayButton" width="30" height="30"/>
         <image name="loupe.png" width="160" height="160"/>
     </resources>
@@ -433,4 +424,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="hgz-Ac-Mri"/>
+    </inferredMetricsTieBreakers>
 </document>

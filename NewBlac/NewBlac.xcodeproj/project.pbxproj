@@ -41,7 +41,7 @@
 		F3C028B61843F5BD00FF08F1 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3C028B51843F5BD00FF08F1 /* main.mm */; };
 		F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */; };
 		F3C028BD1843F5BD00FF08F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3C028BB1843F5BD00FF08F1 /* Main.storyboard */; };
-		F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */; };
+		F3C028C01843F5BD00FF08F1 /* FramesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028BF1843F5BD00FF08F1 /* FramesCollectionViewController.m */; };
 		F3C028C21843F5BD00FF08F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C028C11843F5BD00FF08F1 /* Images.xcassets */; };
 		F3C028C91843F5BD00FF08F1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028C81843F5BD00FF08F1 /* XCTest.framework */; };
 		F3C028CA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028A91843F5BD00FF08F1 /* Foundation.framework */; };
@@ -134,8 +134,8 @@
 		F3C028B81843F5BD00FF08F1 /* newBlacAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newBlacAppDelegate.h; sourceTree = "<group>"; };
 		F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newBlacAppDelegate.m; sourceTree = "<group>"; };
 		F3C028BC1843F5BD00FF08F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F3C028BE1843F5BD00FF08F1 /* NewBlacViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewBlacViewController.h; sourceTree = "<group>"; };
-		F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewBlacViewController.m; sourceTree = "<group>"; };
+		F3C028BE1843F5BD00FF08F1 /* FramesCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramesCollectionViewController.h; sourceTree = "<group>"; };
+		F3C028BF1843F5BD00FF08F1 /* FramesCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FramesCollectionViewController.m; sourceTree = "<group>"; };
 		F3C028C11843F5BD00FF08F1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F3C028C71843F5BD00FF08F1 /* NewBlacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewBlacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C028C81843F5BD00FF08F1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -219,8 +219,8 @@
 				F330D95318972C7B009265EC /* InitialViewController.m */,
 				F33BE98F1892F4E90021A5C1 /* VideosCollectionViewController.h */,
 				F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */,
-				F3C028BE1843F5BD00FF08F1 /* NewBlacViewController.h */,
-				F3C028BF1843F5BD00FF08F1 /* NewBlacViewController.m */,
+				F3C028BE1843F5BD00FF08F1 /* FramesCollectionViewController.h */,
+				F3C028BF1843F5BD00FF08F1 /* FramesCollectionViewController.m */,
 				F33EA91318760DB50045E642 /* TakeImageViewController.h */,
 				F33EA91418760DB50045E642 /* TakeImageViewController.m */,
 				F33EA919187641E90045E642 /* ViewImageViewController.h */,
@@ -515,7 +515,7 @@
 				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
-				F3C028C01843F5BD00FF08F1 /* NewBlacViewController.m in Sources */,
+				F3C028C01843F5BD00FF08F1 /* FramesCollectionViewController.m in Sources */,
 				F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
 				F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */,
