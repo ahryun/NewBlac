@@ -1,5 +1,5 @@
 //
-//  VideosCollectionViewLayout.h
+//  CollectionViewLayout.h
 //  NewBlac
 //
 //  Created by Ahryun Moon on 1/25/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VideosCollectionViewLayout : UICollectionViewFlowLayout
+@interface CollectionViewLayout : UICollectionViewFlowLayout
 
 @property (nonatomic, strong) UIDynamicAnimator *dynamicAnimator;
 

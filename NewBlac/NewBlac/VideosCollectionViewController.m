@@ -9,8 +9,7 @@
 #import "VideosCollectionViewController.h"
 #import "NewBlacViewController.h"
 #import "Video+LifeCycle.h"
-#import "VideosCollectionViewLayout.h"
-//#import <MediaPlayer/MediaPlayer.h>
+#import "CollectionViewLayout.h"
 #import "Photo+LifeCycle.h"
 #import "MotionVideoPlayer.h"
 
@@ -30,7 +29,7 @@ static const NSString *PlayerReadyContext;
 {
     [super viewDidLoad];
     [self initializeFetchedResultsController];
-    VideosCollectionViewLayout *layout = [[VideosCollectionViewLayout alloc] init];
+    CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
     self.collectionView.delegate = self;
     

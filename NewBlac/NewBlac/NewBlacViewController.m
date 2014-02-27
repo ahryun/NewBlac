@@ -7,8 +7,6 @@
 //
 
 #import "NewBlacViewController.h"
-//#import <MobileCoreServices/MobileCoreServices.h>
-//#import "Canvas.h"
 #import "VideoCreator.h"
 #import "VideoPlayView.h"
 #import "MotionVideoPlayer.h"
@@ -21,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
 @property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic) BOOL videoIsEmpty;
 
 @end
@@ -43,19 +42,7 @@ static const NSString *PlayerReadyContext;
     UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.playButton.image = playButtonImg;
-    [self prepareFramesPerSecondPickerView];
-}
-
-- (void)prepareFramesPerSecondPickerView
-{
-    // set the frame to zero
-    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    pickerView.showsSelectionIndicator = YES;
-    pickerView.dataSource = self;
-    pickerView.delegate = self;
-    pickerView.hidden = YES;
-    [self.view addSubview:pickerView];
-    self.pickerView = pickerView;
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%d FPS", [self.video.framesPerSecond integerValue]]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -168,7 +155,52 @@ static const NSString *PlayerReadyContext;
 #pragma mark - UIPickerView
 - (IBAction)chooseFramesPerSecond:(UIBarButtonItem *)sender
 {
+    [self.videoPlayer pauseVideo];
     
+    [self prepareFramesPerSecondPickerView];
+    
+    // Animation to bring it up
+    [UIView animateWithDuration:1 animations:^{
+        self.snapshotView.frame = CGRectOffset(self.snapshotView.frame, 0, -CGRectGetHeight(self.pickerView.frame));
+        self.pickerView.frame = CGRectOffset(self.pickerView.frame, 0, -CGRectGetHeight(self.pickerView.frame));
+    }];
+}
+
+- (void)prepareFramesPerSecondPickerView
+{
+    // Create snapshot
+    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:NO withCapInsets:UIEdgeInsetsZero];
+    snapShot.frame = self.navigationController.view.frame;
+    [self.navigationController.view addSubview:snapShot];
+    self.snapshotView = snapShot;
+    [self.snapshotView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removePickerView)]];
+    
+    // Create picker view
+    UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    pickerView.showsSelectionIndicator = YES;
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    pickerView.backgroundColor = [UIColor whiteColor];
+    CGRect pickerViewFrame = CGRectMake(0, CGRectGetHeight(self.navigationController.view.frame),
+                                        CGRectGetWidth(pickerView.frame),
+                                        CGRectGetHeight(pickerView.frame));
+    [pickerView setFrame:pickerViewFrame];
+    [pickerView selectRow:[self.video.framesPerSecond integerValue]-1 inComponent:0 animated:NO];
+    [self.navigationController.view addSubview:pickerView];
+    self.pickerView = pickerView;
+}
+
+- (void)removePickerView
+{
+    // Animation to bring it up
+    [UIView animateWithDuration:1 animations:^{
+        self.snapshotView.frame = CGRectOffset(self.snapshotView.frame, 0, CGRectGetHeight(self.pickerView.frame));
+        self.pickerView.frame = CGRectOffset(self.pickerView.frame, 0, CGRectGetHeight(self.pickerView.frame));
+    } completion:^(BOOL finished) {
+        [self.snapshotView removeFromSuperview];
+        [self.pickerView removeFromSuperview];
+        [self.videoPlayer playVideo];
+    }];
 }
 
 #pragma mark - UIPickerViewDataSource

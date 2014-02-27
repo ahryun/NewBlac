@@ -1,14 +1,14 @@
 //
-//  VideosCollectionViewLayout.m
+//  CollectionViewLayout.m
 //  NewBlac
 //
 //  Created by Ahryun Moon on 1/25/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
-#import "VideosCollectionViewLayout.h"
+#import "CollectionViewLayout.h"
 
-@interface VideosCollectionViewLayout()
+@interface CollectionViewLayout()
 
 @property (nonatomic) NSDictionary *layoutInformation;
 @property (nonatomic) NSInteger maxNumRows;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation VideosCollectionViewLayout
+@implementation CollectionViewLayout
 
 #define X_SPACING               (10.0)
 #define CELL_HEIGHT             (330.0)
@@ -68,7 +68,6 @@
     }
     [layoutInformation setObject:cellInformation forKey:@"VideoCells"]; // 5
     self.layoutInformation = layoutInformation;
-    
     NSLog(@"Content size is %li\n", (long)self.maxNumRows);
 }
 
@@ -76,7 +75,6 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSLog(@"I'm in layoutAttributesForElementsInRect\n");
-    
     NSMutableArray *myAttributes = [NSMutableArray arrayWithCapacity:self.layoutInformation.count];
     for(NSString *key in self.layoutInformation){
         NSDictionary *attributesDict = [self.layoutInformation objectForKey:key];
@@ -95,7 +93,6 @@
 {
     UIScrollView *scrollView = self.collectionView;
     CGFloat delta = newBounds.origin.x - scrollView.bounds.origin.x;
-    
     for (UIAttachmentBehavior *spring in self.dynamicAnimator.behaviors) {
         UICollectionViewLayoutAttributes *item = [spring.items firstObject];
         CGPoint center = item.center;
