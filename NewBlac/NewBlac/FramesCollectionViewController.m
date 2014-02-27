@@ -21,6 +21,7 @@
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic) BOOL videoIsEmpty;
+@property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
 
 @end
 
@@ -37,6 +38,7 @@ static const NSString *PlayerReadyContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.showPhotos = YES; // This tells the core data controller to provide photos
     self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
     UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]

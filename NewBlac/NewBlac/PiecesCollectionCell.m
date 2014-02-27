@@ -1,21 +1,21 @@
 //
-//  VideoCollectionCell.m
+//  PiecesCollectionCell.m
 //  NewBlac
 //
 //  Created by Ahryun Moon on 1/24/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
-#import "VideoCollectionCell.h"
+#import "PiecesCollectionCell.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface VideoCollectionCell() <UIScrollViewDelegate>
+@interface PiecesCollectionCell() <UIScrollViewDelegate>
 
 @property (nonatomic) BOOL pulling;
 
 @end
 
-@implementation VideoCollectionCell
+@implementation PiecesCollectionCell
 
 // Since the cell is registered through Storyboard, I need to use initWithCoder instead of initWithFrame
 - (id)initWithCoder:(NSCoder *)aDecoder

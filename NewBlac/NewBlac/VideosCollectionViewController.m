@@ -16,7 +16,7 @@
 @interface VideosCollectionViewController () <ScrollingCellDelegate>
 
 @property (nonatomic, strong) Video *selectedVideo;
-@property (nonatomic, strong) VideoCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
 
 @end
 
@@ -28,6 +28,7 @@ static const NSString *PlayerReadyContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.showPhotos = NO; // This tells the core data controller to provide videos
     [self initializeFetchedResultsController];
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
@@ -78,7 +79,7 @@ static const NSString *PlayerReadyContext;
 }
 
 #pragma mark - UICollectionView Delegate
-- (void)selectItemAtIndexPath:(VideoCollectionCell *)cell
+- (void)selectItemAtIndexPath:(PiecesCollectionCell *)cell
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -110,7 +111,7 @@ static const NSString *PlayerReadyContext;
             if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
                 // If after scrolling, the user ended up on the same video, resume the video
                 if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
-                VideoCollectionCell *cell = (VideoCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
+                PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
                 cell.maskView.alpha = 0.0;
                 self.centerCell = cell;
             }
@@ -125,7 +126,7 @@ static const NSString *PlayerReadyContext;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"I'm in cellForItemAtIndexPath %@\n", indexPath);
-    VideoCollectionCell *cell = (VideoCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Playable Video" forIndexPath:indexPath];
+    PiecesCollectionCell *cell = (PiecesCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Playable Video" forIndexPath:indexPath];
     cell.delegate = self;
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell prepareScrollView];
@@ -139,7 +140,7 @@ static const NSString *PlayerReadyContext;
 }
 
 #pragma mark - ScrollingCellDelegate
-- (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell
+- (void)scrollingCellDidBeginPulling:(PiecesCollectionCell *)cell
 {
     if (!self.deleteCandidateCell) {
         self.deleteCandidateCell = cell;
@@ -149,7 +150,7 @@ static const NSString *PlayerReadyContext;
     }
 }
 
-- (void)deleteButtonPressed:(VideoCollectionCell *)cell
+- (void)deleteButtonPressed:(PiecesCollectionCell *)cell
 {
     NSLog(@"Doh! I was told to delete this video\n");
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];

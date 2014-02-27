@@ -53,29 +53,36 @@ static NSString *_cacheNameOfInterest = @"Master";
 //    if (self.managedObjectContext) NSLog(@"ManagedObjectContext exists\n");
     
     if (!_fetchedResultsController) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
-        [fetchRequest setEntity:entity];
-        [fetchRequest setFetchBatchSize:20];
-        
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
-        NSArray *sortDescriptors = @[sortDescriptor];
-        
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        // Delete cache name before making any change to the fetchedresultscontroller
-        [NSFetchedResultsController deleteCacheWithName:_cacheNameOfInterest];
-        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:_cacheNameOfInterest];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photos.@count > 0"];
-        [fetchRequest setPredicate:predicate];
-        aFetchedResultsController.delegate = self;
-        self.fetchedResultsController = aFetchedResultsController;
-        
-        NSError *error = nil;
-        [self.fetchedResultsController performFetch:&error];
-        NSLog(@"Fetch request turned up %lu objects\n", (unsigned long)[self.fetchedResultsController.fetchedObjects count]);
-        if (![self.fetchedResultsController performFetch:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        if (!_showPhotos) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
+            [fetchRequest setEntity:entity];
+            [fetchRequest setFetchBatchSize:20];
+            
+            // Get the photos that belong to a specific video
+//            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:<#(NSString *), ...#>]];
+            
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
+            NSArray *sortDescriptors = @[sortDescriptor];
+            
+            [fetchRequest setSortDescriptors:sortDescriptors];
+            
+            // Delete cache name before making any change to the fetchedresultscontroller
+            [NSFetchedResultsController deleteCacheWithName:_cacheNameOfInterest];
+            NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:_cacheNameOfInterest];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"photos.@count > 0"];
+            [fetchRequest setPredicate:predicate];
+            aFetchedResultsController.delegate = self;
+            self.fetchedResultsController = aFetchedResultsController;
+            
+            NSError *error = nil;
+            [self.fetchedResultsController performFetch:&error];
+            NSLog(@"Fetch request turned up %lu objects\n", (unsigned long)[self.fetchedResultsController.fetchedObjects count]);
+            if (![self.fetchedResultsController performFetch:&error]) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
+        } else {
+            // Show photos
         }
     }
     

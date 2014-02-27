@@ -1,5 +1,5 @@
 //
-//  VideoCollectionCell.h
+//  PiecesCollectionCell.h
 //  NewBlac
 //
 //  Created by Ahryun Moon on 1/24/14.
@@ -11,13 +11,12 @@
 
 @protocol ScrollingCellDelegate;
 
-@interface VideoCollectionCell : UICollectionViewCell
+@interface PiecesCollectionCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *deleteButton;
 @property (nonatomic, strong) UIView *maskView;
-@property (nonatomic, strong) VideoPlayView *playerLayer;
 @property (nonatomic, weak) id<ScrollingCellDelegate> delegate;
 
 - (void)displayVideo;
@@ -28,9 +27,9 @@
 
 @protocol ScrollingCellDelegate <NSObject>
 
-- (void)scrollingCellDidBeginPulling:(VideoCollectionCell *)cell;
-- (void)deleteButtonPressed:(VideoCollectionCell *)cell;
-- (void)selectItemAtIndexPath:(VideoCollectionCell *)cell;
+- (void)scrollingCellDidBeginPulling:(PiecesCollectionCell *)cell;
+- (void)deleteButtonPressed:(PiecesCollectionCell *)cell;
+- (void)selectItemAtIndexPath:(PiecesCollectionCell *)cell;
 
 @end
 

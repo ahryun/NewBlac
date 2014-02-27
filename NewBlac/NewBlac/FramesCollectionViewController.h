@@ -10,10 +10,13 @@
 //#import <AVFoundation/AVFoundation.h>
 #import "Video+LifeCycle.h"
 #import "CoreDataCollectionViewController.h"
+#import "PiecesCollectionCell.h"
 
 @interface FramesCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) Video *video;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) PiecesCollectionCell *centerCell;
+
 
 @end

@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) BOOL showPhotos;
 - (void)initializeFetchedResultsController;
 
 @end

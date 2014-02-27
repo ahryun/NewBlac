@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F330D95418972C7C009265EC /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F330D95318972C7B009265EC /* InitialViewController.m */; };
 		F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */; };
-		F33BE9941892F70A0021A5C1 /* VideoCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9931892F70A0021A5C1 /* VideoCollectionCell.m */; };
+		F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */; };
 		F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91418760DB50045E642 /* TakeImageViewController.m */; };
 		F33EA918187612140045E642 /* StillImagePreview.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA917187612140045E642 /* StillImagePreview.m */; };
 		F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA91A187641E90045E642 /* ViewImageViewController.m */; };
@@ -77,8 +77,8 @@
 		F330D95318972C7B009265EC /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		F33BE98F1892F4E90021A5C1 /* VideosCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewController.h; sourceTree = "<group>"; };
 		F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideosCollectionViewController.m; sourceTree = "<group>"; };
-		F33BE9921892F70A0021A5C1 /* VideoCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCollectionCell.h; sourceTree = "<group>"; };
-		F33BE9931892F70A0021A5C1 /* VideoCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCollectionCell.m; sourceTree = "<group>"; };
+		F33BE9921892F70A0021A5C1 /* PiecesCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiecesCollectionCell.h; sourceTree = "<group>"; };
+		F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiecesCollectionCell.m; sourceTree = "<group>"; };
 		F33EA91318760DB50045E642 /* TakeImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TakeImageViewController.h; sourceTree = "<group>"; };
 		F33EA91418760DB50045E642 /* TakeImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TakeImageViewController.m; sourceTree = "<group>"; };
 		F33EA916187612140045E642 /* StillImagePreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StillImagePreview.h; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 			children = (
 				F3A37DBD18947425003B530C /* CollectionViewLayout.h */,
 				F3A37DBE18947425003B530C /* CollectionViewLayout.m */,
-				F33BE9921892F70A0021A5C1 /* VideoCollectionCell.h */,
-				F33BE9931892F70A0021A5C1 /* VideoCollectionCell.m */,
+				F33BE9921892F70A0021A5C1 /* PiecesCollectionCell.h */,
+				F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */,
 				F33EA916187612140045E642 /* StillImagePreview.h */,
 				F33EA917187612140045E642 /* StillImagePreview.m */,
 				F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */,
@@ -497,7 +497,7 @@
 				F363C5FC18BEAB8C003B0AA6 /* Video.m in Sources */,
 				F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */,
 				F3AF498C18B448B4006249BF /* PiecesNavigationController.m in Sources */,
-				F33BE9941892F70A0021A5C1 /* VideoCollectionCell.m in Sources */,
+				F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */,
 				F33EA918187612140045E642 /* StillImagePreview.m in Sources */,
 				F330D95418972C7C009265EC /* InitialViewController.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,

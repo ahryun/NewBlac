@@ -19,7 +19,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Video Frame" id="NbV-nL-PTg">
+                            <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Video Frame" id="NbV-nL-PTg" customClass="PiecesCollectionCell">
                                 <rect key="frame" x="0.0" y="41" width="243" height="379"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -329,7 +329,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="VideoCollectionCell">
+                            <collectionViewCell multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Playable Video" id="Bxr-Qp-ySo" customClass="PiecesCollectionCell">
                                 <rect key="frame" x="0.0" y="105" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
