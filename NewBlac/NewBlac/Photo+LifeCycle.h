@@ -10,7 +10,8 @@
 
 @interface Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates inManagedObjectContext:(NSManagedObjectContext *)context;
++ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates withApertureSize:(float)apertureSize
+                  withFocalLength:(float)focalLength inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)deletePhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context;
 
 @end

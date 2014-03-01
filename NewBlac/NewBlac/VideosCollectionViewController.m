@@ -28,6 +28,11 @@ static const NSString *PlayerReadyContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.entityNameOfInterest = @"Video";
+    self.propertyNameOfInterest = @"dateCreated";
+    self.cacheNameOfInterest = @"Videos Cache";
+    
     self.showPhotos = NO; // This tells the core data controller to provide videos
     [self initializeFetchedResultsController];
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];

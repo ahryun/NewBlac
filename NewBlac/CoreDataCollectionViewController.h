@@ -14,6 +14,11 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL showPhotos;
+@property (nonatomic, strong) NSManagedObject *specificModel;
+
+@property (nonatomic, strong) NSString *entityNameOfInterest;
+@property (nonatomic, strong) NSString *propertyNameOfInterest;
+@property (nonatomic, strong) NSString *cacheNameOfInterest;
 - (void)initializeFetchedResultsController;
 
 @end

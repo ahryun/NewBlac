@@ -188,34 +188,21 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
                     self.croppedImage = self.canvas.originalImage;
                     [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-                    
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
                         self.photo = [Photo photoWithOriginalPhoto:image
                                                   withCroppedPhoto:self.croppedImage
                                                    withCoordinates:self.canvas.coordinates
+                                                  withApertureSize:apertureSize
+                                                   withFocalLength:focalLength
                                             inManagedObjectContext:self.managedObjectContext];
-                        [self performSegueWithIdentifier:@"View Image" sender:self];
+                        [self.video addPhotosObject:self.photo];
+                        [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     }];
                 });
 			}
 		}];
 	});
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"View Image"]) {
-        if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
-            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.photo];
-        }
-        if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
-            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
-        }
-        if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
-            [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
-        }
-    }
 }
 
 #pragma mark Device Configuration
@@ -333,13 +320,10 @@ monitorSubjectAreaChange:NO];
 	NSString *mediaType = AVMediaTypeVideo;
 	
 	[AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
-		if (granted)
-		{
+		if (granted) {
 			//Granted access to mediaType
 			[self setDeviceAuthorized:YES];
-		}
-		else
-		{
+		} else {
 			//Not granted access to mediaType
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[[[UIAlertView alloc] initWithTitle:@"NewBlac"

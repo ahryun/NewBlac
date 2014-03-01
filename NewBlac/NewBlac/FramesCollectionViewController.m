@@ -10,18 +10,23 @@
 #import "VideoCreator.h"
 #import "VideoPlayView.h"
 #import "MotionVideoPlayer.h"
+#import "Photo+LifeCycle.h"
+#import "CollectionViewLayout.h"
+#import "EditImageViewController.h"
 
-@interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate, ScrollingCellDelegate>
 
 @property (strong, nonatomic) VideoCreator *videoCreator;
-@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
-@property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIView *snapshotView;
-@property (nonatomic) BOOL videoIsEmpty;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) Photo *selectedPhoto;
+
+@property (nonatomic) BOOL videoIsEmpty;
+@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
+@property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
 
 @end
 
@@ -34,17 +39,35 @@ static const NSString *PlayerReadyContext;
     _video = video;
 }
 
+- (NSManagedObject *)specificModel
+{
+    return self.video;
+}
+
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.entityNameOfInterest = @"Photo";
+    self.propertyNameOfInterest = @"indexInVideo";
+    self.cacheNameOfInterest = @"Frames Cache";
+
     self.showPhotos = YES; // This tells the core data controller to provide photos
-    self.videoIsEmpty = YES;
-    [self loadAssetFromVideo];
+//    self.videoIsEmpty = YES;
+//    [self loadAssetFromVideo];
     UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.playButton.image = playButtonImg;
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%d FPS", [self.video.framesPerSecond integerValue]]];
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[self.video.framesPerSecond integerValue]]];
+    
+    [self initializeFetchedResultsController];
+    CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
+    self.collectionView.collectionViewLayout = layout;
+    self.collectionView.delegate = self;
+    
+    // Navigation Bar Buttons configuration
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,13 +76,20 @@ static const NSString *PlayerReadyContext;
     if ([self.video.photos count] > 0) self.playButton.enabled = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self centerACell];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (!self.videoIsEmpty) {
-        [self.videoPlayer unregisterNotification];
-        [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
-    }
+    
+//    if (!self.videoIsEmpty) {
+//        [self.videoPlayer unregisterNotification];
+//        [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
+//    }
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
     self.videoPlayer.isCancelled = YES;
 }
@@ -70,9 +100,15 @@ static const NSString *PlayerReadyContext;
     [self compileVideo];
 }
 
-- (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
+//- (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
+//{
+////    [self compileVideo];
+//}
+
+- (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
 {
-//    [self compileVideo];
+    // Nothing necessary to be done here
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -84,6 +120,22 @@ static const NSString *PlayerReadyContext;
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
             [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        }
+    }
+    if ([segue.identifier isEqualToString:@"Edit Corners"]) {
+        if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
+            [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.selectedPhoto];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
+            UIImage *originalPhoto = [UIImage imageWithData:self.selectedPhoto.originalPhoto];
+            float focalLength = [self.selectedPhoto.focalLength floatValue];
+            float apertureSize = [self.selectedPhoto.apertureSize floatValue];
+            float aspectRatio = [self.video.screenRatio floatValue];
+            Canvas *canvas = [[Canvas alloc] initWithPhoto:originalPhoto withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
+            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:canvas];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
+            [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
     }
 }
@@ -108,47 +160,47 @@ static const NSString *PlayerReadyContext;
         CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
         if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
         [self.videoCreator writeImagesToVideo];
-        [self loadAssetFromVideo];
+//        [self loadAssetFromVideo];
     }
 }
 
-- (void)loadAssetFromVideo
-{
-    if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
-    NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
-        self.videoIsEmpty = NO;
-        [self.videoPlayer loadAssetFromVideo:videoURL];
-        [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
-    } else {
-        // Video data object exists but no video saved yet
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                        change:(NSDictionary *)change context:(void *)context
-{
-    if (context == &PlayerReadyContext) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setPlayerInLayer:self.videoPlayer.player];
-        });
-        return;
-    }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
-}
-
-- (void)setPlayerInLayer:(AVPlayer *)player
-{
-    if ((self.videoPlayer.playerIsReady) &&
-        ([self.videoPlayer.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
-        NSLog(@"Setting the video layer\n");
-        [self.playerView setPlayer:player];
-        [self.videoPlayer playVideo];
-    } else {
-        NSLog(@"Video not ready to play\n");
-    }
-}
+//- (void)loadAssetFromVideo
+//{
+//    if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
+//    NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
+//        self.videoIsEmpty = NO;
+//        [self.videoPlayer loadAssetFromVideo:videoURL];
+//        [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
+//    } else {
+//        // Video data object exists but no video saved yet
+//    }
+//}
+//
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+//                        change:(NSDictionary *)change context:(void *)context
+//{
+//    if (context == &PlayerReadyContext) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self setPlayerInLayer:self.videoPlayer.player];
+//        });
+//        return;
+//    }
+//    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+//    return;
+//}
+//
+//- (void)setPlayerInLayer:(AVPlayer *)player
+//{
+//    if ((self.videoPlayer.playerIsReady) &&
+//        ([self.videoPlayer.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
+//        NSLog(@"Setting the video layer\n");
+//        [self.playerView setPlayer:player];
+//        [self.videoPlayer playVideo];
+//    } else {
+//        NSLog(@"Video not ready to play\n");
+//    }
+//}
 
 - (IBAction)play:sender {
     [self.videoPlayer playVideo];
@@ -219,7 +271,7 @@ static const NSString *PlayerReadyContext;
 #pragma mark - UIPickerViewDelegate
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *item = [NSString stringWithFormat:@"%d Frames Per Second", row+1];
+    NSString *item = [NSString stringWithFormat:@"%ld Frames Per Second", row+1];
     return item;
 }
 
@@ -228,7 +280,87 @@ static const NSString *PlayerReadyContext;
     // perform some action
     NSNumber *framesPerSecond = [NSNumber numberWithInteger:row + 1];
     [self.video setFramesPerSecond:framesPerSecond];
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%d FPS", [framesPerSecond integerValue]]];
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[framesPerSecond integerValue]]];
+}
+
+#pragma mark - UICollectionView Delegate
+- (void)selectItemAtIndexPath:(PiecesCollectionCell *)cell
+{
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.selectedPhoto = photo;
+    [self performSegueWithIdentifier:@"Edit Corners" sender:self];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.deleteCandidateCell) [self.deleteCandidateCell reset];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (decelerate == NO) {
+        [self centerACell];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self centerACell];
+}
+
+#pragma mark - Configure Video
+- (void)centerACell {
+    for (NSInteger sectionNumber = 0; sectionNumber < [self.collectionView numberOfSections]; sectionNumber++) {
+        if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
+            NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+            [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
+                // If after scrolling, the user ended up on the same video, resume the video
+                if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
+                PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
+                cell.maskView.alpha = 0.0;
+                self.centerCell = cell;
+            }
+        } else {
+            // Create a blank video
+            NSLog(@"No video!");
+        }
+    }
+}
+
+#pragma mark - NSFetchedResultsController
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"I'm in cellForItemAtIndexPath %@\n", indexPath);
+    PiecesCollectionCell *cell = (PiecesCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Video Frame" forIndexPath:indexPath];
+    cell.delegate = self;
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell prepareScrollView];
+    [cell displayVideo];
+    cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
+    NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
+    
+    return cell;
+}
+
+#pragma mark - ScrollingCellDelegate
+- (void)scrollingCellDidBeginPulling:(PiecesCollectionCell *)cell
+{
+    if (!self.deleteCandidateCell) {
+        self.deleteCandidateCell = cell;
+    } else if (self.deleteCandidateCell != cell) {
+        [self.deleteCandidateCell reset];
+        self.deleteCandidateCell = cell;
+    }
+}
+
+- (void)deleteButtonPressed:(PiecesCollectionCell *)cell
+{
+    NSLog(@"Doh! I was told to delete this video\n");
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.selectedPhoto = photo;
+    [Photo deletePhoto:photo inContext:self.managedObjectContext];
+    [self centerACell];
 }
 
 @end

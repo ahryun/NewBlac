@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Photo" representedClassName="Photo" syncable="YES">
+        <attribute name="apertureSize" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0.0" syncable="YES"/>
         <attribute name="croppedPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="focalLength" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="indexInVideo" optional="YES" attributeType="Integer 16" minValueString="0" syncable="YES"/>
         <attribute name="originalPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="timeTaken" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="canvasRect" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PhotoCorners" inverseName="originalPhoto" inverseEntity="PhotoCorners" syncable="YES"/>

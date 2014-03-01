@@ -105,6 +105,23 @@
     NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.photos];
     [tempSet addObject:photo];
     self.photos = tempSet;
+    [self updateAPhotoIndexInVideo:photo atEnd:YES];
+}
+
+- (void)updateAPhotoIndexInVideo:(Photo *)photo atEnd:(BOOL)atEnd
+{
+    if (atEnd) {
+        [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos count]]];
+    } else {
+        [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos indexOfObject:photo]]];
+    }
+}
+
+- (void)updateAllPhotoIndexInVideo
+{
+    for (Photo *photo in self.photos) {
+        [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos indexOfObject:photo]]];
+    }
 }
 
 @end

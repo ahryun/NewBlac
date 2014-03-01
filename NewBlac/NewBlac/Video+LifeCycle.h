@@ -15,8 +15,7 @@
 + (void)removeVideosInManagedContext:(NSManagedObjectContext *)context;
 
 - (NSArray *)imagesArrayInOrder;
-
-// Support functions
-+ (NSString *)getRandomFilePath;
+- (void)updateAPhotoIndexInVideo:(Photo *)photo atEnd:(BOOL)atEnd;
+- (void)updateAllPhotoIndexInVideo;
 
 @end

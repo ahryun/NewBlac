@@ -32,9 +32,7 @@
 #define LOUPE_BEZEL_WIDTH 18.0
 
 @implementation EditImageViewController
-
-- (IBAction)doneEditingImage:(UIButton *)sender {
-    
+- (IBAction)doneEditingImage:(UIBarButtonItem *)sender {
     // See if the coordinates have changed
     if (self.coordinatesChanged) {
         // Update the corner coordinates in core data
@@ -250,7 +248,7 @@
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
-    NSLog(@"Pan recognizer state is %i\n", panRecognizer.state);
+    NSLog(@"Pan recognizer state is %li\n", panRecognizer.state);
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             NSLog(@"Pan began\n");
