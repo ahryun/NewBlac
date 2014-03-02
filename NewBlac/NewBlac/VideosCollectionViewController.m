@@ -13,7 +13,7 @@
 #import "Photo+LifeCycle.h"
 #import "MotionVideoPlayer.h"
 
-@interface VideosCollectionViewController () <ScrollingCellDelegate>
+@interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) Video *selectedVideo;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
@@ -157,14 +157,22 @@ static const NSString *PlayerReadyContext;
 
 - (void)deleteButtonPressed:(PiecesCollectionCell *)cell
 {
-    NSLog(@"Doh! I was told to delete this video\n");
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    self.selectedVideo = video;
-    [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
-    [self centerACell];
+    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle:@"Delete this piece?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+    [deleteConfirmButton show];
 }
 
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+        [self.deleteCandidateCell reset];
+    } else {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.deleteCandidateCell];
+        Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        self.selectedVideo = video;
+        [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
+        [self centerACell];
+    }
+}
 
 @end

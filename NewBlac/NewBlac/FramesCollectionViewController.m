@@ -8,14 +8,17 @@
 
 #import "FramesCollectionViewController.h"
 #import "VideoCreator.h"
-#import "VideoPlayView.h"
-#import "MotionVideoPlayer.h"
+//#import "VideoPlayView.h"
+//#import "MotionVideoPlayer.h"
 #import "Photo+LifeCycle.h"
 #import "CollectionViewLayout.h"
 #import "EditImageViewController.h"
+#import "FullScreenMovieViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate, ScrollingCellDelegate>
 
+@property (nonatomic) BOOL needToCompile;
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
@@ -23,16 +26,13 @@
 @property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
 @property (nonatomic, strong) Photo *selectedPhoto;
-
-@property (nonatomic) BOOL videoIsEmpty;
-@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
-@property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
+@property (nonatomic) Canvas *canvas;
 
 @end
 
 @implementation FramesCollectionViewController
 
-static const NSString *PlayerReadyContext;
+static const NSString *videoCompilingDone;
 
 - (void)setVideo:(Video *)video
 {
@@ -54,8 +54,7 @@ static const NSString *PlayerReadyContext;
     self.cacheNameOfInterest = @"Frames Cache";
 
     self.showPhotos = YES; // This tells the core data controller to provide photos
-//    self.videoIsEmpty = YES;
-//    [self loadAssetFromVideo];
+    self.needToCompile = NO;
     UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.playButton.image = playButtonImg;
@@ -73,7 +72,17 @@ static const NSString *PlayerReadyContext;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if ([self.video.photos count] > 0) self.playButton.enabled = YES;
+    UIImage *playButtonImg;
+    if ([self.video.photos count] > 1) {
+        playButtonImg = [[UIImage imageNamed:@"PlayButton"]
+                         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.playButton.enabled = YES;
+    } else {
+        playButtonImg = [[UIImage imageNamed:@"PlayButton"]
+                         imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.playButton.enabled = NO;
+    }
+    self.playButton.image = playButtonImg;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -85,30 +94,51 @@ static const NSString *PlayerReadyContext;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-//    if (!self.videoIsEmpty) {
-//        [self.videoPlayer unregisterNotification];
-//        [self.videoPlayer removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
-//    }
+    // Hackish way to know if the user clicked "Back" button in the navigation controller
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
-    self.videoPlayer.isCancelled = YES;
+}
+
+- (void)cleanUpBeforeReturningToGallery
+{
+    NSLog(@"I'm in clean up\n");
+    if ([self.video.photos count] < 1) {
+        [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
+    } else {
+        // Save the video to child context, which pushes the changes to the parent context on main thread. This will eventually be saved to persistent store when the UIManagedDocument closes.
+        NSError *error;
+        [self.managedObjectContext save:&error];
+    }
 }
 
 #pragma mark - Segues
 - (IBAction)unwindAddToVideoBuffer:(UIStoryboardSegue *)segue
 {
-    [self compileVideo];
+    // When the user takes a photo with the camera - photo added
+    self.needToCompile = YES;
 }
 
-//- (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
-//{
-////    [self compileVideo];
-//}
+- (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
+{
+    // When the user cancels camera - no photo
+    self.needToCompile = NO;
+}
 
 - (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
 {
-    // Nothing necessary to be done here
-    
+    // When the user edited corners - photo added
+    self.needToCompile = YES;
+}
+
+- (IBAction)unwindCancelEditingImage:(UIStoryboardSegue *)segue
+{
+    // When the user comes back from editing corner mode without making any change - no photo
+    self.needToCompile = NO;
+}
+
+- (IBAction)doneWatchingVideo:(UIStoryboardSegue *)segue
+{
+    // When the user comes back from editing corner mode without making any change - no photo
+    self.needToCompile = NO;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -127,28 +157,16 @@ static const NSString *PlayerReadyContext;
             [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.selectedPhoto];
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setCanvas:)]) {
-            UIImage *originalPhoto = [UIImage imageWithData:self.selectedPhoto.originalPhoto];
-            float focalLength = [self.selectedPhoto.focalLength floatValue];
-            float apertureSize = [self.selectedPhoto.apertureSize floatValue];
-            float aspectRatio = [self.video.screenRatio floatValue];
-            Canvas *canvas = [[Canvas alloc] initWithPhoto:originalPhoto withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
-            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:canvas];
+            [segue.destinationViewController performSelector:@selector(setCanvas:) withObject:self.canvas];
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
     }
-}
-
-- (void)cleanUpBeforeReturningToGallery
-{
-    NSLog(@"I'm in clean up\n");
-    if ([self.video.photos count] < 1) {
-        [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
-    } else {
-        // Save the video to child context, which pushes the changes to the parent context on main thread. This will eventually be saved to persistent store when the UIManagedDocument closes.
-        NSError *error;
-        [self.managedObjectContext save:&error];
+    if ([segue.identifier isEqualToString:@"Play Full Screen Video"]) {
+        if ([segue.destinationViewController respondsToSelector:@selector(setVideoPath:)]) {
+            [segue.destinationViewController performSelector:@selector(setVideoPath:) withObject:self.video.compFilePath];
+        }
     }
 }
 
@@ -160,57 +178,37 @@ static const NSString *PlayerReadyContext;
         CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
         if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
         [self.videoCreator writeImagesToVideo];
-//        [self loadAssetFromVideo];
     }
 }
 
-//- (void)loadAssetFromVideo
-//{
-//    if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
-//    NSURL *videoURL = [NSURL fileURLWithPath:self.video.compFilePath];
-//    if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
-//        self.videoIsEmpty = NO;
-//        [self.videoPlayer loadAssetFromVideo:videoURL];
-//        [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
-//    } else {
-//        // Video data object exists but no video saved yet
-//    }
-//}
-//
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-//                        change:(NSDictionary *)change context:(void *)context
-//{
-//    if (context == &PlayerReadyContext) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self setPlayerInLayer:self.videoPlayer.player];
-//        });
-//        return;
-//    }
-//    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-//    return;
-//}
-//
-//- (void)setPlayerInLayer:(AVPlayer *)player
-//{
-//    if ((self.videoPlayer.playerIsReady) &&
-//        ([self.videoPlayer.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
-//        NSLog(@"Setting the video layer\n");
-//        [self.playerView setPlayer:player];
-//        [self.videoPlayer playVideo];
-//    } else {
-//        NSLog(@"Video not ready to play\n");
-//    }
-//}
-
 - (IBAction)play:sender {
-    [self.videoPlayer playVideo];
+    // Prepare full page video
+    if (self.needToCompile) {
+        [self compileVideo];
+        [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+    } else {
+        [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
+    }
+    
+#warning Let the user know that the video is compiling
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context {
+    if (context == &videoCompilingDone) {
+        NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
+        if (self.videoCreator.videoDoneCreating) {
+            [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
+        }
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
 }
 
 #pragma mark - UIPickerView
 - (IBAction)chooseFramesPerSecond:(UIBarButtonItem *)sender
 {
-    [self.videoPlayer pauseVideo];
-    
     [self prepareFramesPerSecondPickerView];
     
     // Animation to bring it up
@@ -253,7 +251,6 @@ static const NSString *PlayerReadyContext;
     } completion:^(BOOL finished) {
         [self.snapshotView removeFromSuperview];
         [self.pickerView removeFromSuperview];
-        [self.videoPlayer playVideo];
     }];
 }
 
@@ -271,8 +268,7 @@ static const NSString *PlayerReadyContext;
 #pragma mark - UIPickerViewDelegate
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *item = [NSString stringWithFormat:@"%ld Frames Per Second", row+1];
-    return item;
+    return [NSString stringWithFormat:@"%d Frames Per Second", row + 1];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -289,6 +285,12 @@ static const NSString *PlayerReadyContext;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.selectedPhoto = photo;
+    UIImage *originalPhoto = [UIImage imageWithData:self.selectedPhoto.originalPhoto];
+    float focalLength = [self.selectedPhoto.focalLength floatValue];
+    float apertureSize = [self.selectedPhoto.apertureSize floatValue];
+    float aspectRatio = [self.video.screenRatio floatValue];
+    Canvas *canvas = [[Canvas alloc] initWithPhoto:originalPhoto withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
+    self.canvas = canvas;
     [self performSegueWithIdentifier:@"Edit Corners" sender:self];
 }
 
@@ -298,9 +300,7 @@ static const NSString *PlayerReadyContext;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (decelerate == NO) {
-        [self centerACell];
-    }
+    if (decelerate == NO) [self centerACell];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -355,12 +355,22 @@ static const NSString *PlayerReadyContext;
 
 - (void)deleteButtonPressed:(PiecesCollectionCell *)cell
 {
-    NSLog(@"Doh! I was told to delete this video\n");
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    self.selectedPhoto = photo;
-    [Photo deletePhoto:photo inContext:self.managedObjectContext];
-    [self centerACell];
+    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle:@"Delete this frame?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+    [deleteConfirmButton show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+        [self.deleteCandidateCell reset];
+    } else {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.deleteCandidateCell];
+        Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        self.selectedPhoto = photo;
+        [Photo deletePhoto:photo inContext:self.managedObjectContext];
+        [self centerACell];
+    }
 }
 
 @end

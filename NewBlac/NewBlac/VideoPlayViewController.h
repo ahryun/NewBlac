@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface VideoPlayViewController : UIViewController
 
-@property (nonatomic) NSString *videoURL;
+@property (nonatomic) NSString *videoPath;
 
 @end

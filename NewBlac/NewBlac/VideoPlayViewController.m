@@ -13,8 +13,8 @@
 @interface VideoPlayViewController ()
 
 @property (nonatomic) BOOL videoIsEmpty;
-@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
 @property (strong, nonatomic) MotionVideoPlayer *videoPlayer;
+//@property (weak, nonatomic) IBOutlet VideoPlayView *playerView;
 
 @end
 
@@ -28,6 +28,7 @@ static const NSString *PlayerReadyContext;
     [super viewDidLoad];
     self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
+    [self prefersStatusBarHidden];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -41,11 +42,16 @@ static const NSString *PlayerReadyContext;
     self.videoPlayer.isCancelled = YES;
 }
 
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)loadAssetFromVideo
 {
     if (!self.videoPlayer) self.videoPlayer = [[MotionVideoPlayer alloc] init];
-    NSURL *videoURL = [NSURL fileURLWithPath:self.videoURL];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.videoURL]) {
+    NSURL *videoURL = [NSURL fileURLWithPath:self.videoPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.videoPath]) {
         self.videoIsEmpty = NO;
         [self.videoPlayer loadAssetFromVideo:videoURL];
         [self.videoPlayer addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
@@ -72,7 +78,7 @@ static const NSString *PlayerReadyContext;
     if ((self.videoPlayer.playerIsReady) &&
         ([self.videoPlayer.playerItem status] == AVPlayerItemStatusReadyToPlay)) {
         NSLog(@"Setting the video layer\n");
-        [self.playerView setPlayer:player];
+//        [self.playerView setPlayer:player];
         [self.videoPlayer playVideo];
     } else {
         NSLog(@"Video not ready to play\n");

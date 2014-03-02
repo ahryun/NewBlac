@@ -24,9 +24,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @interface TakeImageViewController ()
 
 @property (nonatomic, weak) IBOutlet StillImagePreview *stillImagePreview;
-@property (nonatomic, strong) Photo *photo;
 @property (weak, nonatomic) IBOutlet UIButton *cancelCamera;
+@property (nonatomic, strong) Photo *photo;
 @property (nonatomic) Canvas *canvas;
+@property (nonatomic, strong) UIImage *croppedImage;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
@@ -37,28 +38,16 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @property (nonatomic, getter = isDeviceAuthorized) BOOL deviceAuthorized;
 @property (nonatomic, readonly, getter = isSessionRunningAndDeviceAuthorized) BOOL sessionRunningAndDeviceAuthorized;
 
-@property (nonatomic, strong) UIImage *croppedImage;
-
-- (IBAction)takeStillImage:(UIGestureRecognizer *)gestureRecognizer;
+//- (IBAction)takeStillImage:(UIGestureRecognizer *)gestureRecognizer;
 
 @end
 
 @implementation TakeImageViewController
 
-@synthesize croppedImage = _croppedImage;
 - (UIImage *)croppedImage
 {
-    if (!_croppedImage) {
-        return [[UIImage alloc] init];
-    }
+    if (!_croppedImage) _croppedImage = [[UIImage alloc] init];
     return _croppedImage;
-}
-
-- (void)setCroppedImage:(UIImage *)croppedImage
-{
-    if (_croppedImage != croppedImage) {
-        _croppedImage = croppedImage;
-    }
 }
 
 - (void)viewDidLoad
@@ -84,24 +73,17 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		
 		NSError *error = nil;
-		
 		AVCaptureDevice *videoDevice = [TakeImageViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		
-		if (error)
-		{
-			NSLog(@"%@", error);
-		}
-		
-		if ([session canAddInput:videoDeviceInput])
-		{
+		if (error) NSLog(@"%@", error);
+		if ([session canAddInput:videoDeviceInput]) {
 			[session addInput:videoDeviceInput];
 			[self setVideoDeviceInput:videoDeviceInput];
 		}
 		
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-		if ([session canAddOutput:stillImageOutput])
-		{
+		if ([session canAddOutput:stillImageOutput]) {
 			[stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
 			[session addOutput:stillImageOutput];
 			[self setStillImageOutput:stillImageOutput];
@@ -154,6 +136,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Main Functions
 - (IBAction)takeStillImage:(UIGestureRecognizer *)gestureRecognizer
 {
     dispatch_async(self.sessionQueue, ^{
@@ -267,25 +250,16 @@ monitorSubjectAreaChange:NO];
 			break;
 		}
 	}
-	
 	return captureDevice;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == CapturingStillImageContext)
-	{
+	if (context == CapturingStillImageContext) {
 		BOOL isCapturingStillImage = [change[NSKeyValueChangeNewKey] boolValue];
-		
-		if (isCapturingStillImage)
-		{
-			[self runStillImageCaptureAnimation];
-		}
-	}
-	else if (context == SessionRunningAndDeviceAuthorizedContext)
-	{
+		if (isCapturingStillImage) [self runStillImageCaptureAnimation];
+	} else if (context == SessionRunningAndDeviceAuthorizedContext) {
 		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
-		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (isRunning) {
 				[self.cancelCamera setEnabled:YES];
@@ -293,9 +267,7 @@ monitorSubjectAreaChange:NO];
 				[self.cancelCamera setEnabled:NO];
 			}
 		});
-	}
-	else
-	{
+	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
@@ -335,11 +307,6 @@ monitorSubjectAreaChange:NO];
 			});
 		}
 	}];
-}
-
-- (IBAction)unwindToRetakePhoto:(UIStoryboardSegue *)segue
-{
-    [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
 }
 
 @end
