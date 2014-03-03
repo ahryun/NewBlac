@@ -109,44 +109,26 @@
                                             </navigationItem>
                                         </items>
                                     </navigationBar>
-                                    <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RHA-bj-DBf">
+                                    <navigationBar opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="As7-rv-Kkv">
                                         <rect key="frame" x="0.0" y="430" width="320" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xqa-pz-5ZK">
-                                                <rect key="frame" x="1" y="9" width="46" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <state key="normal" image="MoviePlayButton">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <slider contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="221" placeholderIntrinsicHeight="33" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1.5" minValue="0.0" maxValue="3" minimumValueImage="SliderFill" maximumValueImage="SliderBackground" translatesAutoresizingMaskIntoConstraints="NO" id="Bdf-98-6AO">
-                                                <rect key="frame" x="41" y="7" width="225" height="34"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="thumbTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </slider>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12:34" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqk-Cg-hz4">
-                                                <rect key="frame" x="271" y="13" width="43" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="UXb-xU-IS2"/>
+                                            <constraint firstAttribute="height" constant="50" id="yAC-qp-9dN"/>
                                         </constraints>
-                                    </view>
+                                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <textAttributes key="titleTextAttributes">
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </textAttributes>
+                                        <items>
+                                            <navigationItem id="aAa-R6-3l6"/>
+                                        </items>
+                                    </navigationBar>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="RHA-bj-DBf" secondAttribute="bottom" id="AgX-JS-S30"/>
+                                    <constraint firstAttribute="trailing" secondItem="As7-rv-Kkv" secondAttribute="trailing" id="6j5-Dg-nPM"/>
                                     <constraint firstItem="yL4-zT-XuX" firstAttribute="top" secondItem="zpx-T1-xfz" secondAttribute="top" id="CLo-1a-Q6J"/>
-                                    <constraint firstItem="RHA-bj-DBf" firstAttribute="leading" secondItem="zpx-T1-xfz" secondAttribute="leading" id="N14-Fp-acN"/>
-                                    <constraint firstAttribute="trailing" secondItem="RHA-bj-DBf" secondAttribute="trailing" id="Yvr-yN-3ji"/>
+                                    <constraint firstItem="As7-rv-Kkv" firstAttribute="leading" secondItem="zpx-T1-xfz" secondAttribute="leading" id="EPB-27-zrC"/>
+                                    <constraint firstAttribute="bottom" secondItem="As7-rv-Kkv" secondAttribute="bottom" id="fQN-Fn-3ey"/>
                                     <constraint firstItem="yL4-zT-XuX" firstAttribute="leading" secondItem="zpx-T1-xfz" secondAttribute="leading" id="pq5-lB-xdq"/>
                                     <constraint firstAttribute="trailing" secondItem="yL4-zT-XuX" secondAttribute="trailing" id="zVf-jI-5kH"/>
                                 </constraints>
@@ -161,9 +143,7 @@
                     </view>
                     <connections>
                         <outlet property="customControlsView" destination="zpx-T1-xfz" id="JX1-I8-gfT"/>
-                        <outlet property="moviePlayButton" destination="Xqa-pz-5ZK" id="nno-XU-9LO"/>
-                        <outlet property="moviePlayDuration" destination="Lqk-Cg-hz4" id="B2G-q0-khd"/>
-                        <outlet property="moviePlaySlider" destination="Bdf-98-6AO" id="yr5-qC-upe"/>
+                        <outlet property="topBar" destination="yL4-zT-XuX" id="S9q-fm-zWn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rKd-x0-bOA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -401,10 +381,7 @@
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
         <image name="MenuButton" width="30" height="30"/>
-        <image name="MoviePlayButton" width="30" height="30"/>
         <image name="PlayButton" width="30" height="30"/>
-        <image name="SliderBackground" width="225" height="25"/>
-        <image name="SliderFill" width="225" height="25"/>
         <image name="loupe.png" width="160" height="160"/>
     </resources>
     <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>

@@ -12,7 +12,6 @@
 @interface VideoCreator : NSObject
 
 @property (nonatomic, strong) Video *video;
-
 @property (nonatomic) BOOL videoDoneCreating;
 
 - (id)initWithVideo:(Video *)video withScreenSize:(CGSize)size;

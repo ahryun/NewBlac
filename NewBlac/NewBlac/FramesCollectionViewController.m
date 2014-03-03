@@ -167,6 +167,9 @@ static const NSString *videoCompilingDone;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideoPath:)]) {
             [segue.destinationViewController performSelector:@selector(setVideoPath:) withObject:self.video.compFilePath];
         }
+        if ([segue.destinationViewController respondsToSelector:@selector(setFramesPerSecond:)]) {
+            [segue.destinationViewController performSelector:@selector(setFramesPerSecond:) withObject:self.video.framesPerSecond];
+        }
     }
 }
 
@@ -176,8 +179,11 @@ static const NSString *videoCompilingDone;
 {
     if (self.video && [self.video.photos count] > 0) {
         CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
-        if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
-        [self.videoCreator writeImagesToVideo];
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
+            [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+            [self.videoCreator writeImagesToVideo];
+        });
     }
 }
 
@@ -185,7 +191,6 @@ static const NSString *videoCompilingDone;
     // Prepare full page video
     if (self.needToCompile) {
         [self compileVideo];
-        [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
     } else {
         [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
     }
@@ -196,10 +201,12 @@ static const NSString *videoCompilingDone;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
-        NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
-        if (self.videoCreator.videoDoneCreating) {
-            [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
+            if (self.videoCreator.videoDoneCreating) {
+                [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
+            }
+        });
         return;
     }
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

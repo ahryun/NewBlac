@@ -9,5 +9,6 @@
 @interface FullScreenMovieViewController : UIViewController
 
 @property (nonatomic) NSString *videoPath;
+@property (nonatomic) NSNumber *framesPerSecond;
 
 @end

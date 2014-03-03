@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) NSArray *imagesArray;
 @property (nonatomic) CGSize screenSize;
+@property (nonatomic, strong) AVAssetWriter *writer;
 
 @end
 
@@ -33,7 +34,10 @@
 
 - (NSArray *)imagesArray
 {
-    return [self.video imagesArrayInOrder];
+    if (!_imagesArray) {
+        _imagesArray = [self.video imagesArrayInOrder];
+    }
+    return _imagesArray;
 }
 
 - (void)writeImagesToVideo
@@ -50,7 +54,8 @@
     NSError *error = nil;
     NSURL *url = [NSURL fileURLWithPath:self.video.compFilePath];
     AVAssetWriter *writer = [AVAssetWriter assetWriterWithURL:url fileType:AVFileTypeQuickTimeMovie error:&error];
-    NSParameterAssert(writer);
+    self.writer = writer;
+    NSParameterAssert(self.writer);
     
     // Create Writer Input
     NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -67,16 +72,16 @@
     NSParameterAssert(writerInput);
     
     // Add the Writer Input to Asset Writer
-    NSParameterAssert([writer canAddInput:writerInput]);
+    NSParameterAssert([self.writer canAddInput:writerInput]);
     writerInput.expectsMediaDataInRealTime = YES;
-    [writer addInput:writerInput];
+    [self.writer addInput:writerInput];
     
     // Start a session
-    [writer startWriting];
-    [writer startSessionAtSourceTime:kCMTimeZero];
+    [self.writer startWriting];
+    [self.writer startSessionAtSourceTime:kCMTimeZero];
     
-    NSUInteger fps = 10;
-    double frameDuration = 5;
+    NSUInteger fps = [self.video.framesPerSecond integerValue];
+    double frameDuration = 1;
     for(int i = 0; i < [self.imagesArray count]; i++) {
         @autoreleasepool {
             NSLog(@"Processing video frame %d out of %lu",(i + 1),(unsigned long)[self.imagesArray count]);
@@ -107,12 +112,14 @@
     }
     
     [writerInput markAsFinished];
-    [writer endSessionAtSourceTime:CMTimeMake(frameDuration * [self.imagesArray count], (int32_t)fps)];
+    NSLog(@"End session source time is %f", CMTimeGetSeconds(CMTimeMake(frameDuration * [self.imagesArray count], (int32_t)fps)));
+    [self.writer endSessionAtSourceTime:CMTimeMake(frameDuration * [self.imagesArray count], (int32_t)fps)];
     __weak VideoCreator *weakSelf = self;
-    [writer finishWritingWithCompletionHandler:^(){
+    [self.writer finishWritingWithCompletionHandler:^(){
         // Do something
         NSLog(@"Finished creating a video");
         NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
+        
         weakSelf.videoDoneCreating = YES;
     }];
 }
