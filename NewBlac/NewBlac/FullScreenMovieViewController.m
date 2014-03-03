@@ -45,6 +45,8 @@
     
     [self setUpBottomBar];
     [self setUpSlider];
+    [self setUpPlaybutton];
+    [self setUpDurationLabel];
     [self prefersStatusBarHidden];
 }
 
@@ -94,6 +96,45 @@
     [self.moviePlaySlider addTarget:self action:@selector(durationSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.moviePlaySlider addTarget:self action:@selector(durationSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     [self.moviePlaySlider addTarget:self action:@selector(durationSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setUpPlaybutton
+{
+    float playButtonSize = 50.f;
+    UIImage *playButton = [UIImage imageNamed:@"MoviePlayButton"];
+    UIImage *stopButton = [UIImage imageNamed:@"MovieStopButton"];
+    UIButton *moviePlayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, playButtonSize, playButtonSize)];
+    [moviePlayButton setBackgroundImage:playButton forState:UIControlStateNormal];
+    [moviePlayButton setBackgroundImage:stopButton forState:UIControlStateSelected];
+    [self.bottomBar addSubview:moviePlayButton];
+    self.moviePlayButton = moviePlayButton;
+    [self.moviePlayButton addTarget:self action:@selector(stopOrPlay) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)stopOrPlay
+{
+    switch (self.moviePlayer.playbackState) {
+        case MPMoviePlaybackStatePlaying:
+            [self.moviePlayer pause];
+        case MPMoviePlaybackStatePaused:
+        case MPMoviePlaybackStateStopped:
+            if (self.moviePlayer.currentPlaybackTime >= self.moviePlayer.endPlaybackTime) {
+                [self.moviePlayer setCurrentPlaybackTime:0.0];
+            }
+            [self.moviePlayer play];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setUpDurationLabel
+{
+    float labelSize = 50.f;
+    float origin_x = self.bottomBar.frame.size.width - labelSize;
+    float origin_y = self.bottomBar.frame.size.height - labelSize;
+    self.moviePlayDuration = [[UILabel alloc] initWithFrame:CGRectMake(origin_x, origin_y, labelSize, labelSize)];
+    [self.bottomBar addSubview:self.moviePlayDuration];
 }
 
 - (void)setDurationSliderMaxMinValues
@@ -159,46 +200,53 @@
     self.isShowing ? [self hideControls:nil] : [self showControls:nil];
 }
 
-- (void)buttonTouchedDown:(UIButton *)button {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
-}
-
-- (void)buttonTouchedUpOutside:(UIButton *)button {
-    [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
-}
-
-- (void)buttonTouchCancelled:(UIButton *)button {
-    [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
-}
+//- (void)buttonTouchedDown:(UIButton *)button {
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
+//}
+//
+//- (void)buttonTouchedUpOutside:(UIButton *)button {
+//    [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
+//}
+//
+//- (void)buttonTouchCancelled:(UIButton *)button {
+//    [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
+//}
 
 #pragma mark - Notifications
-- (void)addNotifications {
+- (void)addNotifications
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackStateDidChange:) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieDurationAvailable:) name:MPMovieDurationAvailableNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieLoadStateDidChange:) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
 }
 
-- (void)movieFinished:(NSNotification *)note {
-    self.moviePlayButton.selected = YES;
+- (void)movieFinished:(NSNotification *)note
+{
+    self.moviePlayButton.selected = NO;
     [self.durationTimer invalidate];
-    [self.moviePlayer setCurrentPlaybackTime:0.0];
+//    [self.moviePlayer setCurrentPlaybackTime:0.0];
     [self monitorMoviePlayback]; //reset values
     [self showControls:nil];
 }
 
-- (void)monitorMoviePlayback {
+- (void)monitorMoviePlayback
+{
+    NSLog(@"Current movie time is %f", self.moviePlayer.currentPlaybackTime);
     double currentTime = floor(self.moviePlayer.currentPlaybackTime);
     self.moviePlaySlider.value = ceil(currentTime);
 }
 
-- (void)setTimeLabelValues:(double)totalTime {
+- (void)setTimeLabelValues:(double)totalTime
+{
     double totalMinutes = floor(totalTime / 60.0);
     double totalSeconds = fmod(totalTime, 60.0);
+    self.moviePlayDuration.textColor = [UIColor whiteColor];
     self.moviePlayDuration.text = [NSString stringWithFormat:@"%.0f:%02.0f", totalMinutes, totalSeconds];
 }
 
-- (void)movieLoadStateDidChange:(NSNotification *)note {
+- (void)movieLoadStateDidChange:(NSNotification *)note
+{
     switch (self.moviePlayer.loadState) {
         case MPMovieLoadStatePlayable:
         case MPMovieLoadStatePlaythroughOK:
@@ -212,12 +260,13 @@
     }
 }
 
-- (void)moviePlaybackStateDidChange:(NSNotification *)note {
+- (void)moviePlaybackStateDidChange:(NSNotification *)note
+{
+    NSLog(@"Movie player state is %i", self.moviePlayer.playbackState);
     switch (self.moviePlayer.playbackState) {
         case MPMoviePlaybackStatePlaying:
             self.moviePlayButton.selected = NO;
             [self startDurationTimer];
-            
             //local file
             if ([self.moviePlayer.contentURL.scheme isEqualToString:@"file"]) {
                 [self setDurationSliderMaxMinValues];
@@ -233,17 +282,21 @@
     }
 }
 
-- (void)movieDurationAvailable:(NSNotification *)note {
+- (void)movieDurationAvailable:(NSNotification *)note
+{
     NSLog(@"Duration of video is %f", self.moviePlayer.duration);
     [self setDurationSliderMaxMinValues];
+    [self setTimeLabelValues:self.moviePlayer.duration];
 }
 
-- (void)startDurationTimer {
+- (void)startDurationTimer
+{
     self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(monitorMoviePlayback) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.durationTimer forMode:NSDefaultRunLoopMode];
 }
 
-- (void)stopDurationTimer {
+- (void)stopDurationTimer
+{
     [self.durationTimer invalidate];
 }
 
