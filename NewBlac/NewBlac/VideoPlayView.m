@@ -18,7 +18,7 @@
     return [(AVPlayerLayer *)[self layer] player];
 }
 
-- (void)setPlayer:(AVPlayer *)player {
+- (void)connectPlayer:(AVPlayer *)player {
     AVPlayerLayer *layer = (AVPlayerLayer *)[self layer];
     layer.videoGravity = AVLayerVideoGravityResizeAspect;
     [layer setPlayer:player];

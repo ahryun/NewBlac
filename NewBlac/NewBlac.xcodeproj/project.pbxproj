@@ -203,6 +203,8 @@
 		F33BE995189309FB0021A5C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3A494F8188DEF4E00CBAE82 /* VideoPlayView.h */,
+				F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */,
 				F3A37DBD18947425003B530C /* CollectionViewLayout.h */,
 				F3A37DBE18947425003B530C /* CollectionViewLayout.m */,
 				F33BE9921892F70A0021A5C1 /* PiecesCollectionCell.h */,
@@ -266,10 +268,6 @@
 		F3AAD67B18C072F600B5A23B /* Deleted Files */ = {
 			isa = PBXGroup;
 			children = (
-				F3656E6E18BAF0440008B694 /* MotionVideoPlayer.h */,
-				F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */,
-				F3A494F8188DEF4E00CBAE82 /* VideoPlayView.h */,
-				F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */,
 				F33EA919187641E90045E642 /* ViewImageViewController.h */,
 				F33EA91A187641E90045E642 /* ViewImageViewController.m */,
 				F3AAD68518C15ACE00B5A23B /* VideoPlayViewController.h */,
@@ -298,6 +296,8 @@
 		F3B0ECD51857B93C00143044 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F3656E6E18BAF0440008B694 /* MotionVideoPlayer.h */,
+				F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */,
 				F3B0ECD21857B93100143044 /* Canvas.h */,
 				F3B0ECD31857B93100143044 /* Canvas.mm */,
 				F3FEBF0718809D85000C1181 /* CornerCircle.h */,

@@ -13,15 +13,17 @@
 
 @property (strong, nonatomic) AVPlayerItem *playerItem;
 @property (strong, nonatomic) AVPlayer *player;
+@property (nonatomic) float duration;
 @property (nonatomic) BOOL isCancelled;
 @property (nonatomic) BOOL playerIsReady;
+@property (nonatomic) BOOL isPlaying;
 
 - (void)loadAssetFromVideo:(NSURL *)videoURL;
 - (void)replacePlayerItem:(NSURL *)videoURL;
 - (void)playVideo;
 - (void)pauseVideo;
-- (void)replayVideo;
 - (void)registerNotification;
 - (void)unregisterNotification;
+- (void)rewindVideo;
 
 @end

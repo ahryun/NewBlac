@@ -17,16 +17,19 @@
 @implementation MotionVideoPlayer
 
 static const NSString *ItemStatusContext;
+static const NSString *ItemRateContext;
 
 - (void)loadAssetFromVideo:(NSURL *)videoURL
 {
     // Play the video
     self.playerIsReady = NO;
+    self.isPlaying = NO;
     self.videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
-    NSString *tracksKey = @"tracks";
     NSLog(@"Video URL is %@\n", videoURL);
     NSLog(@"There are %lu tracks in this video", (unsigned long)[self.videoAsset.tracks count]);
     self.isCancelled = NO;
+    
+    NSString *tracksKey = @"tracks";
     [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isCancelled) {
@@ -48,17 +51,35 @@ static const NSString *ItemStatusContext;
     }];
 }
 
+- (void)registerNotification
+{
+    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
+    [self.player addObserver:self forKeyPath:@"rate" options:0 context:&ItemRateContext];
+}
+
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &ItemStatusContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"Context is %ld\n", (long)[self.player.currentItem status]);
-            self.playerIsReady = YES;
+            if ([self.playerItem status] == AVPlayerItemStatusReadyToPlay) {
+                self.duration = CMTimeGetSeconds(self.playerItem.duration);
+                self.playerIsReady = YES;
+            } else {
+                self.playerIsReady = NO;
+            }
         });
         return;
+    } else if (context == &ItemRateContext) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.player.rate == 0) { //stopped
+                self.isPlaying = NO;
+            } else {
+                self.isPlaying = YES;
+            }
+        });
     }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
 }
 
 - (void)replacePlayerItem:(NSURL *)videoURL
@@ -71,32 +92,25 @@ static const NSString *ItemStatusContext;
 {
     if (!self.isCancelled) {
         [self.player play];
+        self.isPlaying = YES;
     }
 }
 
 - (void)pauseVideo
 {
     [self.player pause];
+    self.isPlaying = NO;
 }
 
-- (void)replayVideo
+- (void)rewindVideo
 {
-    if (!self.isCancelled) [self.player seekToTime:kCMTimeZero];
-}
-
-- (void)registerNotification
-{
-    [self.playerItem addObserver:self forKeyPath:@"status" options:0 context:&ItemStatusContext];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(replayVideo)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:self.playerItem];
+    [self.player seekToTime:kCMTimeZero];
 }
 
 - (void)unregisterNotification
 {
     [self.playerItem removeObserver:self forKeyPath:@"status" context:&ItemStatusContext];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem];
+    [self.player removeObserver:self forKeyPath:@"rate" context:&ItemRateContext];
 }
 
 @end

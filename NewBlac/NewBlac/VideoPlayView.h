@@ -11,6 +11,6 @@
 
 @interface VideoPlayView : UIView
 
-@property (nonatomic, strong) AVPlayer *player;
+- (void)connectPlayer:(AVPlayer *)player;
 
 @end
