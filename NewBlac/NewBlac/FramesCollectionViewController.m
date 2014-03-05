@@ -178,7 +178,7 @@ static const NSString *videoCompilingDone;
 - (void)compileVideo
 {
     if (self.video && [self.video.photos count] > 0) {
-        CGSize size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height);
+        CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
         dispatch_async(dispatch_get_main_queue(), ^(){
             if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
             [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];

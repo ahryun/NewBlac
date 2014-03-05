@@ -150,7 +150,7 @@
     ///////////////////////// Change the position of image origin ////////////////////////////////
     CGSize imageSize = [self getImageSizewithScreenSize:size];
     // Below added to un-Blur the image
-    CGContextScaleCTM(context, imageSize.width/size.width, imageSize.height/size.height);
+//    CGContextScaleCTM(context, imageSize.width/size.width, imageSize.height/size.height);
     // Above added to un-Blur the image
     CGContextDrawImage(context, CGRectMake((size.width - imageSize.width) / 2, (size.height - imageSize.height) / 2, imageSize.width, imageSize.height), cgImage);
     CGColorSpaceRelease(colorSpace);
@@ -165,11 +165,11 @@
     CGSize imageSize;
     float screenRatio = screenSize.width / screenSize.height;
     if ([self.video.screenRatio floatValue] >= screenRatio) {
-        imageSize.width = screenSize.width - 20.0;
-        imageSize.height = imageSize.width / [self.video.screenRatio floatValue];
+        imageSize.width = (int)screenSize.width;
+        imageSize.height = (int)(screenSize.width / [self.video.screenRatio floatValue]);
     } else {
-        imageSize.height = screenSize.height - 20.0;
-        imageSize.width = imageSize.height * [self.video.screenRatio floatValue];
+        imageSize.height = (int)screenSize.height;
+        imageSize.width = (int)(screenSize.height * [self.video.screenRatio floatValue]);
     }
     
     return imageSize;
