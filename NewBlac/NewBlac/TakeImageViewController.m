@@ -62,9 +62,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 	// Setup the preview view
 	[self.stillImagePreview setSession:session];
 	
-//	// Check for device authorization
+	// Check for device authorization
 	[self checkDeviceAuthorizationStatus];
-	
+    
+    // Hide the status bar
+    [self prefersStatusBarHidden];
+
 	// Dispatch the rest of session setup to the sessionQueue so that the main queue isn't blocked.
 	dispatch_queue_t sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	[self setSessionQueue:sessionQueue];
@@ -128,6 +131,11 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		[self removeObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized" context:SessionRunningAndDeviceAuthorizedContext];
 		[self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
 	});
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning
