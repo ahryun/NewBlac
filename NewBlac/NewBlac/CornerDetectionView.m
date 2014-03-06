@@ -49,12 +49,11 @@
     if (noCorners) {
         for (NSUInteger index = 0; index < noCorners; index++) {
             UIBezierPath *corner = [self.delegate drawPathInView:self atIndex:index];
-            UIBezierPath *whiteCircle = [UIBezierPath bezierPathWithOvalInRect:CGRectInset(corner.bounds, -3.f, -3.f)];
+            
             [fillColor setFill];
             [corner fill];
             [strokeColor setStroke];
             [corner stroke];
-            [whiteCircle stroke];
         }
     }
 }

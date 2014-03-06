@@ -29,7 +29,7 @@
 
 @end
 
-#define ZOOM_FACTOR 4.0
+#define ZOOM_FACTOR 3.0
 #define LOUPE_BEZEL_WIDTH 8.0
 
 @implementation EditImageViewController
@@ -69,6 +69,13 @@
 {
     [super viewDidLayoutSubviews];
     
+    // ViewDidLayoutSubviews is called twice and thus calling my setup call twice.
+    // This is a hackish way to fix that.
+    if (!self.cornerDetectionView) [self setup];
+}
+
+- (void)setup
+{
     // Sets the controller as a delegate for CornerDetectionView
     [self displayPhoto];
     [self displayCorners];
@@ -93,7 +100,7 @@
     contentLayer.mask = maskLayer;
     
     // Set up the zoom AVPlayerLayer.
-    CGSize zoomSize = CGSizeMake(self.originalImageView.frame.size.width * ZOOM_FACTOR, self.originalImageView.frame.size.height * ZOOM_FACTOR);
+    CGSize zoomSize = CGSizeMake(CGRectGetWidth(self.originalImageView.bounds) * ZOOM_FACTOR, CGRectGetHeight(self.originalImageView.bounds) * ZOOM_FACTOR);
     CALayer *zoomLayer = [CALayer layer];
     NSLog(@"Zoom size width is %f and height is %f\n", zoomSize.width, zoomSize.height);
     zoomLayer.frame = CGRectMake((contentLayer.bounds.size.width /2) - (zoomSize.width /2),
@@ -283,8 +290,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"Touches ended\n");
-    [self.loupeView setHidden:YES];
-    [self.loupeCenter setHidden:YES];
+    [self hideLoupe];
 }
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
@@ -327,13 +333,19 @@
         case UIGestureRecognizerStateEnded: {
             // Pan gesture state ended is called multiple times even though I still have a finger on the screen
             // So I check how many fingers I have on the screen
-            if (panRecognizer.numberOfTouches < 1) [self.loupeView setHidden:YES];
+            if (panRecognizer.numberOfTouches < 1) [self hideLoupe];;
             NSLog(@"Number of touches is %lu\n", (unsigned long)panRecognizer.numberOfTouches);
             NSLog(@"Pan ended\n");
         }
         default:
             break;
     }
+}
+
+- (void)hideLoupe
+{
+    [self.loupeView setHidden:YES];
+    [self.loupeCenter setHidden:YES];
 }
 
 #pragma mark - Hit Testing

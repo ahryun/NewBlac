@@ -43,6 +43,9 @@
                  CGRectMake([coordinate[0] floatValue] * size.width - circleRadius,
                             [coordinate[1] floatValue] * size.height - circleRadius,
                             self.circleDiameter, self.circleDiameter)];
+        UIBezierPath *whiteCircle = [UIBezierPath bezierPathWithOvalInRect:CGRectInset(self.path.bounds, -3.f, -3.f)];
+        [self.path appendPath:whiteCircle];
+        
         self.tapTarget = [self tapTargetForPath:self.path];
     }
     return self;
