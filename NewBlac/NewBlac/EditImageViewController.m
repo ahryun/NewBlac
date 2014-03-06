@@ -141,7 +141,7 @@
 #pragma mark - Storyboard Actions
 - (IBAction)backButtonPressed:(UIBarButtonItem *)sender
 {
-    UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Leave without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", @"Save", nil];
+    UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Go back without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
     [saveBeforeLeavingAlert show];
 }
 
@@ -150,10 +150,8 @@
     if (buttonIndex == [alertView cancelButtonIndex]) {
         NSLog(@"Cancel index is %i", buttonIndex);
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"]) {
-        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
-    } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Save"]) {
-        [self saveBeforeLeaving];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
