@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g6k-0e-5hS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g6k-0e-5hS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -233,28 +233,34 @@
         <!--Edit Image View Controller - pieces-->
         <scene sceneID="Lez-Hp-WL0">
             <objects>
-                <viewController title="pieces" id="w2n-4r-LyO" customClass="EditImageViewController" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" title="pieces" automaticallyAdjustsScrollViewInsets="NO" id="w2n-4r-LyO" customClass="EditImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ddQ-Sm-kRN"/>
                         <viewControllerLayoutGuide type="bottom" id="wdL-cH-2iN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gP9-9I-sK7">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loupe.png" translatesAutoresizingMaskIntoConstraints="NO" id="Al3-Er-6S7">
+                            <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Loupe" translatesAutoresizingMaskIntoConstraints="NO" id="Al3-Er-6S7">
                                 <rect key="frame" x="182" y="80" width="130" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="alB-Uf-IqQ" secondAttribute="bottom" id="Bio-0A-2sK"/>
+                            <constraint firstAttribute="trailing" secondItem="alB-Uf-IqQ" secondAttribute="trailing" id="Ehc-RT-Gzj"/>
+                            <constraint firstItem="alB-Uf-IqQ" firstAttribute="leading" secondItem="gP9-9I-sK7" secondAttribute="leading" id="P6f-mk-Yfo"/>
+                            <constraint firstItem="alB-Uf-IqQ" firstAttribute="top" secondItem="gP9-9I-sK7" secondAttribute="top" id="xLJ-QU-tss"/>
+                        </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="pieces" id="HK3-bL-O1N">
                         <barButtonItem key="rightBarButtonItem" title="SAVE" id="B2I-Eb-xTR">
                             <connections>
@@ -262,6 +268,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
                         <outlet property="loupeView" destination="Al3-Er-6S7" id="4m9-Dv-8JA"/>
@@ -282,7 +289,7 @@
                         <viewControllerLayoutGuide type="bottom" id="v9L-sm-mO0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yg6-qe-qbC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -378,7 +385,7 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Jhu-Gf-9aw">
+                    <toolbar key="toolbar" contentMode="scaleToFill" barStyle="black" id="Jhu-Gf-9aw">
                         <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
@@ -398,9 +405,9 @@
         <image name="AddVideoButton" width="30" height="30"/>
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
+        <image name="Loupe" width="150" height="150"/>
         <image name="MenuButton" width="30" height="30"/>
         <image name="PlayButton" width="30" height="30"/>
-        <image name="loupe.png" width="160" height="160"/>
     </resources>
     <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

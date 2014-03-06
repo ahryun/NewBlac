@@ -88,6 +88,16 @@
         [imageView.layer setCornerRadius:15.0f];
         imageView.clipsToBounds = YES;
         
+        // Set up the index number
+        UILabel *indexLabel = [[UILabel alloc] initWithFrame:CGRectMake(imageView.frame.size.width - 50.f, imageView.frame.size.height - 50.f, 50.f, 50.f)];
+        [indexLabel setTextColor:[UIColor whiteColor]];
+        [indexLabel setShadowColor:[UIColor lightGrayColor]];
+        [indexLabel setShadowOffset:CGSizeMake(0, -1)];
+        [indexLabel setTextAlignment:NSTextAlignmentCenter];
+        [indexLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:36]];
+        [imageView addSubview:indexLabel];
+        self.indexLabel = indexLabel;
+        
         // This makes the video darkened until it's in the middle and playing
         if (!self.maskView) {
             self.maskView = [[UIView alloc] initWithFrame:imageView.bounds];

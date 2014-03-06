@@ -83,6 +83,13 @@ static const NSString *videoCompilingDone;
         self.playButton.enabled = NO;
     }
     self.playButton.image = playButtonImg;
+    
+    // If there are less than 2 frames, hide the tool bar
+    if ([self.video.photos count] < 2) {
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    } else {
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -96,6 +103,9 @@ static const NSString *videoCompilingDone;
     [super viewWillDisappear:animated];
     // Hackish way to know if the user clicked "Back" button in the navigation controller
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
+    
+    // Return the toolbar to its original state
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)cleanUpBeforeReturningToGallery
@@ -284,6 +294,7 @@ static const NSString *videoCompilingDone;
     NSNumber *framesPerSecond = [NSNumber numberWithInteger:row + 1];
     [self.video setFramesPerSecond:framesPerSecond];
     [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[framesPerSecond integerValue]]];
+    self.needToCompile = YES;
 }
 
 #pragma mark - UICollectionView Delegate
@@ -344,6 +355,7 @@ static const NSString *videoCompilingDone;
     [cell prepareScrollView];
     [cell displayVideo];
     cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
+    cell.indexLabel.text = [NSString stringWithFormat:@"%i", [photo.indexInVideo integerValue]];
     NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
     
     return cell;

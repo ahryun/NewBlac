@@ -21,7 +21,6 @@
 		F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA986187B5BE40045E642 /* PhotoCorners+LifeCycle.m */; };
 		F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33EA992187BA1380045E642 /* EditImageViewController.m */; };
 		F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */; };
-		F367D4E318A16AB4007DF795 /* loupe.png in Resources */ = {isa = PBXBuildFile; fileRef = F367D4E218A16AB4007DF795 /* loupe.png */; };
 		F3A37DBF18947425003B530C /* CollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A37DBE18947425003B530C /* CollectionViewLayout.m */; };
 		F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494DE1888A9C700CBAE82 /* Video+LifeCycle.m */; };
 		F3A494F7188B2ED300CBAE82 /* VideoCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F6188B2ED300CBAE82 /* VideoCreator.m */; };
@@ -101,7 +100,6 @@
 		F33EA992187BA1380045E642 /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		F3656E6E18BAF0440008B694 /* MotionVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionVideoPlayer.h; sourceTree = "<group>"; };
 		F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionVideoPlayer.m; sourceTree = "<group>"; };
-		F367D4E218A16AB4007DF795 /* loupe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loupe.png; sourceTree = "<group>"; };
 		F3A37DBD18947425003B530C /* CollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewLayout.h; sourceTree = "<group>"; };
 		F3A37DBE18947425003B530C /* CollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewLayout.m; sourceTree = "<group>"; };
 		F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Video+LifeCycle.h"; path = "NewBlac/Video+LifeCycle.h"; sourceTree = "<group>"; };
@@ -376,7 +374,6 @@
 				F3C028B21843F5BD00FF08F1 /* InfoPlist.strings */,
 				F3C028B51843F5BD00FF08F1 /* main.mm */,
 				F3C028B71843F5BD00FF08F1 /* NewBlac-Prefix.pch */,
-				F367D4E218A16AB4007DF795 /* loupe.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -490,7 +487,6 @@
 				F3AAD69418C2D55F00B5A23B /* Images.xcassets in Resources */,
 				F3C028B41843F5BD00FF08F1 /* InfoPlist.strings in Resources */,
 				F3C028BD1843F5BD00FF08F1 /* Main.storyboard in Resources */,
-				F367D4E318A16AB4007DF795 /* loupe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

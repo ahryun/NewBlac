@@ -10,7 +10,7 @@
 #import "CornerDetectionView.h"
 #import "PhotoCorners+LifeCycle.h"
 #import "CornerCircle.h"
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 
 @interface EditImageViewController () <CornerDetectionViewDelegate>
 
@@ -29,7 +29,7 @@
 @end
 
 #define ZOOM_FACTOR 4.0
-#define LOUPE_BEZEL_WIDTH 18.0
+#define LOUPE_BEZEL_WIDTH 8.0
 
 @implementation EditImageViewController
 - (IBAction)doneEditingImage:(UIBarButtonItem *)sender {
@@ -79,13 +79,13 @@
 {
     [super viewDidLoad];
     
+    // Add imageView
+    UIImageView *imageView = [[UIImageView alloc] init];
+    [self.view insertSubview:imageView belowSubview:self.buttonView];
+    self.originalImageView = imageView;
+    
     self.selectedCornerIndex = NSNotFound;
     self.coordinatesChanged = NO;
-    // Sets the controller as a delegate for CornerDetectionView
-    [self displayPhoto];
-    [self displayCorners];
-    self.cornerDetectionView.delegate = self;
-    [self.cornerDetectionView reloadData];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
     self.originalImageView.userInteractionEnabled = YES;
@@ -100,8 +100,23 @@
     [self.buttonView setBackgroundColor:[UIColor clearColor]];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    
+    // Sets the controller as a delegate for CornerDetectionView
+    [self displayPhoto];
+    [self displayCorners];
+    self.cornerDetectionView.delegate = self;
+    [self.cornerDetectionView reloadData];
+    
+    NSLog(@"View frame is %f x %f", self.view.frame.size.width, self.view.frame.size.height);
+    
     CALayer *contentLayer = [CALayer layer];
     contentLayer.frame = self.loupeView.bounds;
     contentLayer.backgroundColor = [[UIColor blackColor] CGColor];
@@ -137,7 +152,6 @@
     cornersLayer.frame = self.zoomLayer.frame;
 }
 
-
 - (NSMutableArray *)corners
 {
     if (!_corners) {
@@ -151,25 +165,24 @@
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
         UIImage *image = [UIImage imageWithData:self.photo.originalPhoto];
-        float widthRatio = self.view.bounds.size.width / image.size.width;
-        float heightRatio = self.view.bounds.size.height / image.size.height;
-        float scale = MIN(widthRatio, heightRatio);
-        float imageWidth = scale * image.size.width;
-        float imageHeight = scale * image.size.height;
-        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
-        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
+        float viewRatio = self.view.bounds.size.width / self.view.bounds.size.height;
+        float imageRatio = image.size.width / image.size.height;
+        int imageWidth = 0;
+        int imageHeight = 0;
+        if (viewRatio < imageRatio) {
+            imageWidth = (int)self.view.bounds.size.width;
+            imageHeight = (int)(imageWidth / imageRatio);
+        } else {
+            imageHeight = (int)self.view.bounds.size.height;
+            imageWidth = (int)(imageHeight * imageRatio);
+        }
+        float xOffset = (int)((self.view.bounds.size.width - imageWidth) / 2);
+        float yOffset = (int)((self.view.bounds.size.height - imageHeight) / 2);
         
-        CGRect rect = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.image = image;
-        imageView.opaque = NO;
-        [self.view insertSubview:imageView belowSubview:self.buttonView];
-        self.originalImageView = imageView;
-        
-        NSLog(@"Image view frame is %f x %f", self.view.frame.size.width, self.view.frame.size.height);
-        NSLog(@"Image view bounds is %f x %f", self.view.bounds.size.width, self.view.bounds.size.height);
-        
+        self.originalImageView.frame = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
+        self.originalImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.originalImageView.image = image;
+        self.originalImageView.opaque = NO;
     }
 }
 
@@ -229,7 +242,7 @@
     } else if ([touches count] == 1) {
         CGPoint touchPoint = [[touches anyObject] locationInView:self.originalImageView];
         float viewWidth = self.view.frame.size.width;
-        float offset = 30.0;
+        float offset = 20.0;
         float loupeWidth = self.loupeView.frame.size.width;
         CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
         self.loupeLocation = loupeLocation;
@@ -248,7 +261,6 @@
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
-    NSLog(@"Pan recognizer state is %li\n", panRecognizer.state);
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             NSLog(@"Pan began\n");
