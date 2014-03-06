@@ -266,6 +266,12 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="pieces" id="HK3-bL-O1N">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="BackButton" id="ZdP-KC-MGw">
+                            <inset key="imageInsets" minX="-10" minY="-10" maxX="0.0" maxY="0.0"/>
+                            <connections>
+                                <action selector="backButtonPressed:" destination="w2n-4r-LyO" id="ZLj-Ih-N2m"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="SAVE" id="B2I-Eb-xTR">
                             <connections>
                                 <action selector="doneEditingImage:" destination="w2n-4r-LyO" id="Eci-Px-NG7"/>
@@ -408,6 +414,7 @@
     </scenes>
     <resources>
         <image name="AddVideoButton" width="30" height="30"/>
+        <image name="BackButton" width="30" height="30"/>
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
         <image name="Loupe" width="150" height="150"/>

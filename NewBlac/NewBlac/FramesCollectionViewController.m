@@ -66,7 +66,7 @@ static const NSString *videoCompilingDone;
     self.collectionView.delegate = self;
     
     // Navigation Bar Buttons configuration
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationItem setHidesBackButton:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated

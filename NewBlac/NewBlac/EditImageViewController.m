@@ -12,7 +12,7 @@
 #import "CornerCircle.h"
 //#import <QuartzCore/QuartzCore.h>
 
-@interface EditImageViewController () <CornerDetectionViewDelegate>
+@interface EditImageViewController () <CornerDetectionViewDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) UIImageView *originalImageView;
 @property (weak, nonatomic) CALayer *zoomLayer;
@@ -33,47 +33,6 @@
 #define LOUPE_BEZEL_WIDTH 8.0
 
 @implementation EditImageViewController
-- (IBAction)doneEditingImage:(UIBarButtonItem *)sender {
-    // See if the coordinates have changed
-    if (self.coordinatesChanged) {
-        // Update the corner coordinates in core data
-        [self.photo.canvasRect photoCorners:self.coordinates];
-        
-        // Send the new coordinates to the c++ file to recalculate the matrix
-        UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
-        BOOL isFirstImage = [self.video.photos count] > 0 ? NO : YES;
-        [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:isFirstImage];
-        
-        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-        
-        // Replace the cropped image saved in core data
-        NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
-        [self.photo setCroppedPhoto:imageData];
-    }
-    
-    // May need to prepareForSegue
-    [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
-}
-
-- (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
-{
-    CGRect oldSelectionBounds = CGRectZero;
-    if (_selectedCornerIndex < [self.corners count]) {
-        oldSelectionBounds = self.selectedCorner.totalBounds;
-    }
-    _selectedCornerIndex = (selectedCornerIndex > [self.corners count]) ? NSNotFound : selectedCornerIndex;
-    CGRect newSelectionBounds = self.selectedCorner.totalBounds;
-    CGRect rectToRedraw = CGRectUnion(oldSelectionBounds, newSelectionBounds);
-    [self.cornerDetectionView setNeedsDisplayInRect:rectToRedraw];
-}
-
-- (CornerCircle *)selectedCorner
-{
-    if (self.selectedCornerIndex == NSNotFound || self.selectedCornerIndex > [self.corners count]) {
-        return nil;
-    }
-    return [self.corners objectAtIndex:self.selectedCornerIndex];
-}
 
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
@@ -138,9 +97,9 @@
     CALayer *zoomLayer = [CALayer layer];
     NSLog(@"Zoom size width is %f and height is %f\n", zoomSize.width, zoomSize.height);
     zoomLayer.frame = CGRectMake((contentLayer.bounds.size.width /2) - (zoomSize.width /2),
-                                      (contentLayer.bounds.size.height /2) - (zoomSize.height /2),
-                                      zoomSize.width,
-                                      zoomSize.height);
+                                 (contentLayer.bounds.size.height /2) - (zoomSize.height /2),
+                                 zoomSize.width,
+                                 zoomSize.height);
     UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
     zoomLayer.contents = (id)originalImage.CGImage;
     zoomLayer.contentsGravity = kCAGravityResizeAspectFill;
@@ -151,14 +110,6 @@
     // Four corners layer
     CALayer *cornersLayer = [CALayer layer];
     cornersLayer.frame = self.zoomLayer.frame;
-}
-
-- (NSMutableArray *)corners
-{
-    if (!_corners) {
-        _corners = [[NSMutableArray alloc] init];
-    }
-    return _corners;
 }
 
 - (void)displayPhoto
@@ -187,6 +138,52 @@
     }
 }
 
+#pragma mark - Storyboard Actions
+- (IBAction)backButtonPressed:(UIBarButtonItem *)sender
+{
+    UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Leave without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", @"Save", nil];
+    [saveBeforeLeavingAlert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        NSLog(@"Cancel index is %i", buttonIndex);
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"]) {
+        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+    } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Save"]) {
+        [self saveBeforeLeaving];
+    }
+}
+
+- (IBAction)doneEditingImage:(UIBarButtonItem *)sender
+{
+    [self saveBeforeLeaving];
+}
+
+- (void)saveBeforeLeaving
+{
+    if (self.coordinatesChanged) {
+        // Update the corner coordinates in core data
+        [self.photo.canvasRect photoCorners:self.coordinates];
+        
+        // Send the new coordinates to the c++ file to recalculate the matrix
+        UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
+        BOOL isFirstImage = [self.video.photos count] > 0 ? NO : YES;
+        [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:isFirstImage];
+        
+        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
+        
+        // Replace the cropped image saved in core data
+        NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
+        [self.photo setCroppedPhoto:imageData];
+    }
+    
+    // May need to prepareForSegue
+    [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+}
+
 #pragma mark CornerDetectionView
 - (void)displayCorners
 {
@@ -205,6 +202,35 @@
     [self.originalImageView addSubview:cornerDetectionview];
     self.cornerDetectionView = cornerDetectionview;
     NSLog(@"displayCorners has been called");
+}
+
+- (void)setSelectedCornerIndex:(NSUInteger)selectedCornerIndex
+{
+    CGRect oldSelectionBounds = CGRectZero;
+    if (_selectedCornerIndex < [self.corners count]) {
+        oldSelectionBounds = self.selectedCorner.totalBounds;
+    }
+    _selectedCornerIndex = (selectedCornerIndex > [self.corners count]) ? NSNotFound : selectedCornerIndex;
+    CGRect newSelectionBounds = self.selectedCorner.totalBounds;
+    CGRect rectToRedraw = CGRectUnion(oldSelectionBounds, newSelectionBounds);
+    [self.cornerDetectionView setNeedsDisplayInRect:rectToRedraw];
+}
+
+- (CornerCircle *)selectedCorner
+{
+    if (self.selectedCornerIndex == NSNotFound || self.selectedCornerIndex > [self.corners count]) {
+        return nil;
+    }
+    return [self.corners objectAtIndex:self.selectedCornerIndex];
+}
+
+
+- (NSMutableArray *)corners
+{
+    if (!_corners) {
+        _corners = [[NSMutableArray alloc] init];
+    }
+    return _corners;
 }
 
 - (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
