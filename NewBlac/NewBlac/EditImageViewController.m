@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSMutableArray *coordinates;
 @property (nonatomic) BOOL coordinatesChanged;
 @property (weak, nonatomic) IBOutlet UIImageView *loupeView;
+@property (weak, nonatomic) IBOutlet UIImageView *loupeCenter;
 @property (nonatomic) CGPoint loupeLocation;
 
 @end
@@ -214,7 +215,7 @@
 
 - (UIColor *)fillColorInView:(CornerDetectionView *)view
 {
-    return [UIColor blueColor];
+    return [UIColor colorWithRed:(240.f/255) green:(101.f/255) blue:(98.f/255) alpha:1.f];
 }
 
 - (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view
@@ -247,7 +248,9 @@
         CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
         self.loupeLocation = loupeLocation;
         [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, self.loupeView.frame.size.width, self.loupeView.frame.size.height)];
+        [self.loupeCenter setFrame:self.loupeView.frame];
         [self.loupeView setHidden:NO];
+        [self.loupeCenter setHidden:NO];
         self.zoomLayer.position = CGPointMake((self.originalImageView.center.x - touchPoint.x) * ZOOM_FACTOR,
                                               (self.originalImageView.center.y - touchPoint.y) * ZOOM_FACTOR);
     }
@@ -257,6 +260,7 @@
 {
     NSLog(@"Touches ended\n");
     [self.loupeView setHidden:YES];
+    [self.loupeCenter setHidden:YES];
 }
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
@@ -316,6 +320,7 @@
     [self.corners enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id corner, NSUInteger idx, BOOL *stop) {
         if ([corner containsPoint:point]) {
             hitCornerIndex = idx;
+            NSLog(@"Corner index is %i", hitCornerIndex);
             *stop = YES;
         }
     }];

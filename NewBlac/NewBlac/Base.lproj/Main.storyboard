@@ -242,11 +242,15 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
                             <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Loupe" translatesAutoresizingMaskIntoConstraints="NO" id="Al3-Er-6S7">
+                                <rect key="frame" x="182" y="80" width="130" height="130"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LoupeCenter" translatesAutoresizingMaskIntoConstraints="NO" id="kmX-1O-KLh">
                                 <rect key="frame" x="182" y="80" width="130" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -271,6 +275,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
+                        <outlet property="loupeCenter" destination="kmX-1O-KLh" id="aew-DN-gKZ"/>
                         <outlet property="loupeView" destination="Al3-Er-6S7" id="4m9-Dv-8JA"/>
                         <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="hbp-6e-2Dv"/>
                     </connections>
@@ -406,6 +411,7 @@
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
         <image name="Loupe" width="150" height="150"/>
+        <image name="LoupeCenter" width="150" height="150"/>
         <image name="MenuButton" width="30" height="30"/>
         <image name="PlayButton" width="30" height="30"/>
     </resources>

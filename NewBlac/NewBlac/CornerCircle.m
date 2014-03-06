@@ -31,7 +31,7 @@
 
 - (float)circleDiameter
 {
-    return 10.0;
+    return 12.0;
 }
 
 - (id)initWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size

@@ -44,12 +44,17 @@
 {
     // Drawing code
     NSUInteger noCorners = [self.delegate numberOfCornersInView:self];
-    UIColor *color = [self.delegate fillColorInView:self];
+    UIColor *fillColor = [self.delegate fillColorInView:self];
+    UIColor *strokeColor = [UIColor whiteColor];
     if (noCorners) {
         for (NSUInteger index = 0; index < noCorners; index++) {
             UIBezierPath *corner = [self.delegate drawPathInView:self atIndex:index];
-            [color setFill];
+            UIBezierPath *whiteCircle = [UIBezierPath bezierPathWithOvalInRect:CGRectInset(corner.bounds, -3.f, -3.f)];
+            [fillColor setFill];
             [corner fill];
+            [strokeColor setStroke];
+            [corner stroke];
+            [whiteCircle stroke];
         }
     }
 }
