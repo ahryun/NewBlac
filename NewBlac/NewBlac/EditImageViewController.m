@@ -338,7 +338,7 @@
         case UIGestureRecognizerStateEnded: {
             // Pan gesture state ended is called multiple times even though I still have a finger on the screen
             // So I check how many fingers I have on the screen
-            if (panRecognizer.numberOfTouches < 1) [self hideLoupe];
+            if (panRecognizer.numberOfTouches < 1 && !self.loupeView.hidden) [self hideLoupe];
             NSLog(@"Number of touches is %lu\n", (unsigned long)panRecognizer.numberOfTouches);
             NSLog(@"Pan ended\n");
         }
