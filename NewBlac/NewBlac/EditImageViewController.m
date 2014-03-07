@@ -103,11 +103,13 @@
     CGSize zoomSize = CGSizeMake(CGRectGetWidth(self.originalImageView.bounds) * ZOOM_FACTOR, CGRectGetHeight(self.originalImageView.bounds) * ZOOM_FACTOR);
     CALayer *zoomLayer = [CALayer layer];
     NSLog(@"Zoom size width is %f and height is %f\n", zoomSize.width, zoomSize.height);
-    zoomLayer.frame = CGRectMake((contentLayer.bounds.size.width /2) - (zoomSize.width /2),
-                                 (contentLayer.bounds.size.height /2) - (zoomSize.height /2),
+    zoomLayer.frame = CGRectMake(0, 0,
                                  zoomSize.width,
                                  zoomSize.height);
     UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
+    NSMutableDictionary *noImplicitAnimation = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSNull null], @"position", nil];
+    zoomLayer.actions = noImplicitAnimation;
+    zoomLayer.anchorPoint = CGPointZero; // Anchor point become top left (0, 0). This makes position of zoomlayer the top left corner point in the super view.
     zoomLayer.contents = (id)originalImage.CGImage;
     zoomLayer.contentsGravity = kCAGravityResizeAspectFill;
     [contentLayer addSublayer:zoomLayer];
@@ -126,17 +128,17 @@
         UIImage *image = [UIImage imageWithData:self.photo.originalPhoto];
         float viewRatio = self.view.bounds.size.width / self.view.bounds.size.height;
         float imageRatio = image.size.width / image.size.height;
-        int imageWidth = 0;
-        int imageHeight = 0;
+        float imageWidth = 0.f;
+        float imageHeight = 0.f;
         if (viewRatio < imageRatio) {
-            imageWidth = (int)self.view.bounds.size.width;
-            imageHeight = (int)(imageWidth / imageRatio);
+            imageWidth = self.view.bounds.size.width;
+            imageHeight = imageWidth / imageRatio;
         } else {
-            imageHeight = (int)self.view.bounds.size.height;
-            imageWidth = (int)(imageHeight * imageRatio);
+            imageHeight = self.view.bounds.size.height;
+            imageWidth = imageHeight * imageRatio;
         }
-        float xOffset = (int)((self.view.bounds.size.width - imageWidth) / 2);
-        float yOffset = (int)((self.view.bounds.size.height - imageHeight) / 2);
+        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
+        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
         
         self.originalImageView.frame = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
         self.originalImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -272,7 +274,7 @@
     if ([touches count] > 1) {
         return;
     } else if ([touches count] == 1) {
-        CGPoint touchPoint = [[touches anyObject] locationInView:self.originalImageView];
+        CGPoint touchPoint = [[touches anyObject] locationInView:self.view];
         float viewWidth = self.view.frame.size.width;
         float offset = 20.0;
         float loupeWidth = self.loupeView.frame.size.width;
@@ -280,10 +282,9 @@
         self.loupeLocation = loupeLocation;
         [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, self.loupeView.frame.size.width, self.loupeView.frame.size.height)];
         [self.loupeCenter setFrame:self.loupeView.frame];
-        [self.loupeView setHidden:NO];
-        [self.loupeCenter setHidden:NO];
-        self.zoomLayer.position = CGPointMake((self.originalImageView.center.x - touchPoint.x) * ZOOM_FACTOR,
-                                              (self.originalImageView.center.y - touchPoint.y) * ZOOM_FACTOR);
+        self.zoomLayer.position = [self calculateZoomLayerOriginWithTouchPoint:touchPoint];
+        
+        [self showLoupe];
     }
 }
 
@@ -325,15 +326,14 @@
             // Loupe
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
-            self.zoomLayer.position = CGPointMake(self.zoomLayer.position.x - translation.x * ZOOM_FACTOR,
-                                                  self.zoomLayer.position.y - translation.y * ZOOM_FACTOR);
+            self.zoomLayer.position = CGPointApplyAffineTransform(self.zoomLayer.position, CGAffineTransformMakeTranslation(- translation.x * ZOOM_FACTOR, - translation.y * ZOOM_FACTOR));
             [CATransaction commit];
 
         }
         case UIGestureRecognizerStateEnded: {
             // Pan gesture state ended is called multiple times even though I still have a finger on the screen
             // So I check how many fingers I have on the screen
-            if (panRecognizer.numberOfTouches < 1) [self hideLoupe];;
+            if (panRecognizer.numberOfTouches < 1) [self hideLoupe];
             NSLog(@"Number of touches is %lu\n", (unsigned long)panRecognizer.numberOfTouches);
             NSLog(@"Pan ended\n");
         }
@@ -342,10 +342,30 @@
     }
 }
 
+- (void)showLoupe
+{
+    [self.loupeView setHidden:NO];
+    [self.loupeCenter setHidden:NO];
+}
+
 - (void)hideLoupe
 {
     [self.loupeView setHidden:YES];
     [self.loupeCenter setHidden:YES];
+}
+
+- (CGPoint)calculateZoomLayerOriginWithTouchPoint:(CGPoint)touchPoint
+{
+    // Calculate the translation between the position and loupe center point
+    touchPoint = [self.view convertPoint:touchPoint toView:self.originalImageView];
+    CGPoint loupeCenter = CGPointMake(self.loupeView.bounds.size.width / 2, self.loupeView.bounds.size.height / 2);
+    CGAffineTransform imageViewTranslation = CGAffineTransformMakeTranslation(loupeCenter.x - (touchPoint.x * ZOOM_FACTOR),
+                                                                              loupeCenter.y - (touchPoint.y * ZOOM_FACTOR));
+    
+    // Apply the translation to the origin of image view in terms of self.view
+    CGPoint zoomLayerOrigin = CGPointApplyAffineTransform(CGPointZero, imageViewTranslation);
+    
+    return zoomLayerOrigin;
 }
 
 #pragma mark - Hit Testing
