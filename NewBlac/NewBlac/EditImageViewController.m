@@ -107,9 +107,9 @@
                                  zoomSize.width,
                                  zoomSize.height);
     UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
-    NSMutableDictionary *noImplicitAnimation = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSNull null], @"position", nil];
+    NSMutableDictionary *noImplicitAnimation = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSNull null], @"position", [NSNull null], @"anchorPoint", nil];
     zoomLayer.actions = noImplicitAnimation;
-    zoomLayer.anchorPoint = CGPointZero; // Anchor point become top left (0, 0). This makes position of zoomlayer the top left corner point in the super view.
+    zoomLayer.position = CGPointMake(self.loupeView.frame.size.width / 2, self.loupeView.frame.size.height / 2);
     zoomLayer.contents = (id)originalImage.CGImage;
     zoomLayer.contentsGravity = kCAGravityResizeAspectFill;
     [contentLayer addSublayer:zoomLayer];
@@ -275,16 +275,22 @@
         return;
     } else if ([touches count] == 1) {
         CGPoint touchPoint = [[touches anyObject] locationInView:self.view];
-        float viewWidth = self.view.frame.size.width;
-        float offset = 20.0;
-        float loupeWidth = self.loupeView.frame.size.width;
-        CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
-        self.loupeLocation = loupeLocation;
-        [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, self.loupeView.frame.size.width, self.loupeView.frame.size.height)];
-        [self.loupeCenter setFrame:self.loupeView.frame];
-        self.zoomLayer.position = [self calculateZoomLayerOriginWithTouchPoint:touchPoint];
+        CGPoint touchPointInImageView = [self.originalImageView convertPoint:touchPoint fromView:self.view];
         
-        [self showLoupe];
+        self.selectedCornerIndex = [self hitTest:touchPointInImageView];
+        
+        if (self.selectedCornerIndex != NSNotFound) {
+            float viewWidth = self.view.frame.size.width;
+            float offset = 20.0;
+            float loupeWidth = self.loupeView.frame.size.width;
+            float loupeHeight = self.loupeView.frame.size.height;
+            CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
+            self.loupeLocation = loupeLocation;
+            [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, loupeWidth, loupeHeight)];
+            [self.loupeCenter setFrame:self.loupeView.frame];
+            [self changeZoomLayerAnchorPoint];
+            [self showLoupe];
+        }
     }
 }
 
@@ -299,18 +305,19 @@
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             NSLog(@"Pan began\n");
-            CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
-            self.selectedCornerIndex = [self hitTest:tapLocation];
+//            CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
+//            self.selectedCornerIndex = [self hitTest:tapLocation];
             break;
         }
         case UIGestureRecognizerStateChanged: {
             NSLog(@"Pan changed\n");
-            CGPoint translation = [panRecognizer translationInView:self.originalImageView];
-            CGRect originalBounds = self.selectedCorner.totalBounds;
-            CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
-            CGRect rectToRedraw = CGRectUnion(originalBounds, newBounds);
             
             if (self.selectedCorner) {
+                CGPoint translation = [panRecognizer translationInView:self.originalImageView];
+                CGRect originalBounds = self.selectedCorner.totalBounds;
+                CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
+                CGRect rectToRedraw = CGRectUnion(originalBounds, newBounds);
+                
                 [self.selectedCorner moveBy:translation];
                 [self.cornerDetectionView reloadDataInRect:rectToRedraw];
                 [panRecognizer setTranslation:CGPointZero inView:self.originalImageView];
@@ -321,14 +328,13 @@
                 // Update coordinates of the corner selected
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x / self.originalImageView.bounds.size.width]];
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y / self.originalImageView.bounds.size.height]];
+                
+                // Loupe
+                [CATransaction begin];
+                [CATransaction setDisableActions:YES];
+                [self changeZoomLayerAnchorPoint];
+                [CATransaction commit];
             }
-            
-            // Loupe
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            self.zoomLayer.position = CGPointApplyAffineTransform(self.zoomLayer.position, CGAffineTransformMakeTranslation(- translation.x * ZOOM_FACTOR, - translation.y * ZOOM_FACTOR));
-            [CATransaction commit];
-
         }
         case UIGestureRecognizerStateEnded: {
             // Pan gesture state ended is called multiple times even though I still have a finger on the screen
@@ -354,18 +360,11 @@
     [self.loupeCenter setHidden:YES];
 }
 
-- (CGPoint)calculateZoomLayerOriginWithTouchPoint:(CGPoint)touchPoint
+- (void)changeZoomLayerAnchorPoint
 {
     // Calculate the translation between the position and loupe center point
-    touchPoint = [self.view convertPoint:touchPoint toView:self.originalImageView];
-    CGPoint loupeCenter = CGPointMake(self.loupeView.bounds.size.width / 2, self.loupeView.bounds.size.height / 2);
-    CGAffineTransform imageViewTranslation = CGAffineTransformMakeTranslation(loupeCenter.x - (touchPoint.x * ZOOM_FACTOR),
-                                                                              loupeCenter.y - (touchPoint.y * ZOOM_FACTOR));
-    
-    // Apply the translation to the origin of image view in terms of self.view
-    CGPoint zoomLayerOrigin = CGPointApplyAffineTransform(CGPointZero, imageViewTranslation);
-    
-    return zoomLayerOrigin;
+    CGPoint newAnchorPoint = CGPointMake([[self.coordinates objectAtIndex:self.selectedCornerIndex][0] floatValue], [[self.coordinates objectAtIndex:self.selectedCornerIndex][1] floatValue]);
+    self.zoomLayer.anchorPoint = newAnchorPoint;
 }
 
 #pragma mark - Hit Testing
