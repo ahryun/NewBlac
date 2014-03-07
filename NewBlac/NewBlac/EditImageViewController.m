@@ -43,7 +43,6 @@
     UIImageView *imageView = [[UIImageView alloc] init];
     [self.view insertSubview:imageView belowSubview:self.buttonView];
     self.originalImageView = imageView;
-    
     self.selectedCornerIndex = NSNotFound;
     self.coordinatesChanged = NO;
     
@@ -72,6 +71,15 @@
     // ViewDidLayoutSubviews is called twice and thus calling my setup call twice.
     // This is a hackish way to fix that.
     if (!self.cornerDetectionView) [self setup];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    self.view = nil;
+    self.originalImageView = nil;
+    self.cornerDetectionView = nil;
 }
 
 - (void)setup
@@ -240,6 +248,8 @@
     return _corners;
 }
 
+#pragma mark - CornerDetectionView delegate
+
 - (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
 {
     CornerCircle *corner = [self.corners objectAtIndex:index];
@@ -254,15 +264,6 @@
 - (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view
 {
     return [self.corners count];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    self.view = nil;
-    self.originalImageView = nil;
-    self.cornerDetectionView = nil;
 }
 
 #pragma mark - Touch handling
@@ -305,14 +306,12 @@
     switch (panRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             NSLog(@"Pan began\n");
-//            CGPoint tapLocation = [panRecognizer locationInView:self.originalImageView];
-//            self.selectedCornerIndex = [self hitTest:tapLocation];
             break;
         }
         case UIGestureRecognizerStateChanged: {
             NSLog(@"Pan changed\n");
             
-            if (self.selectedCorner) {
+            if (self.selectedCornerIndex != NSNotFound) {
                 CGPoint translation = [panRecognizer translationInView:self.originalImageView];
                 CGRect originalBounds = self.selectedCorner.totalBounds;
                 CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
