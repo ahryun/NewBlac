@@ -22,6 +22,7 @@
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *noOfFrames;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
@@ -64,31 +65,23 @@ static const NSString *videoCompilingDone;
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
     self.collectionView.delegate = self;
-    
-    // Navigation Bar Buttons configuration
-//    [self.navigationItem setHidesBackButton:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    UIImage *playButtonImg;
-    if ([self.video.photos count] > 1) {
-        playButtonImg = [[UIImage imageNamed:@"PlayButton"]
+    int photoCount = [self.video.photos count];
+    if (photoCount > 1) {
+        UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.navigationController setToolbarHidden:NO animated:NO];
         self.playButton.enabled = YES;
+        self.playButton.image = playButtonImg;
+        
+        // Count the number of frames
+        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", photoCount]];
     } else {
-        playButtonImg = [[UIImage imageNamed:@"PlayButton"]
-                         imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.playButton.enabled = NO;
-    }
-    self.playButton.image = playButtonImg;
-    
-    // If there are less than 2 frames, hide the tool bar
-    if ([self.video.photos count] < 2) {
         [self.navigationController setToolbarHidden:YES animated:YES];
-    } else {
-        [self.navigationController setToolbarHidden:NO animated:YES];
     }
 }
 
@@ -355,7 +348,6 @@ static const NSString *videoCompilingDone;
     [cell prepareScrollView];
     [cell displayVideo];
     cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
-    cell.indexLabel.text = [NSString stringWithFormat:@"%i", [photo.indexInVideo integerValue]];
     NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
     
     return cell;

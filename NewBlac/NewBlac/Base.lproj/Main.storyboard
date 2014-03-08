@@ -40,7 +40,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem title="FPS" id="mCg-Eb-YDg">
-                            <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.94117647058823528" green="0.396078431372549" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="chooseFramesPerSecond:" destination="Tgz-jk-S1w" id="ERd-Jy-wTo"/>
                             </connections>
@@ -53,6 +53,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="v7k-y8-3aY"/>
+                        <barButtonItem enabled="NO" id="wYq-MW-pnn"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="pieces" id="jQr-tK-ufg">
                         <barButtonItem key="rightBarButtonItem" image="CameraButton" id="x5f-XP-HxK">
@@ -64,6 +65,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="framesPerSecond" destination="mCg-Eb-YDg" id="bgT-KI-DZL"/>
+                        <outlet property="noOfFrames" destination="wYq-MW-pnn" id="KEh-jB-FOc"/>
                         <outlet property="playButton" destination="YZr-ds-ZGa" id="uhN-dr-MWb"/>
                         <segue destination="9rq-fX-s1X" kind="modal" identifier="Play Full Screen Video" id="Tvp-mB-LwE"/>
                     </connections>
