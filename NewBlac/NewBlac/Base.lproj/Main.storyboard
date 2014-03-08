@@ -226,7 +226,8 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="NLM-Ar-rL7" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="NjT-6A-Cf5"/>
                             <constraint firstItem="NLM-Ar-rL7" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="Uib-K6-PIX"/>

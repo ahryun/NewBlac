@@ -39,8 +39,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @property (nonatomic, getter = isDeviceAuthorized) BOOL deviceAuthorized;
 @property (nonatomic, readonly, getter = isSessionRunningAndDeviceAuthorized) BOOL sessionRunningAndDeviceAuthorized;
 
-//- (IBAction)takeStillImage:(UIGestureRecognizer *)gestureRecognizer;
-
 @end
 
 @implementation TakeImageViewController
