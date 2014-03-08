@@ -165,26 +165,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0z0-yS-VDR" customClass="StillImagePreview">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="XHt-7x-vgi" appends="YES" id="mwS-hT-boS"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NLM-Ar-rL7">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP ANYWHERE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jko-oZ-EY4">
-                                        <rect key="frame" x="70" y="123" width="181" height="30"/>
+                                        <rect key="frame" x="70" y="109" width="181" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3c-QB-Y4w">
-                                        <rect key="frame" x="240" y="0.0" width="80" height="80"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3c-QB-Y4w">
+                                        <rect key="frame" x="280" y="0.0" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="8hp-3a-QbA"/>
-                                            <constraint firstAttribute="height" constant="80" id="syH-B6-Gw5"/>
+                                            <constraint firstAttribute="width" constant="40" id="8hp-3a-QbA"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="U8z-e8-JxQ"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="oyi-Hz-M7D"/>
+                                            <constraint firstAttribute="height" constant="40" id="syH-B6-Gw5"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <size key="titleShadowOffset" width="0.0" height="-1"/>
                                         <state key="normal" image="ExitButton">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -193,30 +204,39 @@
                                             <segue destination="uND-v8-dts" kind="unwind" unwindAction="unwindCancelPhoto:" id="ASx-fv-naL"/>
                                         </connections>
                                     </button>
+                                    <button contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xw7-2o-wfS">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <size key="titleShadowOffset" width="0.0" height="-1"/>
+                                        <state key="normal" image="FlashOff">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" image="FlashOn"/>
+                                        <connections>
+                                            <action selector="toggleFlash:" destination="CaK-cf-brN" eventType="touchUpInside" id="tUH-Vh-ZVp"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstItem="N3c-QB-Y4w" firstAttribute="top" secondItem="0z0-yS-VDR" secondAttribute="top" id="2in-Jz-AEK"/>
-                                    <constraint firstItem="jko-oZ-EY4" firstAttribute="top" secondItem="0z0-yS-VDR" secondAttribute="top" constant="123" id="V5u-iU-zdM"/>
-                                    <constraint firstAttribute="centerX" secondItem="jko-oZ-EY4" secondAttribute="centerX" constant="-0.5" id="ecl-QB-lVx"/>
-                                    <constraint firstAttribute="trailing" secondItem="N3c-QB-Y4w" secondAttribute="trailing" id="rU3-ER-vCS"/>
+                                    <constraint firstItem="N3c-QB-Y4w" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" id="AwJ-IW-3eL"/>
+                                    <constraint firstAttribute="trailing" secondItem="N3c-QB-Y4w" secondAttribute="trailing" id="VYA-qs-1fN"/>
+                                    <constraint firstAttribute="centerX" secondItem="jko-oZ-EY4" secondAttribute="centerX" constant="-0.5" id="kpg-Lj-EUe"/>
+                                    <constraint firstItem="jko-oZ-EY4" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" constant="109" id="rjJ-b0-FbW"/>
                                 </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="XHt-7x-vgi" appends="YES" id="mwS-hT-boS"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="0z0-yS-VDR" secondAttribute="bottom" id="3hG-13-fwI"/>
-                            <constraint firstItem="0z0-yS-VDR" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="FVe-rZ-QN7"/>
-                            <constraint firstItem="0z0-yS-VDR" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="GJh-e4-qc8"/>
-                            <constraint firstAttribute="trailing" secondItem="0z0-yS-VDR" secondAttribute="trailing" id="f11-IV-Ldz"/>
+                            <constraint firstItem="NLM-Ar-rL7" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="NjT-6A-Cf5"/>
+                            <constraint firstItem="NLM-Ar-rL7" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="Uib-K6-PIX"/>
+                            <constraint firstAttribute="trailing" secondItem="NLM-Ar-rL7" secondAttribute="trailing" id="YB9-Eh-dbX"/>
+                            <constraint firstAttribute="bottom" secondItem="NLM-Ar-rL7" secondAttribute="bottom" id="c0N-8L-jgU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3LB-gN-lWE"/>
                     <connections>
+                        <outlet property="buttonsView" destination="NLM-Ar-rL7" id="PaM-mz-2YI"/>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>
                         <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="dAX-m9-GtR"/>
                         <segue destination="uND-v8-dts" kind="unwind" identifier="Add Image To Video" unwindAction="unwindAddToVideoBuffer:" id="Xik-fJ-K6G"/>
@@ -230,7 +250,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3529" y="-734"/>
+            <point key="canvasLocation" x="3457" y="-729"/>
         </scene>
         <!--Edit Image View Controller - pieces-->
         <scene sceneID="Lez-Hp-WL0">
@@ -419,6 +439,8 @@
         <image name="BackButton" width="30" height="30"/>
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
+        <image name="FlashOff" width="40" height="30"/>
+        <image name="FlashOn" width="40" height="30"/>
         <image name="Loupe" width="150" height="150"/>
         <image name="LoupeCenter" width="150" height="150"/>
         <image name="MenuButton" width="30" height="30"/>

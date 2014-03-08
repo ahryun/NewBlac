@@ -24,6 +24,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @interface TakeImageViewController ()
 
 @property (nonatomic, weak) IBOutlet StillImagePreview *stillImagePreview;
+@property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelCamera;
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic) Canvas *canvas;
@@ -67,6 +68,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     
     // Hide the status bar
     [self prefersStatusBarHidden];
+    
+    // Draw the black overlay view
+    [self drawBlackOverlay];
 
 	// Dispatch the rest of session setup to the sessionQueue so that the main queue isn't blocked.
 	dispatch_queue_t sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
@@ -93,6 +97,40 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		}
 	});
 }
+
+- (void)drawBlackOverlay
+{
+    UIView *baseView = [[UIView alloc] initWithFrame:self.view.bounds];
+    //self.view = baseView;
+    [self.view insertSubview:baseView belowSubview:self.buttonsView];
+    [baseView setBackgroundColor:[UIColor blackColor]];
+    baseView.userInteractionEnabled = NO;
+    baseView.alpha = 0.6;
+    
+    CAShapeLayer *mask = [[CAShapeLayer alloc] init];
+    mask.frame = baseView.layer.bounds;
+    CGRect biggerRect = CGRectMake(mask.frame.origin.x, mask.frame.origin.y, mask.frame.size.width, mask.frame.size.height);
+    CGRect smallerRect = CGRectMake(30.0f, 30.0f, baseView.frame.size.width - (30.0f * 2), baseView.frame.size.height - (30.0f * 2));
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPath];
+    [maskPath moveToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMaxY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(biggerRect), CGRectGetMaxY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(biggerRect), CGRectGetMinY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
+    
+    [maskPath moveToPoint:CGPointMake(CGRectGetMinX(smallerRect), CGRectGetMinY(smallerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(smallerRect), CGRectGetMaxY(smallerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(smallerRect), CGRectGetMaxY(smallerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(smallerRect), CGRectGetMinY(smallerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(smallerRect), CGRectGetMinY(smallerRect))];
+    
+    mask.path = maskPath.CGPath;
+    [mask setFillRule:kCAFillRuleEvenOdd];
+    mask.fillColor = [[UIColor blackColor] CGColor];
+    baseView.layer.mask = mask;
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -226,8 +264,7 @@ monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
 + (void)setFlashMode:(AVCaptureFlashMode)flashMode
            forDevice:(AVCaptureDevice *)device
 {
-	if ([device hasFlash] && [device isFlashModeSupported:flashMode])
-	{
+	if ([device hasFlash] && [device isFlashModeSupported:flashMode]) {
 		NSError *error = nil;
 		if ([device lockForConfiguration:&error]) {
 			[device setFlashMode:flashMode];
@@ -315,6 +352,28 @@ monitorSubjectAreaChange:NO];
 			});
 		}
 	}];
+}
+
+#pragma mark - Outlet Actions
+
+- (IBAction)toggleFlash:(UIButton *)sender
+{
+    if (sender.selected) {
+        [sender setSelected:NO];
+        [self toogleFlashWithState:AVCaptureTorchModeOff];
+    } else {
+        [sender setSelected:YES];
+        [self toogleFlashWithState:AVCaptureTorchModeOn];
+    };
+}
+
+-(void)toogleFlashWithState:(AVCaptureTorchMode)torchMode
+{
+    if ([[self.videoDeviceInput device] hasTorch] && [self.videoDeviceInput device].torchAvailable) {
+        [[self.videoDeviceInput device] lockForConfiguration:nil];
+        [[self.videoDeviceInput device] setTorchMode:torchMode];
+        [[self.videoDeviceInput device] unlockForConfiguration];
+    }
 }
 
 @end
