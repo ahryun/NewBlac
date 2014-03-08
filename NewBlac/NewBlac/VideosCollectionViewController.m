@@ -47,6 +47,7 @@ static const NSString *PlayerReadyContext;
 {
     [super viewDidAppear:animated];
     [self centerACell];
+    if (self.navigationController.toolbarHidden) [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (IBAction)presentMenuModally:(UIBarButtonItem *)sender

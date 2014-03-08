@@ -96,9 +96,6 @@ static const NSString *videoCompilingDone;
     [super viewWillDisappear:animated];
     // Hackish way to know if the user clicked "Back" button in the navigation controller
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
-    
-    // Return the toolbar to its original state
-    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)cleanUpBeforeReturningToGallery
