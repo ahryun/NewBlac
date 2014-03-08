@@ -26,6 +26,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *loupeView;
 @property (weak, nonatomic) IBOutlet UIImageView *loupeCenter;
 @property (nonatomic) CGPoint loupeLocation;
+@property (nonatomic) UIBezierPath *maskPath;
+@property (nonatomic) UIView *baseView;
+@property (nonatomic) CAShapeLayer *mask;
 
 @end
 
@@ -127,6 +130,47 @@
     // Four corners layer
     CALayer *cornersLayer = [CALayer layer];
     cornersLayer.frame = self.zoomLayer.frame;
+    
+    UIView *baseView = [[UIView alloc] initWithFrame:self.originalImageView.bounds];
+    [self.originalImageView insertSubview:baseView belowSubview:self.cornerDetectionView];
+    [baseView setBackgroundColor:[UIColor blackColor]];
+    baseView.userInteractionEnabled = NO;
+    baseView.alpha = 0.5;
+    
+    [self drawBlackOverlay];
+    
+    CAShapeLayer *mask = [[CAShapeLayer alloc] init];
+    mask.frame = baseView.layer.bounds;
+    mask.path = self.maskPath.CGPath;
+    [mask setFillRule:kCAFillRuleEvenOdd];
+    mask.fillColor = [[UIColor blackColor] CGColor];
+    baseView.layer.mask = mask;
+    self.mask = mask;
+    self.baseView = baseView;
+}
+
+- (void)drawBlackOverlay
+{
+    float imageViewWidth = self.originalImageView.frame.size.width;
+    float imageViewHeight = self.originalImageView.frame.size.height;
+    CGRect biggerRect = CGRectMake(0, 0, imageViewWidth, imageViewHeight);
+    UIBezierPath *maskPath = [UIBezierPath bezierPath];
+    [maskPath moveToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMaxY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(biggerRect), CGRectGetMaxY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(biggerRect), CGRectGetMinY(biggerRect))];
+    [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
+    
+    [maskPath moveToPoint:CGPointMake([[self.coordinates objectAtIndex:2][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:2][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:3][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:3][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:1][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:1][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:0][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:0][1] floatValue] * imageViewHeight)];
+    [maskPath closePath];
+    
+    self.maskPath = maskPath;
+    self.mask.path = maskPath.CGPath;
+    self.baseView.layer.mask = self.mask;
+    [self.baseView setNeedsDisplay];
 }
 
 - (void)displayPhoto
@@ -158,8 +202,12 @@
 #pragma mark - Storyboard Actions
 - (IBAction)backButtonPressed:(UIBarButtonItem *)sender
 {
-    UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Go back without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-    [saveBeforeLeavingAlert show];
+    if (self.coordinatesChanged) {
+        UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Go back without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        [saveBeforeLeavingAlert show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -327,6 +375,8 @@
                 // Update coordinates of the corner selected
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:0 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.x / self.originalImageView.bounds.size.width]];
                 [[self.coordinates objectAtIndex:self.selectedCornerIndex] replaceObjectAtIndex:1 withObject:[[NSNumber alloc] initWithFloat:self.selectedCorner.centerPoint.y / self.originalImageView.bounds.size.height]];
+                
+                [self drawBlackOverlay];
                 
                 // Loupe
                 [CATransaction begin];
