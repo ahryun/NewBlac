@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id<ScrollingCellDelegate> delegate;
 
 - (void)displayVideo;
+- (void)displayWarningBar;
 - (void)prepareScrollView;
 - (void)reset;
 

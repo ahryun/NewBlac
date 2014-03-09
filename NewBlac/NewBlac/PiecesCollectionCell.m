@@ -101,6 +101,25 @@
     }
 }
 
+- (void)displayWarningBar
+{
+    if (self.imageView) {
+        UILabel *warningLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.imageView.bounds.size.width, 50.f)];
+        NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+        attachment.image = [UIImage imageNamed:@"WarningSign"];
+        NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+        NSMutableAttributedString *mutableAttachmentString = [attachmentString mutableCopy];
+        NSAttributedString *myString= [[NSAttributedString alloc] initWithString:@" Snap! No Corners Found"];
+        [mutableAttachmentString appendAttributedString:myString];
+        warningLabel.attributedText = mutableAttachmentString;
+        [warningLabel setBackgroundColor:[UIColor colorWithRed:(0.f/255.f) green:(0.f/255.f) blue:(0.f/255.f) alpha:0.7f]];
+        [warningLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:16]];
+        [warningLabel setTextAlignment:NSTextAlignmentCenter];
+        [warningLabel setTextColor:[UIColor lightGrayColor]];
+        [self.imageView addSubview:warningLabel];
+    }
+}
+
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

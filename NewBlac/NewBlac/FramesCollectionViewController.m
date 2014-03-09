@@ -336,6 +336,7 @@ static const NSString *videoCompilingDone;
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell prepareScrollView];
     [cell displayVideo];
+    if (![photo.cornersDetected boolValue]) [cell displayWarningBar];
     cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
     NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
     
