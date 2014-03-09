@@ -7,6 +7,7 @@
 //
 
 #import "Canvas.h"
+#import <CoreImage/CoreImage.h>
 #include "CanvasStraightener.hpp"
 
 @implementation Canvas
@@ -168,11 +169,13 @@
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     images.initialStraighteningDone = false;
     images.screenAspectRatio = self.screenAspect ? self.screenAspect : 0;
+    images.cornersDetected = false;
     
     CanvasStraightener canvasStraightener(images);
 //    self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.canvas];
     self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.photoCopy];
     self.coordinates = [self convertToNSArray:canvasStraightener.images_.inputQuad];
+    self.cornersDetected = canvasStraightener.images_.cornersDetected;
     if (!self.screenAspect) self.screenAspect = canvasStraightener.images_.screenAspectRatio;
 }
 
@@ -188,6 +191,7 @@
     images.initialStraighteningDone = true;
     // Screen aspect ratio needs to be recalculated so I pass zero into CanvasStraightener to force it to recalculate the aspect
     images.screenAspectRatio = ifFirstImage ? 0 : self.screenAspect;
+    images.cornersDetected = true;
     
     // Fill out the input quads of vertices in real pixel
     // Meaning the floating points are not in percentage form
@@ -202,6 +206,39 @@
     self.coordinates = coordinates;
     // Saves the new value for screen aspect ratio
     self.screenAspect = canvasStraightener.images_.screenAspectRatio;
+    self.cornersDetected = YES; // This function is used when a user unskews an image manually. In that case I consider corners are detected.
+}
+
+- (cv::Mat)gaussianBlurAndProduceCIImage:(UIImage *)uiImage
+{
+    CIContext *context = [CIContext contextWithOptions:nil];               // 1
+    CIImage *ciImage = [uiImage CIImage];               // 2
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];           // 3
+    [filter setValue:ciImage forKey:kCIInputImageKey];
+    [filter setValue:@5.0f forKey:kCIInputRadiusKey];
+    CIImage *blurredImage = [filter valueForKey:kCIOutputImageKey];              // 4
+    CGRect extent = [blurredImage extent];
+    CGImageRef cgImage = [context createCGImage:blurredImage fromRect:extent];   // 5
+    
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(cgImage);
+    CGFloat cols = CGImageGetWidth(cgImage);
+    CGFloat rows = CGImageGetHeight(cgImage);
+    
+    cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
+                                                    cols,                       // Width of bitmap
+                                                    rows,                       // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNoneSkipLast |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), cgImage);
+    CGContextRelease(contextRef);
+    
+    return cvMat;
 }
 
 // Images captured by iPhone camera are rotated 90 degree automatically

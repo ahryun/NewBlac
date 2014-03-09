@@ -2,7 +2,7 @@
 //  Photo.m
 //  NewBlac
 //
-//  Created by Ahryun Moon on 2/28/14.
+//  Created by Ahryun Moon on 3/9/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -13,12 +13,13 @@
 
 @implementation Photo
 
+@dynamic apertureSize;
 @dynamic croppedPhoto;
+@dynamic focalLength;
+@dynamic indexInVideo;
 @dynamic originalPhoto;
 @dynamic timeTaken;
-@dynamic indexInVideo;
-@dynamic apertureSize;
-@dynamic focalLength;
+@dynamic cornersDetected;
 @dynamic canvasRect;
 @dynamic video;
 

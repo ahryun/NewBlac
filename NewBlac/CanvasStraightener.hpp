@@ -30,9 +30,10 @@ public:
         float focalLength;
         float sensorWidth;
         bool initialStraighteningDone;
+        bool cornersDetected;
         float screenAspectRatio;
         std::vector<cv::Point> square;
-        cv::Point2f inputQuad[4]; // coordinate corresponding to pixels in images_photoCopy
+        cv::Point2f inputQuad[4]; // coordinate corresponding to pixels in images_.photoCopy
     } images_;
     
     CanvasStraightener(Images images);
@@ -41,7 +42,7 @@ public:
     void straighten();
     
 private:
-    void findASquare(const cv::Mat& image, std::vector<std::vector<cv::Point>> &squares, std::vector<cv::Point> &square);
+    void findASquare(const cv::Mat& image, std::vector<std::vector<cv::Point>> &squares, std::vector<cv::Point> &square, bool &cornersDetected);
     
     void applyGrayscale(cv::Mat &image);
     void applyGaussianBlur(cv::Mat &image, cv::Size kernel_size);

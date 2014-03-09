@@ -29,7 +29,7 @@ void CanvasStraightener::straighten()
     applyGaussianBlur(images_.canvas, Size(5,5));
 
     vector<vector<Point>> squares;
-    findASquare(images_.canvas, squares, images_.square);
+    findASquare(images_.canvas, squares, images_.square, images_.cornersDetected);
     warpToRectangle(images_.canvas, images_.photoCopy, images_.square, images_.imageWidth, images_.imageHeight, images_.focalLength, images_.sensorWidth, images_.screenAspectRatio);
 }
 
@@ -42,7 +42,6 @@ void CanvasStraightener::straightenToNewRectangle()
 void CanvasStraightener::applyGaussianBlur(Mat &image, Size kernel_size)
 {
     if (!image.empty()) {
-        
         GaussianBlur(image, image, kernel_size, 1.2, 1.2);
     }
 }
@@ -64,7 +63,7 @@ void CanvasStraightener::drawSquares(Mat &image, const vector<Point> &squares)
     
 }
 
-void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &squares, vector<Point> &square)
+void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &squares, vector<Point> &square, bool &cornersDetected)
 {
     int thresh = 200, N = 2;
     squares.clear();
@@ -140,8 +139,10 @@ void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &sq
         
 //        drawSquares(images_.canvas, square);
         cout << "Largest contour area is " << square << "\n";
+        cornersDetected = true;
     } else {
         cout << "Hey. No square has been detected. Try again\n";
+        cornersDetected = false;
     }
     
 //    if (!square.empty()) {

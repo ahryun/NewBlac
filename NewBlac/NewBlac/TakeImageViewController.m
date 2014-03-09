@@ -25,7 +25,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 @property (nonatomic, weak) IBOutlet StillImagePreview *stillImagePreview;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
+@property (strong, nonatomic) UIView *snapshotView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelCamera;
+@property (weak, nonatomic) IBOutlet UIImageView *customActivityIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic) Canvas *canvas;
 @property (nonatomic, strong) UIImage *croppedImage;
@@ -183,6 +186,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 #pragma mark - Main Functions
 - (IBAction)takeStillImage:(UIGestureRecognizer *)gestureRecognizer
 {
+    // Let the user know that the photo is being processed
+    [self showLoadingBar];
+    
     dispatch_async(self.sessionQueue, ^{
 		// Update the orientation on the still image output video connection before capturing.
 		[[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[self.stillImagePreview layer] connection] videoOrientation]];
@@ -209,7 +215,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                 
                 NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
                 
-                // Save the original image to a file system and save URL to core data
                 dispatch_async(dispatch_get_main_queue(), ^{
                     float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
                     self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
@@ -222,6 +227,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                                                    withCoordinates:self.canvas.coordinates
                                                   withApertureSize:apertureSize
                                                    withFocalLength:focalLength
+                                                 ifCornersDetected:self.canvas.cornersDetected
                                             inManagedObjectContext:self.managedObjectContext];
                         [self.video addPhotosObject:self.photo];
                         [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
@@ -230,6 +236,29 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 			}
 		}];
 	});
+}
+
+- (void)showLoadingBar
+{
+    self.instructionLabel.text = @"CREATING FRAME";
+    UIView *snapShot = [self.view resizableSnapshotViewFromRect:self.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+    snapShot.frame = self.view.frame;
+    [self.view insertSubview:snapShot belowSubview:self.customActivityIndicator];
+    self.snapshotView = snapShot;
+    [self.customActivityIndicator setHidden:NO];
+    [self rotateLayerInfinite:self.customActivityIndicator.layer];
+}
+
+- (void)rotateLayerInfinite:(CALayer *)layer
+{
+    CABasicAnimation *rotation;
+    rotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+    rotation.fromValue = [NSNumber numberWithFloat:0];
+    rotation.toValue = [NSNumber numberWithFloat:(2 * M_PI)];
+    rotation.duration = 0.7f; // Speed
+    rotation.repeatCount = HUGE_VALF; // Repeat forever. Can be a finite number.
+    [layer removeAllAnimations];
+    [layer addAnimation:rotation forKey:@"Spin"];
 }
 
 #pragma mark Device Configuration

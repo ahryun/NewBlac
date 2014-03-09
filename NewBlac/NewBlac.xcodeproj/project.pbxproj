@@ -26,9 +26,6 @@
 		F3A494F7188B2ED300CBAE82 /* VideoCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F6188B2ED300CBAE82 /* VideoCreator.m */; };
 		F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */; };
 		F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */; };
-		F3AAD67E18C1340500B5A23B /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3AAD67D18C1340500B5A23B /* Video.m */; };
-		F3AAD68118C1340500B5A23B /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3AAD68018C1340500B5A23B /* PhotoCorners.m */; };
-		F3AAD68418C1340500B5A23B /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3AAD68318C1340500B5A23B /* Photo.m */; };
 		F3AAD68718C15ACE00B5A23B /* VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3AAD68618C15ACE00B5A23B /* VideoPlayViewController.m */; };
 		F3AAD68918C2A8A400B5A23B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3AAD68818C2A8A400B5A23B /* MediaPlayer.framework */; };
 		F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3AAD68E18C2ABFB00B5A23B /* FullScreenMovieViewController.m */; };
@@ -56,8 +53,11 @@
 		F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290318443ADB00FF08F1 /* AssetsLibrary.framework */; };
 		F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290418443ADB00FF08F1 /* CoreImage.framework */; };
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
-		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; };
+		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F3C8566B18CBE08B00C9FE97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C8566A18CBE08B00C9FE97 /* Images.xcassets */; };
+		F3C8567718CC58EF00C9FE97 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567618CC58EF00C9FE97 /* Photo.m */; };
+		F3C8567A18CC58F000C9FE97 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567918CC58F000C9FE97 /* Video.m */; };
+		F3C8567D18CC58F000C9FE97 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */; };
 		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
 		F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */; };
 		F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF0818809D85000C1181 /* CornerCircle.m */; };
@@ -110,12 +110,6 @@
 		F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayView.m; sourceTree = "<group>"; };
 		F3A495041891D18E00CBAE82 /* CoreDataCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataCollectionViewController.h; sourceTree = "<group>"; };
 		F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataCollectionViewController.m; sourceTree = "<group>"; };
-		F3AAD67C18C1340500B5A23B /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
-		F3AAD67D18C1340500B5A23B /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
-		F3AAD67F18C1340500B5A23B /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
-		F3AAD68018C1340500B5A23B /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
-		F3AAD68218C1340500B5A23B /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
-		F3AAD68318C1340500B5A23B /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
 		F3AAD68518C15ACE00B5A23B /* VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayViewController.h; sourceTree = "<group>"; };
 		F3AAD68618C15ACE00B5A23B /* VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayViewController.m; sourceTree = "<group>"; };
 		F3AAD68818C2A8A400B5A23B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -155,6 +149,12 @@
 		F3C0290518443ADB00FF08F1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F3C0290618443ADB00FF08F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F3C8566A18CBE08B00C9FE97 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F3C8567518CC58EF00C9FE97 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
+		F3C8567618CC58EF00C9FE97 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
+		F3C8567818CC58F000C9FE97 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
+		F3C8567918CC58F000C9FE97 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
+		F3C8567B18CC58F000C9FE97 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
+		F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
 		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
 		F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerDetectionView.m; sourceTree = "<group>"; };
 		F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeImage.h"; sourceTree = "<group>"; };
@@ -240,12 +240,12 @@
 			isa = PBXGroup;
 			children = (
 				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
-				F3AAD68218C1340500B5A23B /* Photo.h */,
-				F3AAD68318C1340500B5A23B /* Photo.m */,
-				F3AAD67F18C1340500B5A23B /* PhotoCorners.h */,
-				F3AAD68018C1340500B5A23B /* PhotoCorners.m */,
-				F3AAD67C18C1340500B5A23B /* Video.h */,
-				F3AAD67D18C1340500B5A23B /* Video.m */,
+				F3C8567B18CC58F000C9FE97 /* PhotoCorners.h */,
+				F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */,
+				F3C8567818CC58F000C9FE97 /* Video.h */,
+				F3C8567918CC58F000C9FE97 /* Video.m */,
+				F3C8567518CC58EF00C9FE97 /* Photo.h */,
+				F3C8567618CC58EF00C9FE97 /* Photo.m */,
 				F3A495041891D18E00CBAE82 /* CoreDataCollectionViewController.h */,
 				F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */,
 				F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */,
@@ -508,7 +508,6 @@
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
 				F33EA966187A3B860045E642 /* SharedManagedDocument.m in Sources */,
-				F3AAD67E18C1340500B5A23B /* Video.m in Sources */,
 				F33EA987187B5BE40045E642 /* PhotoCorners+LifeCycle.m in Sources */,
 				F3AF498C18B448B4006249BF /* PiecesNavigationController.m in Sources */,
 				F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */,
@@ -518,25 +517,26 @@
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
 				F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */,
 				F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */,
+				F3C8567718CC58EF00C9FE97 /* Photo.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
+				F3C8567D18CC58F000C9FE97 /* PhotoCorners.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
 				F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */,
-				F3AAD68418C1340500B5A23B /* Photo.m in Sources */,
 				F3AAD68718C15ACE00B5A23B /* VideoPlayViewController.m in Sources */,
 				F3A494F7188B2ED300CBAE82 /* VideoCreator.m in Sources */,
 				F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */,
 				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
+				F3C8567A18CC58F000C9FE97 /* Video.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* FramesCollectionViewController.m in Sources */,
 				F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
 				F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */,
 				F3A37DBF18947425003B530C /* CollectionViewLayout.m in Sources */,
-				F3AAD68118C1340500B5A23B /* PhotoCorners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

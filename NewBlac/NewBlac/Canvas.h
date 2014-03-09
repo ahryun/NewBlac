@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UIImage *originalImage;
 @property (strong, nonatomic) NSArray *coordinates; // In percentage
 @property (nonatomic) BOOL orientationChanged;
+@property (nonatomic) BOOL cornersDetected;
 @property (nonatomic) float imageWidth;
 @property (nonatomic) float imageHeight;
 @property (nonatomic) float focalLength;

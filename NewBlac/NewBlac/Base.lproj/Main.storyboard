@@ -170,9 +170,6 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="XHt-7x-vgi" appends="YES" id="mwS-hT-boS"/>
-                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NLM-Ar-rL7">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -218,36 +215,52 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="N3c-QB-Y4w" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" id="AwJ-IW-3eL"/>
                                     <constraint firstAttribute="trailing" secondItem="N3c-QB-Y4w" secondAttribute="trailing" id="VYA-qs-1fN"/>
                                     <constraint firstAttribute="centerX" secondItem="jko-oZ-EY4" secondAttribute="centerX" constant="-0.5" id="kpg-Lj-EUe"/>
                                     <constraint firstItem="jko-oZ-EY4" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" constant="109" id="rjJ-b0-FbW"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="fB2-ff-ZLJ" appends="YES" id="XfK-bv-sOv"/>
+                                </connections>
                             </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ActivityIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="QRC-ku-7UE" userLabel="Activity Indicator">
+                                <rect key="frame" x="110" y="234" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="hB0-uj-2um"/>
+                                    <constraint firstAttribute="width" constant="100" id="iSR-xK-5m3"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="QRC-ku-7UE" secondAttribute="centerX" id="M2b-8X-HkK"/>
                             <constraint firstItem="NLM-Ar-rL7" firstAttribute="top" secondItem="AOS-x5-JgC" secondAttribute="top" id="NjT-6A-Cf5"/>
                             <constraint firstItem="NLM-Ar-rL7" firstAttribute="leading" secondItem="AOS-x5-JgC" secondAttribute="leading" id="Uib-K6-PIX"/>
                             <constraint firstAttribute="trailing" secondItem="NLM-Ar-rL7" secondAttribute="trailing" id="YB9-Eh-dbX"/>
                             <constraint firstAttribute="bottom" secondItem="NLM-Ar-rL7" secondAttribute="bottom" id="c0N-8L-jgU"/>
+                            <constraint firstAttribute="centerY" secondItem="QRC-ku-7UE" secondAttribute="centerY" id="ld0-5U-w12"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3LB-gN-lWE"/>
                     <connections>
                         <outlet property="buttonsView" destination="NLM-Ar-rL7" id="PaM-mz-2YI"/>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>
-                        <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="dAX-m9-GtR"/>
+                        <outlet property="customActivityIndicator" destination="QRC-ku-7UE" id="M0s-Gc-7Eh"/>
+                        <outlet property="instructionLabel" destination="jko-oZ-EY4" id="kBF-BX-JLE"/>
+                        <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="czz-E7-qIZ"/>
                         <segue destination="uND-v8-dts" kind="unwind" identifier="Add Image To Video" unwindAction="unwindAddToVideoBuffer:" id="Xik-fJ-K6G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="74r-8o-GnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="uND-v8-dts" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="XHt-7x-vgi">
+                <tapGestureRecognizer id="fB2-ff-ZLJ">
                     <connections>
-                        <action selector="takeStillImage:" destination="CaK-cf-brN" id="YbJ-2k-vAj"/>
+                        <action selector="takeStillImage:" destination="CaK-cf-brN" id="PgQ-r4-Qrk"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -278,7 +291,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="alB-Uf-IqQ" secondAttribute="bottom" id="Bio-0A-2sK"/>
@@ -436,6 +449,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ActivityIndicator" width="100" height="100"/>
         <image name="AddVideoButton" width="30" height="30"/>
         <image name="BackButton" width="30" height="30"/>
         <image name="CameraButton" width="30" height="30"/>

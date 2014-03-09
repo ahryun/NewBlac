@@ -70,19 +70,8 @@ static const NSString *videoCompilingDone;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    int photoCount = [self.video.photos count];
-    if (photoCount > 1) {
-        UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
-                         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [self.navigationController setToolbarHidden:NO animated:NO];
-        self.playButton.enabled = YES;
-        self.playButton.image = playButtonImg;
-        
-        // Count the number of frames
-        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", photoCount]];
-    } else {
-        [self.navigationController setToolbarHidden:YES animated:YES];
-    }
+    int photoCount = [self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+    [self resetToolbarWithPhotoCount:photoCount];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -108,6 +97,8 @@ static const NSString *videoCompilingDone;
         NSError *error;
         [self.managedObjectContext save:&error];
     }
+    // When going back to the videoCollectionView, make the tool bar appear again no matter what
+    [self.navigationController setToolbarHidden:NO];
 }
 
 #pragma mark - Segues
@@ -162,6 +153,7 @@ static const NSString *videoCompilingDone;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
+        [self.navigationController setToolbarHidden:YES];
     }
     if ([segue.identifier isEqualToString:@"Play Full Screen Video"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setVideoPath:)]) {
@@ -378,6 +370,26 @@ static const NSString *videoCompilingDone;
         self.selectedPhoto = photo;
         [Photo deletePhoto:photo inContext:self.managedObjectContext];
         [self centerACell];
+        
+        int photoCount = [self.video.photos count] - 1; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+        [self resetToolbarWithPhotoCount:photoCount];
+    }
+}
+
+#pragma mark - Update UIs
+- (void)resetToolbarWithPhotoCount:(NSUInteger)photoCount
+{
+    if (photoCount > 1) {
+        UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
+                                  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.navigationController setToolbarHidden:NO animated:NO];
+        self.playButton.enabled = YES;
+        self.playButton.image = playButtonImg;
+        
+        // Count the number of frames
+        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", photoCount]];
+    } else {
+        [self.navigationController setToolbarHidden:YES animated:YES];
     }
 }
 

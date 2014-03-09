@@ -12,8 +12,7 @@
 
 @implementation Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates withApertureSize:(float)apertureSize
-                  withFocalLength:(float)focalLength inManagedObjectContext:(NSManagedObjectContext *)context
++ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates withApertureSize:(float)apertureSize withFocalLength:(float)focalLength ifCornersDetected:(BOOL)cornersDetected inManagedObjectContext:(NSManagedObjectContext *)context
 {
     Photo *photo = nil;
     NSData *originalPhotoData = UIImageJPEGRepresentation(originalPhoto, 0);
@@ -24,6 +23,7 @@
     [photo setTimeTaken:[NSDate date]];
     [photo setApertureSize:[NSNumber numberWithFloat:apertureSize]];
     [photo setFocalLength:[NSNumber numberWithFloat:focalLength]];
+    [photo setCornersDetected:[NSNumber numberWithBool:cornersDetected]];
     PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates withManagedObjectContext:context];
     [photo setCanvasRect:photoCorners];
     

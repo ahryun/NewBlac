@@ -241,6 +241,7 @@
         // Replace the cropped image saved in core data
         NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
         [self.photo setCroppedPhoto:imageData];
+        [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
     }
     
     // May need to prepareForSegue
@@ -250,12 +251,23 @@
 #pragma mark CornerDetectionView
 - (void)displayCorners
 {
-    self.coordinates = [NSMutableArray arrayWithObjects:
-                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil],
-                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil],
-                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
-                        [NSMutableArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
-                        , nil];
+    if ([self.photo.cornersDetected boolValue]) {
+        self.coordinates = [NSMutableArray arrayWithObjects:
+                            [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomLeftxPercent, self.photo.canvasRect.bottomLeftyPercent, nil],
+                            [NSMutableArray arrayWithObjects:self.photo.canvasRect.bottomRightxPercent, self.photo.canvasRect.bottomRightyPercent, nil],
+                            [NSMutableArray arrayWithObjects:self.photo.canvasRect.topLeftxPercent, self.photo.canvasRect.topLeftyPercent, nil],
+                            [NSMutableArray arrayWithObjects:self.photo.canvasRect.topRightxPercent, self.photo.canvasRect.topRightyPercent, nil]
+                            , nil];
+    } else {
+        // If corners were not detected and no meaningful coordinates available, I want the corners to appear at designated places.
+        self.coordinates = [NSMutableArray arrayWithObjects:
+                            [NSMutableArray arrayWithObjects:@0.2f, @0.8f, nil],
+                            [NSMutableArray arrayWithObjects:@0.8f, @0.8f, nil],
+                            [NSMutableArray arrayWithObjects:@0.2f, @0.2f, nil],
+                            [NSMutableArray arrayWithObjects:@0.8f, @0.2f, nil]
+                            , nil];
+    }
+    
     CornerDetectionView *cornerDetectionview = [[CornerDetectionView alloc] initWithFrame:self.originalImageView.bounds];
     for (NSArray *coordinate in self.coordinates) {
         CornerCircle *corner = [CornerCircle addCornerWithCoordinate:coordinate inRect:cornerDetectionview.bounds.size];
