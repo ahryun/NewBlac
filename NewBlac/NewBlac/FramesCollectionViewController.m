@@ -71,7 +71,7 @@ static const NSString *videoCompilingDone;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    int photoCount = [self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+    int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
     [self resetToolbarWithPhotoCount:photoCount];
 }
 
@@ -383,7 +383,7 @@ static const NSString *videoCompilingDone;
         [Photo deletePhoto:photo inContext:self.managedObjectContext];
         [self centerACell];
         
-        int photoCount = [self.video.photos count] - 1; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+        int photoCount = (int)[self.video.photos count] - 1; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
         [self resetToolbarWithPhotoCount:photoCount];
     }
 }
@@ -403,7 +403,7 @@ static const NSString *videoCompilingDone;
         self.playButton.image = playButtonImg;
         
         // Count the number of frames
-        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", photoCount]];
+        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", (int)photoCount]];
     } else {
         if (!self.navigationController.toolbarHidden) {
             [self.navigationController setToolbarHidden:YES animated:YES];

@@ -50,6 +50,14 @@ static const NSString *PlayerReadyContext;
 //    if (self.navigationController.toolbarHidden) [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    int videoCount = (int)[self.collectionView numberOfItemsInSection:0];
+    [self resetToolbarWithPhotoCount:videoCount];
+}
+
 - (IBAction)presentMenuModally:(UIBarButtonItem *)sender
 {
     // Do something
@@ -61,6 +69,22 @@ static const NSString *PlayerReadyContext;
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
     // Do manual segue "View And Edit Video"
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+}
+
+#pragma mark - Update UIs
+- (void)resetToolbarWithPhotoCount:(NSUInteger)videoCount
+{
+    if (videoCount > 0) {
+        if (self.navigationController.toolbarHidden) {
+            [self.navigationController setToolbarHidden:NO animated:NO];
+            [self.view setNeedsLayout];
+        }
+    } else {
+        if (!self.navigationController.toolbarHidden) {
+            [self.navigationController setToolbarHidden:YES animated:YES];
+            [self.view setNeedsLayout];
+        }
+    }
 }
 
 #pragma mark - Segues
