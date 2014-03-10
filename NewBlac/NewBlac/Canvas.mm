@@ -150,7 +150,7 @@
     
     if (aspectRatio) [self setScreenAspect:aspectRatio];
     
-    [self straightenCanvas];
+//    [self straightenCanvas];
     
     return self;
 }
@@ -169,7 +169,7 @@
     images.sensorWidth = self.apertureSize <= 2.30 ? 4.8: 4.54;
     images.initialStraighteningDone = false;
     images.screenAspectRatio = self.screenAspect ? self.screenAspect : 0;
-    images.cornersDetected = false;
+//    images.cornersDetected = false;
     
     CanvasStraightener canvasStraightener(images);
 //    self.originalImage = [self UIImageFromCVMat:canvasStraightener.images_.canvas];
@@ -191,7 +191,7 @@
     images.initialStraighteningDone = true;
     // Screen aspect ratio needs to be recalculated so I pass zero into CanvasStraightener to force it to recalculate the aspect
     images.screenAspectRatio = ifFirstImage ? 0 : self.screenAspect;
-    images.cornersDetected = true;
+//    images.cornersDetected = true;
     
     // Fill out the input quads of vertices in real pixel
     // Meaning the floating points are not in percentage form

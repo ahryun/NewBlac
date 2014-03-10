@@ -26,6 +26,7 @@
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) NSIndexPath *selectedCellIndexPath;
 @property (nonatomic, strong) Photo *selectedPhoto;
 @property (nonatomic) Canvas *canvas;
 
@@ -118,6 +119,8 @@ static const NSString *videoCompilingDone;
 {
     // When the user edited corners - photo added
     self.needToCompile = YES;
+    
+    [self.collectionView reloadItemsAtIndexPaths:@[self.selectedCellIndexPath]];
 }
 
 - (IBAction)unwindCancelEditingImage:(UIStoryboardSegue *)segue
@@ -153,6 +156,9 @@ static const NSString *videoCompilingDone;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
+        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
+            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        }
         [self.navigationController setToolbarHidden:YES];
     }
     if ([segue.identifier isEqualToString:@"Play Full Screen Video"]) {
@@ -169,6 +175,7 @@ static const NSString *videoCompilingDone;
 
 - (void)compileVideo
 {
+    NSLog(@"I am in compileVideo\n");
     if (self.video && [self.video.photos count] > 0) {
         CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
         dispatch_async(dispatch_get_main_queue(), ^(){
@@ -196,6 +203,7 @@ static const NSString *videoCompilingDone;
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
+                [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
                 [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
             }
         });
@@ -283,6 +291,7 @@ static const NSString *videoCompilingDone;
 - (void)selectItemAtIndexPath:(PiecesCollectionCell *)cell
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    self.selectedCellIndexPath = indexPath;
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.selectedPhoto = photo;
     UIImage *originalPhoto = [UIImage imageWithData:self.selectedPhoto.originalPhoto];
@@ -336,6 +345,7 @@ static const NSString *videoCompilingDone;
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell prepareScrollView];
     [cell displayVideo];
+    if (![photo.cornersDetected boolValue]) NSLog(@"No Corners detected for indexPath: %@\n", indexPath);
     if (![photo.cornersDetected boolValue]) [cell displayWarningBar];
     cell.imageView.image = [UIImage imageWithData:photo.croppedPhoto];
     NSLog(@"Cell width and height are %f x %f", cell.bounds.size.width, cell.bounds.size.height);
@@ -369,6 +379,7 @@ static const NSString *videoCompilingDone;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.deleteCandidateCell];
         Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
         self.selectedPhoto = photo;
+        self.needToCompile = YES;
         [Photo deletePhoto:photo inContext:self.managedObjectContext];
         [self centerACell];
         
@@ -383,14 +394,21 @@ static const NSString *videoCompilingDone;
     if (photoCount > 1) {
         UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                                   imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [self.navigationController setToolbarHidden:NO animated:NO];
+        if (self.navigationController.toolbarHidden) {
+            [self.navigationController setToolbarHidden:NO animated:NO];
+            [self.view setNeedsLayout];
+        }
+        
         self.playButton.enabled = YES;
         self.playButton.image = playButtonImg;
         
         // Count the number of frames
         [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", photoCount]];
     } else {
-        [self.navigationController setToolbarHidden:YES animated:YES];
+        if (!self.navigationController.toolbarHidden) {
+            [self.navigationController setToolbarHidden:YES animated:YES];
+            [self.view setNeedsLayout];
+        }
     }
 }
 

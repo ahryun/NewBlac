@@ -31,5 +31,6 @@
 
 - (id)initWithPhoto:(UIImage *)photo withFocalLength:(float)focalLength withApertureSize:(float)apertureSize withAspectRatio:(float)aspectRatio;
 - (void)unskewWithCoordinates:(NSArray *)coordinates withOriginalImage:(UIImage *)originalImage ifFirstImage:(BOOL)ifFirstImage;
+- (void)straightenCanvas;
 
 @end

@@ -40,6 +40,14 @@
     return self;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    [self.warningLabel removeFromSuperview];
+    [self reset];
+}
+
 #define OFFSET_TOP               (80)
 #define PULL_THRESHOLD           (50)
 #define CELL_HEIGHT              (330)
@@ -117,6 +125,7 @@
         [warningLabel setTextAlignment:NSTextAlignmentCenter];
         [warningLabel setTextColor:[UIColor lightGrayColor]];
         [self.imageView addSubview:warningLabel];
+        self.warningLabel = warningLabel;
     }
 }
 
@@ -162,7 +171,10 @@
 - (void)reset
 {
     self.pulling = NO;
-    [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.deleteButton.alpha = 0;
+        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
+    }];
 }
 
 @end

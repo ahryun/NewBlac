@@ -242,6 +242,9 @@
         NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
         [self.photo setCroppedPhoto:imageData];
         [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
+        
+        NSError *error;
+        [self.managedObjectContext save:&error];
     }
     
     // May need to prepareForSegue

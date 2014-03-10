@@ -148,7 +148,8 @@
     NSParameterAssert(context);
     
     ///////////////////////// Change the position of image origin ////////////////////////////////
-    CGSize imageSize = [self getImageSizewithScreenSize:size];
+    float originalImageRatio = (float)CGImageGetWidth(cgImage) / (float)CGImageGetHeight(cgImage);
+    CGSize imageSize = [self getImageSizewithScreenSize:size withImageSize:originalImageRatio];
     // Below added to un-Blur the image
 //    CGContextScaleCTM(context, imageSize.width/size.width, imageSize.height/size.height);
     // Above added to un-Blur the image
@@ -160,16 +161,19 @@
     return pixelBuffer;
 }
 
-- (CGSize)getImageSizewithScreenSize:(CGSize)screenSize
+- (CGSize)getImageSizewithScreenSize:(CGSize)screenSize withImageSize:(float)originalImageRatio
 {
     CGSize imageSize;
     float screenRatio = screenSize.width / screenSize.height;
-    if ([self.video.screenRatio floatValue] >= screenRatio) {
+    float videoRatio = [self.video.screenRatio floatValue];
+    // This is so that if the video only contains non corners detected photos, meaning aspect ratio of ZERO, the video still shows the photos in correct dimensions
+    if (videoRatio <= 0) videoRatio = originalImageRatio;
+    if (videoRatio >= screenRatio) {
         imageSize.width = (int)screenSize.width;
-        imageSize.height = (int)(screenSize.width / [self.video.screenRatio floatValue]);
+        imageSize.height = (int)(screenSize.width / videoRatio);
     } else {
         imageSize.height = (int)screenSize.height;
-        imageSize.width = (int)(screenSize.height * [self.video.screenRatio floatValue]);
+        imageSize.width = (int)(screenSize.height * videoRatio);
     }
     
     return imageSize;

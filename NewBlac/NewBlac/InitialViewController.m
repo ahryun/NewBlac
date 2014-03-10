@@ -8,6 +8,7 @@
 
 #import "InitialViewController.h"
 #import "SharedManagedDocument.h"
+#import <CoreData/CoreData.h>
 
 @interface InitialViewController ()
 
@@ -40,6 +41,7 @@ static NSString *_SegueIdentifier = @"Go To Rootview";
 {
     [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
         self.managedObjectContext = document.managedObjectContext;
+        [self.managedObjectContext setUndoManager:nil];
     }];
 }
 
