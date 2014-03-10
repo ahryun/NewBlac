@@ -197,6 +197,9 @@ static const NSString *PlayerReadyContext;
         self.selectedVideo = video;
         [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
         [self centerACell];
+        
+        int videoCount = (int)[self.collectionView numberOfItemsInSection:0] - 1;
+        [self resetToolbarWithPhotoCount:videoCount];
     }
 }
 
