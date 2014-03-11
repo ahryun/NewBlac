@@ -231,6 +231,8 @@
         // Update the corner coordinates in core data
         [self.managedObjectContext performBlock:^{
             [self.photo.canvasRect setCoordinates:self.coordinates];
+            NSError *error;
+            [self.managedObjectContext save:&error];
         }];
         
         // Send the new coordinates to the c++ file to recalculate the matrix
@@ -244,10 +246,9 @@
             NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
             [self.photo setCroppedPhoto:imageData];
             [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
+            NSError *error;
+            [self.managedObjectContext save:&error];
         }];
-        
-        NSError *error;
-        [self.managedObjectContext save:&error];
     }
     
     // May need to prepareForSegue

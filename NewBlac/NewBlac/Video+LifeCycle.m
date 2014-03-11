@@ -75,9 +75,7 @@
             if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
         }
         
-        [context performBlock:^{
-            [context deleteObject:video];
-        }];
+        [context deleteObject:video];
         
         NSError *saveError;
         [context save:&saveError];

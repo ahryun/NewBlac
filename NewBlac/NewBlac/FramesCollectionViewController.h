@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) PiecesCollectionCell *centerCell;
 
+- (void)ifAutoCameraMode:(NSNumber *)ifNewVideo;
 
 @end

@@ -19,10 +19,12 @@
 @interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate, ScrollingCellDelegate>
 
 @property (nonatomic) BOOL needToCompile;
+@property (nonatomic) BOOL autoCameraMode;
 @property (strong, nonatomic) VideoCreator *videoCreator;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *noOfFrames;
+@property (weak, nonatomic) IBOutlet UIImageView *noFramesScreen;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIView *snapshotView;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
@@ -39,6 +41,11 @@ static const NSString *videoCompilingDone;
 - (void)setVideo:(Video *)video
 {
     _video = video;
+}
+
+- (void)ifAutoCameraMode:(NSNumber *)ifNewVideo
+{
+    self.autoCameraMode = [ifNewVideo boolValue];
 }
 
 - (NSManagedObject *)specificModel
@@ -73,17 +80,20 @@ static const NSString *videoCompilingDone;
     [super viewWillAppear:animated];
     int photoCount = (int)[self.video.photos count];
     [self resetToolbarWithPhotoCount:photoCount];
+    [self.noFramesScreen setHidden:YES];
+    if (photoCount == 0) {
+        [self.noFramesScreen setHidden:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([self.video.photos count] > 0) {
-        [self centerACell];
-    } else {
-        // Make a cell appear then segue
-        
+    if (self.autoCameraMode) {
         [self performSegueWithIdentifier:@"Ready Camera" sender:self];
+        
+    } else {
+        [self centerACell];
     }
 }
 
@@ -92,18 +102,15 @@ static const NSString *videoCompilingDone;
     [super viewWillDisappear:animated];
     // Hackish way to know if the user clicked "Back" button in the navigation controller
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
+    self.autoCameraMode = NO;
 }
 
 - (void)cleanUpBeforeReturningToGallery
 {
     NSLog(@"I'm in clean up\n");
-    if ([self.video.photos count] < 1) {
-        [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
-    } else {
-        // Save the video to child context, which pushes the changes to the parent context on main thread. This will eventually be saved to persistent store when the UIManagedDocument closes.
-        NSError *error;
-        [self.managedObjectContext save:&error];
-    }
+    if ([self.video.photos count] < 1) [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
+    NSError *error;
+    [self.managedObjectContext save:&error];
     // When going back to the videoCollectionView, make the tool bar appear again no matter what
     [self.navigationController setToolbarHidden:NO];
 }
@@ -113,12 +120,14 @@ static const NSString *videoCompilingDone;
 {
     // When the user takes a photo with the camera - photo added
     self.needToCompile = YES;
+    [self ifAutoCameraMode:[NSNumber numberWithBool:YES]];
 }
 
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
 {
     // When the user cancels camera - no photo
     self.needToCompile = NO;
+    [self ifAutoCameraMode:[NSNumber numberWithBool:NO]];
 }
 
 - (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
@@ -396,6 +405,9 @@ static const NSString *videoCompilingDone;
         
         int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
         [self resetToolbarWithPhotoCount:photoCount];
+        if (photoCount == 0) {
+            [self.noFramesScreen setHidden:NO];
+        }
     }
 }
 

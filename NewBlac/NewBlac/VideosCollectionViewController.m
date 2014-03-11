@@ -15,8 +15,10 @@
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
 
+@property (nonatomic, strong) NSNumber *ifAddNewVideo;
 @property (nonatomic, strong) Video *selectedVideo;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
+@property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
 
 @end
 
@@ -61,7 +63,20 @@ static const NSString *PlayerReadyContext;
     
     int videoCount = (int)[self.collectionView numberOfItemsInSection:0];
     [self resetToolbarWithPhotoCount:videoCount];
+    [self.noVideoScreen setHidden:YES];
+    if (videoCount == 0) {
+        [self.noVideoScreen setHidden:NO];
+    }
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.ifAddNewVideo = [NSNumber numberWithBool:NO];
+}
+
+#pragma mark - Storyboard Actions
 
 - (IBAction)presentMenuModally:(UIBarButtonItem *)sender
 {
@@ -73,6 +88,7 @@ static const NSString *PlayerReadyContext;
     NSLog(@"I'm in addVideo\n");
     self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
     // Do manual segue "View And Edit Video"
+    self.ifAddNewVideo = [NSNumber numberWithBool:YES];
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
 }
 
@@ -100,8 +116,8 @@ static const NSString *PlayerReadyContext;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.selectedVideo];
         }
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        if ([segue.destinationViewController respondsToSelector:@selector(ifAutoCameraMode:)]) {
+            [segue.destinationViewController performSelector:@selector(ifAutoCameraMode:) withObject:self.ifAddNewVideo];
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
             [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
@@ -208,6 +224,9 @@ static const NSString *PlayerReadyContext;
         
         int videoCount = (int)[self.collectionView numberOfItemsInSection:0] - 1;
         [self resetToolbarWithPhotoCount:videoCount];
+        if (videoCount == 0) {
+            [self.noVideoScreen setHidden:NO];
+        }
     }
 }
 

@@ -12,7 +12,7 @@
 #import <ImageIO/CGImageProperties.h>
 #import "StillImagePreview.h"
 #import "Canvas.h"
-#import "ViewImageViewController.h"
+//#import "ViewImageViewController.h"
 #import "SharedManagedDocument.h"
 #import "Photo+LifeCycle.h"
 #import "UIImage+ResizeImage.h"
@@ -133,7 +133,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     baseView.layer.mask = mask;
     
     // If photos object is created before coming into the Camera mode, take off "+1"
-    [self.frameNumberLabel setText:[NSString stringWithFormat:@"Frame %i", [self.video.photos count] + 1]];
+    [self.frameNumberLabel setText:[NSString stringWithFormat:@"FRAME %i", [self.video.photos count] + 1]];
 }
 
 
@@ -197,11 +197,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		// Update the orientation on the still image output video connection before capturing.
 		[[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[self.stillImagePreview layer] connection] videoOrientation]];
 		
-		// Flash set to Auto for Still Capture
-//		[TakeImageViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[self.videoDeviceInput device]];
-//        [TakeImageViewController setExposureMode:AVCaptureExposureModeContinuousAutoExposure forDevice:[self.videoDeviceInput device]];
-//        [TakeImageViewController setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance forDevice:[self.videoDeviceInput device]];
-
 		// Capture a still image.
 		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
             // Creates exifAttachments
@@ -298,49 +293,6 @@ monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
 		}
 	});
 }
-
-//+ (void)setFlashMode:(AVCaptureFlashMode)flashMode
-//           forDevice:(AVCaptureDevice *)device
-//{
-//	if ([device hasFlash] && [device isFlashModeSupported:flashMode]) {
-//		NSError *error = nil;
-//		if ([device lockForConfiguration:&error]) {
-//			[device setFlashMode:flashMode];
-//			[device unlockForConfiguration];
-//		} else {
-//			NSLog(@"%@", error);
-//		}
-//	}
-//}
-//
-
-//+ (void)setExposureMode:(AVCaptureExposureMode)exposureMode
-//           forDevice:(AVCaptureDevice *)device
-//{
-//	if ([device isExposureModeSupported:exposureMode]) {
-//		NSError *error = nil;
-//		if ([device lockForConfiguration:&error]) {
-//			[device setExposureMode:exposureMode];
-//			[device unlockForConfiguration];
-//		} else {
-//			NSLog(@"%@", error);
-//		}
-//	}
-//}
-//
-//+ (void)setWhiteBalanceMode:(AVCaptureWhiteBalanceMode)whiteBalanceMode
-//              forDevice:(AVCaptureDevice *)device
-//{
-//	if ([device isWhiteBalanceModeSupported:whiteBalanceMode]) {
-//		NSError *error = nil;
-//		if ([device lockForConfiguration:&error]) {
-//			[device setWhiteBalanceMode:whiteBalanceMode];
-//			[device unlockForConfiguration];
-//		} else {
-//			NSLog(@"%@", error);
-//		}
-//	}
-//}
 
 - (void)subjectAreaDidChange:(NSNotification *)notification
 {
