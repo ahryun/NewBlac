@@ -214,13 +214,26 @@
                                             <action selector="toggleFlash:" destination="CaK-cf-brN" eventType="touchUpInside" id="tUH-Vh-ZVp"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frame 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCI-0I-307">
+                                        <rect key="frame" x="110" y="147" width="100" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="RP7-zx-BU4"/>
+                                            <constraint firstAttribute="width" constant="100" id="hec-3A-lcS"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="iCI-0I-307" secondAttribute="centerX" id="8gd-RM-0vt"/>
                                     <constraint firstItem="N3c-QB-Y4w" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" id="AwJ-IW-3eL"/>
                                     <constraint firstAttribute="trailing" secondItem="N3c-QB-Y4w" secondAttribute="trailing" id="VYA-qs-1fN"/>
                                     <constraint firstAttribute="centerX" secondItem="jko-oZ-EY4" secondAttribute="centerX" constant="-0.5" id="kpg-Lj-EUe"/>
                                     <constraint firstItem="jko-oZ-EY4" firstAttribute="top" secondItem="NLM-Ar-rL7" secondAttribute="top" constant="109" id="rjJ-b0-FbW"/>
+                                    <constraint firstItem="iCI-0I-307" firstAttribute="top" secondItem="jko-oZ-EY4" secondAttribute="bottom" constant="8" id="uAu-ek-Ds4"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="fB2-ff-ZLJ" appends="YES" id="XfK-bv-sOv"/>
@@ -251,6 +264,7 @@
                         <outlet property="buttonsView" destination="NLM-Ar-rL7" id="PaM-mz-2YI"/>
                         <outlet property="cancelCamera" destination="N3c-QB-Y4w" id="aId-at-PiS"/>
                         <outlet property="customActivityIndicator" destination="QRC-ku-7UE" id="M0s-Gc-7Eh"/>
+                        <outlet property="frameNumberLabel" destination="iCI-0I-307" id="RA2-Jz-OBx"/>
                         <outlet property="instructionLabel" destination="jko-oZ-EY4" id="kBF-BX-JLE"/>
                         <outlet property="stillImagePreview" destination="0z0-yS-VDR" id="czz-E7-qIZ"/>
                         <segue destination="uND-v8-dts" kind="unwind" identifier="Add Image To Video" unwindAction="unwindAddToVideoBuffer:" id="Xik-fJ-K6G"/>

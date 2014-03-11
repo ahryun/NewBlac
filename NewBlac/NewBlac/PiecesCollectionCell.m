@@ -45,7 +45,7 @@
     [super prepareForReuse];
     
     [self.warningLabel removeFromSuperview];
-    [self reset];
+    [self resetWithoutAnimation];
 }
 
 #define OFFSET_TOP               (80)
@@ -175,6 +175,13 @@
         self.deleteButton.alpha = 0;
         [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
     }];
+}
+
+- (void)resetWithoutAnimation
+{
+    self.pulling = NO;
+    self.deleteButton.alpha = 0;
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
 }
 
 @end

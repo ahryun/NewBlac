@@ -71,7 +71,7 @@ static const NSString *videoCompilingDone;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+    int photoCount = (int)[self.video.photos count];
     [self resetToolbarWithPhotoCount:photoCount];
 }
 
@@ -394,7 +394,7 @@ static const NSString *videoCompilingDone;
         [Photo deletePhoto:photo inContext:self.managedObjectContext];
         [self centerACell];
         
-        int photoCount = (int)[self.video.photos count] - 1; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+        int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
         [self resetToolbarWithPhotoCount:photoCount];
     }
 }
@@ -405,10 +405,8 @@ static const NSString *videoCompilingDone;
     if (photoCount > 1) {
         UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                                   imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        if (self.navigationController.toolbarHidden) {
-            [self.navigationController setToolbarHidden:NO animated:NO];
-            [self.view setNeedsLayout];
-        }
+        [self.navigationController setToolbarHidden:NO animated:NO];
+        [self.view setNeedsLayout];
         
         self.playButton.enabled = YES;
         self.playButton.image = playButtonImg;
@@ -416,10 +414,8 @@ static const NSString *videoCompilingDone;
         // Count the number of frames
         [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", (int)photoCount]];
     } else {
-        if (!self.navigationController.toolbarHidden) {
-            [self.navigationController setToolbarHidden:YES animated:YES];
-            [self.view setNeedsLayout];
-        }
+        [self.navigationController setToolbarHidden:YES animated:YES];
+        [self.view setNeedsLayout];
     }
 }
 

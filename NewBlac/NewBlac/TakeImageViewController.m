@@ -29,6 +29,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @property (weak, nonatomic) IBOutlet UIButton *cancelCamera;
 @property (weak, nonatomic) IBOutlet UIImageView *customActivityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *frameNumberLabel;
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic) Canvas *canvas;
 @property (nonatomic, strong) UIImage *croppedImage;
@@ -130,6 +131,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     [mask setFillRule:kCAFillRuleEvenOdd];
     mask.fillColor = [[UIColor blackColor] CGColor];
     baseView.layer.mask = mask;
+    
+    // If photos object is created before coming into the Camera mode, take off "+1"
+    [self.frameNumberLabel setText:[NSString stringWithFormat:@"Frame %i", [self.video.photos count] + 1]];
 }
 
 
