@@ -41,7 +41,6 @@ static NSString *_SegueIdentifier = @"Go To Rootview";
 {
     [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
         self.managedObjectContext = document.managedObjectContext;
-        [self.managedObjectContext setUndoManager:nil];
     }];
 }
 
