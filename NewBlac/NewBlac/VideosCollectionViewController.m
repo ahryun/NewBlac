@@ -41,6 +41,11 @@ static const NSString *PlayerReadyContext;
     
     // Navigation Bar Buttons configuration
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    // When the view loads (not every time it appears)
+    [self.managedObjectContext performBlock:^{
+        [Video removeVideosInManagedContext:self.managedObjectContext];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -94,6 +99,9 @@ static const NSString *PlayerReadyContext;
     if ([segue.identifier isEqualToString:@"View And Edit Video"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.selectedVideo];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
+            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
             [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];

@@ -16,7 +16,7 @@
 {
     NSLog(@"Auto-saving document");
     // Core Data clean up. Delete all videos that have zero photos attached.
-    [Video removeVideosInManagedContext:self.managedObjectContext];
+//    [Video removeVideosInManagedContext:self.managedObjectContext];
     return [super contentsForType:typeName error:outError];
 }
 
@@ -33,7 +33,5 @@
         NSLog(@"  %@", error.userInfo);
     }
 }
-
-
 
 @end

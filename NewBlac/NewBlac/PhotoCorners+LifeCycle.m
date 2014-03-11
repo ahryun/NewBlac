@@ -24,10 +24,13 @@
     photoCorners.topRightxPercent = coordinates[3][0];
     photoCorners.topRightyPercent = coordinates[3][1];
     
+    NSError *error;
+    [context save:&error];
+    
     return photoCorners;
 }
 
-- (void)photoCorners:(NSArray *)coordinates
+- (void)setCoordinates:(NSArray *)coordinates
 {
     self.bottomLeftxPercent = coordinates[0][0];
     self.bottomLeftyPercent = coordinates[0][1];
@@ -36,7 +39,7 @@
     self.topLeftxPercent = coordinates[2][0];
     self.topLeftyPercent = coordinates[2][1];
     self.topRightxPercent = coordinates[3][0];
-    self.topRightyPercent = coordinates[3][1];
+    self.topRightyPercent = coordinates[3][1];    
 }
 
 @end

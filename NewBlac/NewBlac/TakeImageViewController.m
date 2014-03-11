@@ -222,9 +222,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
                     [self.canvas straightenCanvas];
                     self.croppedImage = self.canvas.originalImage;
-                    [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
                     [self.managedObjectContext performBlock:^{
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
+                        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
                         self.photo = [Photo photoWithOriginalPhoto:image
                                                   withCroppedPhoto:self.croppedImage
                                                    withCoordinates:self.canvas.coordinates
@@ -233,6 +233,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                                                  ifCornersDetected:self.canvas.cornersDetected
                                             inManagedObjectContext:self.managedObjectContext];
                         [self.video addPhotosObject:self.photo];
+                        
+                        NSError *error;
+                        [self.managedObjectContext save:&error];
+                        
                         [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     }];
                 });

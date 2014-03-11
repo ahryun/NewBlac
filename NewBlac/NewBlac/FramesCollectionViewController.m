@@ -78,7 +78,13 @@ static const NSString *videoCompilingDone;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self centerACell];
+    if ([self.video.photos count] > 0) {
+        [self centerACell];
+    } else {
+        // Make a cell appear then segue
+        
+        [self performSegueWithIdentifier:@"Ready Camera" sender:self];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -282,7 +288,12 @@ static const NSString *videoCompilingDone;
 {
     // perform some action
     NSNumber *framesPerSecond = [NSNumber numberWithInteger:row + 1];
-    [self.video setFramesPerSecond:framesPerSecond];
+    [self.managedObjectContext performBlock:^{
+        [self.video setFramesPerSecond:framesPerSecond];
+        
+        NSError *error;
+        [self.managedObjectContext save:&error];
+    }];
     [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[framesPerSecond integerValue]]];
     self.needToCompile = YES;
 }

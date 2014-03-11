@@ -117,7 +117,7 @@
 - (IBAction)addImageToVideoAndSegue:(UIButton *)sender {
     
     // Add the photo to video
-    [self.video addPhotosObject:self.photo];
+//    [self.video addPhotosObject:self.photo inManagedObjectContext:self.managedObjectContext];
     
     // Do a manual segue
     [self performSegueWithIdentifier:@"Add Image To Video" sender:self];

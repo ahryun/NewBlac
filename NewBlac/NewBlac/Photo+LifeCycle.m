@@ -27,6 +27,9 @@
     PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates withManagedObjectContext:context];
     [photo setCanvasRect:photoCorners];
     
+    NSError *error;
+    [context save:&error];
+    
     return photo;
 }
 
@@ -34,6 +37,9 @@
 {
     [context deleteObject:photo];
     [photo.video updateAllPhotoIndexInVideo];
+    
+    NSError *error;
+    [context save:&error];
 }
 
 @end

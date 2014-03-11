@@ -45,7 +45,7 @@
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:_entityNameOfInterest inManagedObjectContext:self.managedObjectContext];
         [fetchRequest setEntity:entity];
-        [fetchRequest setFetchBatchSize:20];
+        [fetchRequest setFetchBatchSize:10];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:_propertyNameOfInterest ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
         
@@ -60,6 +60,7 @@
             // Show photos
             // Get the photos that belong to a specific video
             predicate = [NSPredicate predicateWithFormat:@"self.video == %@", self.specificModel];
+            [fetchRequest setRelationshipKeyPathsForPrefetching:@[@"canvasRect"]];
         }
         [fetchRequest setPredicate:predicate];
         

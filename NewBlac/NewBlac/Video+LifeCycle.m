@@ -42,6 +42,9 @@
         [video setDateCreated:[NSDate date]];
     }
     
+    NSError *error;
+    [context save:&error];
+    
     return video;
 }
 
@@ -71,7 +74,14 @@
             BOOL success = [fileManager removeItemAtPath:video.compFilePath error:&error];
             if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
         }
-        [context deleteObject:video];
+        
+        [context performBlock:^{
+            [context deleteObject:video];
+        }];
+        
+        NSError *saveError;
+        [context save:&saveError];
+        
         NSLog(@"You went back to gallery without saving the video. It's been deleted\n");
     } else {
         NSLog(@"Something went wrong while deleting the video");
