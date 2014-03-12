@@ -29,6 +29,7 @@
     self.video = video;
     self.screenSize = size;
     self.videoDoneCreating = NO;
+    self.numberOfFramesInLastCompiledVideo = 0;
     return self;
 }
 
@@ -121,6 +122,8 @@
         NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
         
         weakSelf.videoDoneCreating = YES;
+        
+        weakSelf.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
     }];
 }
 

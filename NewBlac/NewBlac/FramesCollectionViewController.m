@@ -21,6 +21,7 @@
 @property (nonatomic) BOOL needToCompile;
 @property (nonatomic) BOOL autoCameraMode;
 @property (strong, nonatomic) VideoCreator *videoCreator;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *framesPerSecond;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *noOfFrames;
@@ -37,6 +38,9 @@
 @implementation FramesCollectionViewController
 
 static const NSString *videoCompilingDone;
+static const NSArray *fpsArray;
+
+#define CALCULATE_FPS(FPS) (FPS - 1) / 2
 
 - (void)setVideo:(Video *)video
 {
@@ -64,26 +68,20 @@ static const NSString *videoCompilingDone;
 
     self.showPhotos = YES; // This tells the core data controller to provide photos
     self.needToCompile = NO;
-    UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
-                              imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.playButton.image = playButtonImg;
     [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[self.video.framesPerSecond integerValue]]];
     
     [self initializeFetchedResultsController];
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
     self.collectionView.delegate = self;
+    
+    fpsArray = @[@1, @3, @5];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    int photoCount = (int)[self.video.photos count];
-    [self resetToolbarWithPhotoCount:photoCount];
-    [self.noFramesScreen setHidden:YES];
-    if (photoCount == 0) {
-        [self.noFramesScreen setHidden:NO];
-    }
+    [self updateUI];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -91,9 +89,8 @@ static const NSString *videoCompilingDone;
     [super viewDidAppear:animated];
     if (self.autoCameraMode) {
         [self performSegueWithIdentifier:@"Ready Camera" sender:self];
-        
     } else {
-        [self centerACell];
+//        [self centerACell];
     }
 }
 
@@ -126,7 +123,16 @@ static const NSString *videoCompilingDone;
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
 {
     // When the user cancels camera - no photo
-    self.needToCompile = NO;
+    if ([self.video.photos count] > 0) {
+        if (!self.videoCreator || self.videoCreator.numberOfFramesInLastCompiledVideo != [self.video.photos count]) {
+            self.needToCompile = YES;
+        } else {
+            self.needToCompile = NO;
+        }
+    } else {
+        self.needToCompile = NO;
+    }
+    
     [self ifAutoCameraMode:[NSNumber numberWithBool:NO]];
 }
 
@@ -205,11 +211,11 @@ static const NSString *videoCompilingDone;
     // Prepare full page video
     if (self.needToCompile) {
         [self compileVideo];
+        [self.playButton setImage:nil];
+        [self.playButton setTitle:@"Compiling..."];
     } else {
         [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
     }
-    
-#warning Let the user know that the video is compiling
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -259,7 +265,7 @@ static const NSString *videoCompilingDone;
                                         CGRectGetWidth(pickerView.frame),
                                         CGRectGetHeight(pickerView.frame));
     [pickerView setFrame:pickerViewFrame];
-    [pickerView selectRow:[self.video.framesPerSecond integerValue]-1 inComponent:0 animated:NO];
+    [pickerView selectRow:CALCULATE_FPS([self.video.framesPerSecond intValue]) inComponent:0 animated:NO];
     [self.navigationController.view addSubview:pickerView];
     self.pickerView = pickerView;
 }
@@ -290,13 +296,13 @@ static const NSString *videoCompilingDone;
 #pragma mark - UIPickerViewDelegate
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [NSString stringWithFormat:@"%d Frames Per Second", row + 1];
+    return [NSString stringWithFormat:@"%@ Frames Per Second", fpsArray[row]];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     // perform some action
-    NSNumber *framesPerSecond = [NSNumber numberWithInteger:row + 1];
+    NSNumber *framesPerSecond = fpsArray[row];
     [self.managedObjectContext performBlock:^{
         [self.video setFramesPerSecond:framesPerSecond];
         
@@ -401,17 +407,32 @@ static const NSString *videoCompilingDone;
         self.selectedPhoto = photo;
         self.needToCompile = YES;
         [Photo deletePhoto:photo inContext:self.managedObjectContext];
-        [self centerACell];
         
-        int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
-        [self resetToolbarWithPhotoCount:photoCount];
-        if (photoCount == 0) {
-            [self.noFramesScreen setHidden:NO];
-        }
+        [self updateUI];
     }
 }
 
 #pragma mark - Update UIs
+
+- (void)updateUI
+{
+    int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+    [self.noFramesScreen setHidden:YES];
+    [self resetToolbarWithPhotoCount:photoCount];
+    
+    if (photoCount == 0) [self.noFramesScreen setHidden:NO];
+    
+    if (photoCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
+        [self.cameraButton setEnabled:NO];
+        self.autoCameraMode = NO;
+        
+    } else {
+        [self.cameraButton setEnabled:YES];
+    }
+    
+    [self centerACell];
+}
+
 - (void)resetToolbarWithPhotoCount:(NSUInteger)photoCount
 {
     if (photoCount > 1) {

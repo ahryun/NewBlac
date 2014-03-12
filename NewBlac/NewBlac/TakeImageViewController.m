@@ -192,56 +192,61 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 {
     // Let the user know that the photo is being processed
     [self showLoadingBar];
-    
-    dispatch_async(self.sessionQueue, ^{
-		// Update the orientation on the still image output video connection before capturing.
-		[[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[self.stillImagePreview layer] connection] videoOrientation]];
-		
-		// Capture a still image.
-		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            // Creates exifAttachments
-			CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer,
-                                                              kCGImagePropertyExifDictionary,
-                                                              NULL);
-            // Print out EXIF data
-            exifAttachments? NSLog(@"attachements: %@", exifAttachments): NSLog(@"no attachments");
+    if ([self.video.photos count] < MAX_PHOTO_COUNT_PER_VIDEO) {
+        dispatch_async(self.sessionQueue, ^{
+            // Update the orientation on the still image output video connection before capturing.
+            [[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[self.stillImagePreview layer] connection] videoOrientation]];
             
-			if (imageDataSampleBuffer) {
-				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-				UIImage *image = [[UIImage alloc] initWithData:imageData];
-                image = [UIImage imageWithImage:image scaledToMultiplier:0.5];
-                NSLog(@"image width is %f, height is %f", image.size.width, image.size.height);
-                float focalLength = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FocalLength"] floatValue];
-                float apertureSize = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FNumber"] floatValue];
+            // Capture a still image.
+            [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+                // Creates exifAttachments
+                CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer,
+                                                                  kCGImagePropertyExifDictionary,
+                                                                  NULL);
+                // Print out EXIF data
+                exifAttachments? NSLog(@"attachements: %@", exifAttachments): NSLog(@"no attachments");
                 
-                NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
-                    self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
-                    [self.canvas straightenCanvas];
-                    self.croppedImage = self.canvas.originalImage;
-                    [self.managedObjectContext performBlock:^{
-                        // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-                        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-                        self.photo = [Photo photoWithOriginalPhoto:image
-                                                  withCroppedPhoto:self.croppedImage
-                                                   withCoordinates:self.canvas.coordinates
-                                                  withApertureSize:apertureSize
-                                                   withFocalLength:focalLength
-                                                 ifCornersDetected:self.canvas.cornersDetected
-                                            inManagedObjectContext:self.managedObjectContext];
-                        [self.video addPhotosObject:self.photo];
-                        
-                        NSError *error;
-                        [self.managedObjectContext save:&error];
-                        
-                        [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
-                    }];
-                });
-			}
-		}];
-	});
+                if (imageDataSampleBuffer) {
+                    NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                    UIImage *image = [[UIImage alloc] initWithData:imageData];
+                    image = [UIImage imageWithImage:image scaledToMultiplier:0.5];
+                    NSLog(@"image width is %f, height is %f", image.size.width, image.size.height);
+                    float focalLength = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FocalLength"] floatValue];
+                    float apertureSize = [[(__bridge NSDictionary *)exifAttachments valueForKey:@"FNumber"] floatValue];
+                    
+                    NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
+                        self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
+                        [self.canvas straightenCanvas];
+                        self.croppedImage = self.canvas.originalImage;
+                        [self.managedObjectContext performBlock:^{
+                            // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
+                            [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
+                            self.photo = [Photo photoWithOriginalPhoto:image
+                                                      withCroppedPhoto:self.croppedImage
+                                                       withCoordinates:self.canvas.coordinates
+                                                      withApertureSize:apertureSize
+                                                       withFocalLength:focalLength
+                                                     ifCornersDetected:self.canvas.cornersDetected
+                                                inManagedObjectContext:self.managedObjectContext];
+                            
+                            // Think about whether it's right to put a filter here. App crashes if more than 75 photos are added to a single video.8
+                            // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
+                            BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
+                            if (!success) [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
+                            
+                            NSError *error;
+                            [self.managedObjectContext save:&error];
+                            
+                            [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
+                        }];
+                    });
+                }
+            }];
+        });
+    }
 }
 
 - (void)showLoadingBar

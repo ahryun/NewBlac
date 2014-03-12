@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g6k-0e-5hS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g6k-0e-5hS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Frames Collection View Controller - pieces-->
@@ -68,6 +68,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cameraButton" destination="x5f-XP-HxK" id="a2J-Ad-KAd"/>
                         <outlet property="framesPerSecond" destination="mCg-Eb-YDg" id="bgT-KI-DZL"/>
                         <outlet property="noFramesScreen" destination="jt1-rT-2W6" id="9MG-Fb-wDR"/>
                         <outlet property="noOfFrames" destination="wYq-MW-pnn" id="KEh-jB-FOc"/>
@@ -283,7 +284,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3457" y="-729"/>
+            <point key="canvasLocation" x="3529" y="-729"/>
         </scene>
         <!--Edit Image View Controller - pieces-->
         <scene sceneID="Lez-Hp-WL0">
@@ -321,7 +322,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="pieces" id="HK3-bL-O1N">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="BackButton" id="ZdP-KC-MGw">
+                        <barButtonItem key="leftBarButtonItem" image="BackButton" id="ZdP-KC-MGw">
                             <inset key="imageInsets" minX="-10" minY="-10" maxX="0.0" maxY="0.0"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="w2n-4r-LyO" id="ZLj-Ih-N2m"/>
@@ -413,6 +414,9 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="ddv-1S-GGs"/>
                         <barButtonItem style="plain" systemItem="action" id="W0b-Hb-mVG">
                             <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="sTz-sj-hlH" kind="modal" id="YCW-9t-BKN"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
                     </toolbarItems>
@@ -438,6 +442,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2546" y="-4"/>
+        </scene>
+        <!--Activity View Controller-->
+        <scene sceneID="vSQ-nM-f9x">
+            <objects>
+                <viewController id="sTz-sj-hlH" customClass="UIActivityViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R9o-vu-pkT"/>
+                        <viewControllerLayoutGuide type="bottom" id="DVM-BA-WTG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kfm-Y4-Fmt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Exq-BP-NSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2967" y="-729"/>
         </scene>
         <!--Pieces Navigation Controller-->
         <scene sceneID="aNY-VK-qoL">

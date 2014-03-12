@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) Video *video;
 @property (nonatomic) BOOL videoDoneCreating;
+@property (nonatomic) int numberOfFramesInLastCompiledVideo;
 
 - (id)initWithVideo:(Video *)video withScreenSize:(CGSize)size;
 - (void)writeImagesToVideo;

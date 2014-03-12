@@ -108,8 +108,20 @@
     return [self.photos array];
 }
 
+// This is to avoid adding more than max number, currently 75 per video, of photos to a single video
+- (BOOL)addPhotosObjectWithAuthentification:(Photo *)photo
+{
+    if ([self.photos count] < MAX_PHOTO_COUNT_PER_VIDEO) {
+        [self addPhotosObject:photo];
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 // this overwrites the original addPhotosObjectfunction to get around the known bug
-- (void)addPhotosObject:(Photo *)photo {
+- (void)addPhotosObject:(Photo *)photo
+{
     NSMutableOrderedSet* tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.photos];
     [tempSet addObject:photo];
     self.photos = tempSet;

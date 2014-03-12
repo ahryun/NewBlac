@@ -55,9 +55,9 @@
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
 		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F3C8566B18CBE08B00C9FE97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C8566A18CBE08B00C9FE97 /* Images.xcassets */; };
-		F3C8567718CC58EF00C9FE97 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567618CC58EF00C9FE97 /* Photo.m */; };
-		F3C8567A18CC58F000C9FE97 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567918CC58F000C9FE97 /* Video.m */; };
-		F3C8567D18CC58F000C9FE97 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */; };
+		F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */; };
+		F3C8568318CFDB5500C9FE97 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8568218CFDB5500C9FE97 /* Video.m */; };
+		F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8568518CFDB5500C9FE97 /* Photo.m */; };
 		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
 		F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */; };
 		F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF0818809D85000C1181 /* CornerCircle.m */; };
@@ -149,12 +149,12 @@
 		F3C0290518443ADB00FF08F1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F3C0290618443ADB00FF08F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F3C8566A18CBE08B00C9FE97 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F3C8567518CC58EF00C9FE97 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
-		F3C8567618CC58EF00C9FE97 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
-		F3C8567818CC58F000C9FE97 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
-		F3C8567918CC58F000C9FE97 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
-		F3C8567B18CC58F000C9FE97 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
-		F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
+		F3C8567E18CFDB5400C9FE97 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
+		F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
+		F3C8568118CFDB5500C9FE97 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
+		F3C8568218CFDB5500C9FE97 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
+		F3C8568418CFDB5500C9FE97 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
+		F3C8568518CFDB5500C9FE97 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
 		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
 		F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerDetectionView.m; sourceTree = "<group>"; };
 		F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeImage.h"; sourceTree = "<group>"; };
@@ -239,13 +239,13 @@
 		F33EA9221877A51D0045E642 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				F3C8567E18CFDB5400C9FE97 /* PhotoCorners.h */,
+				F3C8568418CFDB5500C9FE97 /* Photo.h */,
+				F3C8568518CFDB5500C9FE97 /* Photo.m */,
+				F3C8568118CFDB5500C9FE97 /* Video.h */,
+				F3C8568218CFDB5500C9FE97 /* Video.m */,
+				F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */,
 				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
-				F3C8567B18CC58F000C9FE97 /* PhotoCorners.h */,
-				F3C8567C18CC58F000C9FE97 /* PhotoCorners.m */,
-				F3C8567818CC58F000C9FE97 /* Video.h */,
-				F3C8567918CC58F000C9FE97 /* Video.m */,
-				F3C8567518CC58EF00C9FE97 /* Photo.h */,
-				F3C8567618CC58EF00C9FE97 /* Photo.m */,
 				F3A495041891D18E00CBAE82 /* CoreDataCollectionViewController.h */,
 				F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */,
 				F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */,
@@ -441,7 +441,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = newBlac;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Ahryun Moon";
 				TargetAttributes = {
 					F3C028A51843F5BD00FF08F1 = {
@@ -517,10 +517,10 @@
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
 				F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */,
 				F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */,
-				F3C8567718CC58EF00C9FE97 /* Photo.m in Sources */,
+				F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
-				F3C8567D18CC58F000C9FE97 /* PhotoCorners.m in Sources */,
+				F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */,
 				F33EA91518760DB50045E642 /* TakeImageViewController.m in Sources */,
 				F33EA993187BA1380045E642 /* EditImageViewController.m in Sources */,
 				F33EA9211877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld in Sources */,
@@ -530,7 +530,7 @@
 				F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */,
 				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
-				F3C8567A18CC58F000C9FE97 /* Video.m in Sources */,
+				F3C8568318CFDB5500C9FE97 /* Video.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* FramesCollectionViewController.m in Sources */,
 				F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */,
@@ -590,7 +590,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -629,7 +628,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -703,7 +701,6 @@
 		F3C028DC1843F5BD00FF08F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NewBlac.app/NewBlac";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -726,7 +723,6 @@
 		F3C028DD1843F5BD00FF08F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NewBlac.app/NewBlac";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

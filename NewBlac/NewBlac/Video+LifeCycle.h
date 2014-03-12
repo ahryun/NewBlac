@@ -10,6 +10,8 @@
 
 @interface Video (LifeCycle)
 
+#define MAX_PHOTO_COUNT_PER_VIDEO 75
+
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;
 + (void)removeVideosInManagedContext:(NSManagedObjectContext *)context;
@@ -17,5 +19,6 @@
 - (NSArray *)imagesArrayInOrder;
 - (void)updateAPhotoIndexInVideo:(Photo *)photo atEnd:(BOOL)atEnd;
 - (void)updateAllPhotoIndexInVideo;
+- (BOOL)addPhotosObjectWithAuthentification:(Photo *)photo;
 
 @end
