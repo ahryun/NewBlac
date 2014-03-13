@@ -437,6 +437,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="noVideoScreen" destination="PgH-qT-kF1" id="Izj-Le-Z2Q"/>
+                        <outlet property="shareButton" destination="W0b-Hb-mVG" id="h5w-RV-Pfv"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>

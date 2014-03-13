@@ -58,13 +58,12 @@
 		F3C028D51843F5BD00FF08F1 /* NewBlacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C028D41843F5BD00FF08F1 /* NewBlacTests.m */; };
 		F3C028DF1843F5DB00FF08F1 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028DE1843F5DB00FF08F1 /* opencv2.framework */; };
 		F3C028F9184429D800FF08F1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028F8184429D800FF08F1 /* AVFoundation.framework */; };
-		F3C028FB184429E100FF08F1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028FA184429E100FF08F1 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F3C028FB184429E100FF08F1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028FA184429E100FF08F1 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F3C028FD18442A0300FF08F1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C028FC18442A0300FF08F1 /* libc++.dylib */; };
-		F3C0290718443ADB00FF08F1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290218443ADB00FF08F1 /* Accelerate.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290318443ADB00FF08F1 /* AssetsLibrary.framework */; };
 		F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290418443ADB00FF08F1 /* CoreImage.framework */; };
 		F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290518443ADB00FF08F1 /* CoreMedia.framework */; };
-		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F3C8566B18CBE08B00C9FE97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C8566A18CBE08B00C9FE97 /* Images.xcassets */; };
 		F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */; };
 		F3C8568318CFDB5500C9FE97 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8568218CFDB5500C9FE97 /* Video.m */; };
@@ -203,7 +202,6 @@
 				F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */,
 				F3AAD68918C2A8A400B5A23B /* MediaPlayer.framework in Frameworks */,
 				F33EA9361878CF010045E642 /* CoreData.framework in Frameworks */,
-				F3C0290718443ADB00FF08F1 /* Accelerate.framework in Frameworks */,
 				F32E2EDF18D1B97E00D5A556 /* FacebookSDK.framework in Frameworks */,
 				F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */,
 				F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */,

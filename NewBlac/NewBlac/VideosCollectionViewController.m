@@ -14,19 +14,24 @@
 #import "MotionVideoPlayer.h"
 #import "ShareViewController.h"
 #import "SharableMovieItemProvider.h"
+#import "VideoCreator.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSNumber *ifAddNewVideo;
 @property (nonatomic, strong) Video *selectedVideo;
+@property (nonatomic, strong) VideoCreator *videoCreator;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) ShareViewController *shareViewController;
 @property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 
 @end
 
 @implementation VideosCollectionViewController
 
+static const NSString *videoCompilingDone;
 static const NSString *PlayerReadyContext;
 
 #pragma mark - View Lifecycle
@@ -98,9 +103,39 @@ static const NSString *PlayerReadyContext;
     [movieItemProvider setVideoPath:video.compFilePath];
     ShareViewController *shareViewController = [[ShareViewController alloc] initWithActivityItems:@[movieItemProvider] applicationActivities:nil];
     shareViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact]; //or whichever you don't need
-    [self presentViewController:shareViewController animated:YES completion:^{
-        NSLog(@"Share screen presented\n");
-    }];
+    self.shareViewController = shareViewController;
+    [self compileVideo:video];
+}
+
+- (void)compileVideo:(Video *)videoToCompile
+{
+    NSLog(@"I am in compileVideo\n");
+    [self.shareButton setImage:nil];
+    [self.shareButton setTitle:@"Compiling..."];
+    CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
+        [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+        [self.videoCreator writeImagesToVideo];
+    });
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context {
+    if (context == &videoCompilingDone) {
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
+            if (self.videoCreator.videoDoneCreating) {
+                [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
+                [self presentViewController:self.shareViewController animated:YES completion:^{
+                    NSLog(@"Share screen presented\n");
+                }];
+            }
+        });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
 }
 
 - (IBAction)addVideo:(UIBarButtonItem *)sender

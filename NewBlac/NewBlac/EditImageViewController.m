@@ -10,7 +10,7 @@
 #import "CornerDetectionView.h"
 #import "PhotoCorners+LifeCycle.h"
 #import "CornerCircle.h"
-//#import <QuartzCore/QuartzCore.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface EditImageViewController () <CornerDetectionViewDelegate, UIAlertViewDelegate>
 

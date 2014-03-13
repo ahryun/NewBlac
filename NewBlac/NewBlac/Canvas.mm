@@ -41,6 +41,7 @@
 {
     if (_originalImage != originalImage) {
         if (!self.orientationChanged) {
+            // Some extreme amount of memory leak here - 7MB of CGImage
             _originalImage = [self scaleAndRotateImage:originalImage ifOriginal:true];
             self.orientationChanged = YES;
         } else {
@@ -209,42 +210,12 @@
     self.cornersDetected = YES; // This function is used when a user unskews an image manually. In that case I consider corners are detected.
 }
 
-- (cv::Mat)gaussianBlurAndProduceCIImage:(UIImage *)uiImage
-{
-    CIContext *context = [CIContext contextWithOptions:nil];               // 1
-    CIImage *ciImage = [uiImage CIImage];               // 2
-    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];           // 3
-    [filter setValue:ciImage forKey:kCIInputImageKey];
-    [filter setValue:@5.0f forKey:kCIInputRadiusKey];
-    CIImage *blurredImage = [filter valueForKey:kCIOutputImageKey];              // 4
-    CGRect extent = [blurredImage extent];
-    CGImageRef cgImage = [context createCGImage:blurredImage fromRect:extent];   // 5
-    
-    CGColorSpaceRef colorSpace = CGImageGetColorSpace(cgImage);
-    CGFloat cols = CGImageGetWidth(cgImage);
-    CGFloat rows = CGImageGetHeight(cgImage);
-    
-    cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
-    
-    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
-                                                    cols,                       // Width of bitmap
-                                                    rows,                       // Height of bitmap
-                                                    8,                          // Bits per component
-                                                    cvMat.step[0],              // Bytes per row
-                                                    colorSpace,                 // Colorspace
-                                                    kCGImageAlphaNoneSkipLast |
-                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
-    
-    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), cgImage);
-    CGContextRelease(contextRef);
-    
-    return cvMat;
-}
-
 // Images captured by iPhone camera are rotated 90 degree automatically
 // This function corrects the orientation
 - (UIImage *)scaleAndRotateImage:(UIImage *)image ifOriginal:(BOOL)iforiginal
 {
+    if (iforiginal && image.imageOrientation == UIImageOrientationUp) return image;
+    
     int kMaxResolution = 480;
     
     CGImageRef imgRef = image.CGImage;
@@ -329,6 +300,7 @@
             [NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
             
     }
+    
     UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 1.0);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
