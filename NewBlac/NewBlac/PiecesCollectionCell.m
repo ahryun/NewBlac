@@ -63,14 +63,16 @@
     // Set up delete button within scroll view programmatically
     if (!self.deleteButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 25, self.scrollView.frame.size.width, 30);
-        [button setTitle:@"DELETE" forState:UIControlStateNormal];
+        button.frame = CGRectMake(0, 10, self.scrollView.frame.size.width, 60);
+        [button setTitle:@" DELETE" forState:UIControlStateNormal];
+        [button setTintColor:[UIColor whiteColor]];
+        [button.layer setCornerRadius:5.0f];
         UIImage *scissorImage = [UIImage imageNamed:@"DeleteIcon"];
-        scissorImage = [scissorImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        scissorImage = [scissorImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [button setImage:scissorImage forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
         button.alpha = 0;
-        [button setTitleColor:[UIColor colorWithRed:(51.0/255) green:(51.0/255) blue:(51.0/255) alpha:1.0f] forState:UIControlStateNormal];
+        [button setBackgroundColor:[UIColor colorWithRed:(240.f/255) green:(101.f/255) blue:(98.f/255) alpha:1.f]];
         self.deleteButton = button;
         [self.scrollView addSubview:button];
         [self.deleteButton addTarget:self action:@selector(sendDeleteMessage) forControlEvents:UIControlEventTouchUpInside];

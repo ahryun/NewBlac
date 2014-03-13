@@ -87,11 +87,7 @@ static const NSArray *fpsArray;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.autoCameraMode) {
-        [self performSegueWithIdentifier:@"Ready Camera" sender:self];
-    } else {
-//        [self centerACell];
-    }
+    if (self.autoCameraMode) [self performSegueWithIdentifier:@"Ready Camera" sender:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -349,7 +345,6 @@ static const NSArray *fpsArray;
             NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
             if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-                // If after scrolling, the user ended up on the same video, resume the video
                 if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
                 PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
                 cell.maskView.alpha = 0.0;
@@ -425,12 +420,15 @@ static const NSArray *fpsArray;
     if (photoCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
         [self.cameraButton setEnabled:NO];
         self.autoCameraMode = NO;
-        
     } else {
         [self.cameraButton setEnabled:YES];
     }
     
-    [self centerACell];
+    NSIndexPath *firstFrameIndexPath = [NSIndexPath indexPathForItem:[self.collectionView numberOfItemsInSection:0] - 1 inSection:0];
+    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
+    cell.maskView.alpha = 0.0;
+    self.centerCell = cell;
+    
 }
 
 - (void)resetToolbarWithPhotoCount:(NSUInteger)photoCount
