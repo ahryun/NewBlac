@@ -236,7 +236,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                             // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
                             BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
                             if (!success) [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
-                            
                             NSError *error;
                             [self.managedObjectContext save:&error];
                             

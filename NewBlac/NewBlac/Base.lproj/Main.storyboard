@@ -415,7 +415,7 @@
                         <barButtonItem style="plain" systemItem="action" id="W0b-Hb-mVG">
                             <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="sTz-sj-hlH" kind="modal" id="YCW-9t-BKN"/>
+                                <action selector="presentShareModally:" destination="wEj-N1-jhZ" id="gXD-4F-m6W"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
@@ -442,24 +442,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2546" y="-4"/>
-        </scene>
-        <!--Activity View Controller-->
-        <scene sceneID="vSQ-nM-f9x">
-            <objects>
-                <viewController id="sTz-sj-hlH" customClass="UIActivityViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="R9o-vu-pkT"/>
-                        <viewControllerLayoutGuide type="bottom" id="DVM-BA-WTG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kfm-Y4-Fmt">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Exq-BP-NSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2967" y="-729"/>
         </scene>
         <!--Pieces Navigation Controller-->
         <scene sceneID="aNY-VK-qoL">

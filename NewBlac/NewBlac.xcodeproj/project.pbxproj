@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F32E2ECA18D1333200D5A556 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2EC918D1333200D5A556 /* ShareViewController.m */; };
 		F330D95418972C7C009265EC /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F330D95318972C7B009265EC /* InitialViewController.m */; };
 		F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */; };
 		F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */; };
@@ -74,6 +75,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F32E2EC818D1333200D5A556 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		F32E2EC918D1333200D5A556 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		F330D95218972C7B009265EC /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		F330D95318972C7B009265EC /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		F33BE98F1892F4E90021A5C1 /* VideosCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewController.h; sourceTree = "<group>"; };
@@ -232,6 +235,8 @@
 				F33EA992187BA1380045E642 /* EditImageViewController.m */,
 				F3AAD68D18C2ABFB00B5A23B /* FullScreenMovieViewController.h */,
 				F3AAD68E18C2ABFB00B5A23B /* FullScreenMovieViewController.m */,
+				F32E2EC818D1333200D5A556 /* ShareViewController.h */,
+				F32E2EC918D1333200D5A556 /* ShareViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -518,6 +523,7 @@
 				F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */,
 				F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */,
 				F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */,
+				F32E2ECA18D1333200D5A556 /* ShareViewController.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */,

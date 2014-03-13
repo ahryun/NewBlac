@@ -53,8 +53,11 @@ static const NSString *PlayerReadyContext;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self centerACell];
-//    if (self.navigationController.toolbarHidden) [self.navigationController setToolbarHidden:NO animated:YES];
+    // Lighten the first cell
+    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
+    cell.maskView.alpha = 0.0;
+    self.centerCell = cell;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -83,6 +86,14 @@ static const NSString *PlayerReadyContext;
     // Do something
 }
 
+- (IBAction)presentShareModally:(UIBarButtonItem *)sender
+{
+    UIActivityViewController *shareViewController = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
+    [self presentViewController:shareViewController animated:YES completion:^{
+        NSLog(@"Share screen presented\n");
+    }];
+}
+
 - (IBAction)addVideo:(UIBarButtonItem *)sender
 {
     NSLog(@"I'm in addVideo\n");
@@ -98,12 +109,10 @@ static const NSString *PlayerReadyContext;
     if (videoCount > 0) {
         if (self.navigationController.toolbarHidden) {
             [self.navigationController setToolbarHidden:NO animated:NO];
-            [self.view setNeedsLayout];
         }
     } else {
         if (!self.navigationController.toolbarHidden) {
             [self.navigationController setToolbarHidden:YES animated:YES];
-            [self.view setNeedsLayout];
         }
     }
 }
@@ -222,7 +231,7 @@ static const NSString *PlayerReadyContext;
         [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
         [self centerACell];
         
-        int videoCount = (int)[self.collectionView numberOfItemsInSection:0] - 1;
+        int videoCount = (int)[self.collectionView numberOfItemsInSection:0];
         [self resetToolbarWithPhotoCount:videoCount];
         if (videoCount == 0) {
             [self.noVideoScreen setHidden:NO];

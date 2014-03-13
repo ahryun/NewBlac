@@ -87,6 +87,13 @@ static const NSArray *fpsArray;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Lighten the first cell
+    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
+    cell.maskView.alpha = 0.0;
+    self.centerCell = cell;
+    
     if (self.autoCameraMode) [self performSegueWithIdentifier:@"Ready Camera" sender:self];
 }
 
@@ -156,6 +163,9 @@ static const NSArray *fpsArray;
 {
     NSLog(@"I'm in segue\n");
     if ([segue.identifier isEqualToString:@"Ready Camera"]) {
+        // Hack to set the height of collectionview right
+        if ([self.video.photos count] == 1) [self.navigationController setToolbarHidden:NO];
+        
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
@@ -415,20 +425,16 @@ static const NSArray *fpsArray;
     [self.noFramesScreen setHidden:YES];
     [self resetToolbarWithPhotoCount:photoCount];
     
-    if (photoCount == 0) [self.noFramesScreen setHidden:NO];
-    
-    if (photoCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
-        [self.cameraButton setEnabled:NO];
-        self.autoCameraMode = NO;
+    if (photoCount <= 0) {
+        [self.noFramesScreen setHidden:NO];
     } else {
-        [self.cameraButton setEnabled:YES];
+        if (photoCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
+            [self.cameraButton setEnabled:NO];
+            self.autoCameraMode = NO;
+        } else {
+            [self.cameraButton setEnabled:YES];
+        }
     }
-    
-    NSIndexPath *firstFrameIndexPath = [NSIndexPath indexPathForItem:[self.collectionView numberOfItemsInSection:0] - 1 inSection:0];
-    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
-    cell.maskView.alpha = 0.0;
-    self.centerCell = cell;
-    
 }
 
 - (void)resetToolbarWithPhotoCount:(NSUInteger)photoCount
@@ -437,7 +443,6 @@ static const NSArray *fpsArray;
         UIImage *playButtonImg = [[UIImage imageNamed:@"PlayButton"]
                                   imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [self.navigationController setToolbarHidden:NO animated:NO];
-        [self.view setNeedsLayout];
         
         self.playButton.enabled = YES;
         self.playButton.image = playButtonImg;
@@ -446,7 +451,6 @@ static const NSArray *fpsArray;
         [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", (int)photoCount]];
     } else {
         [self.navigationController setToolbarHidden:YES animated:YES];
-        [self.view setNeedsLayout];
     }
 }
 
