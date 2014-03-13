@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		F32E2ECA18D1333200D5A556 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2EC918D1333200D5A556 /* ShareViewController.m */; };
+		F32E2ECD18D17F8500D5A556 /* SharableMovieItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */; };
+		F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ECE18D1AC3600D5A556 /* Parse.framework */; };
+		F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */; };
+		F32E2ED318D1AC7A00D5A556 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */; };
+		F32E2ED518D1AC9000D5A556 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */; };
+		F32E2ED718D1AC9B00D5A556 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED618D1AC9B00D5A556 /* libz.dylib */; };
+		F32E2ED918D1ACB700D5A556 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED818D1ACB700D5A556 /* Security.framework */; };
+		F32E2EDB18D1ACBF00D5A556 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */; };
+		F32E2EDD18D1ACC800D5A556 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */; };
+		F32E2EDF18D1B97E00D5A556 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */; };
 		F330D95418972C7C009265EC /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F330D95318972C7B009265EC /* InitialViewController.m */; };
 		F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */; };
 		F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */; };
@@ -77,6 +87,17 @@
 /* Begin PBXFileReference section */
 		F32E2EC818D1333200D5A556 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		F32E2EC918D1333200D5A556 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		F32E2ECB18D17F8500D5A556 /* SharableMovieItemProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharableMovieItemProvider.h; sourceTree = "<group>"; };
+		F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharableMovieItemProvider.m; sourceTree = "<group>"; };
+		F32E2ECE18D1AC3600D5A556 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F32E2ED618D1AC9B00D5A556 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		F32E2ED818D1ACB700D5A556 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		F330D95218972C7B009265EC /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		F330D95318972C7B009265EC /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		F33BE98F1892F4E90021A5C1 /* VideosCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewController.h; sourceTree = "<group>"; };
@@ -171,15 +192,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F32E2EDD18D1ACC800D5A556 /* SystemConfiguration.framework in Frameworks */,
+				F32E2EDB18D1ACBF00D5A556 /* StoreKit.framework in Frameworks */,
+				F32E2ED918D1ACB700D5A556 /* Security.framework in Frameworks */,
+				F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */,
+				F3C028FB184429E100FF08F1 /* MobileCoreServices.framework in Frameworks */,
+				F32E2ED718D1AC9B00D5A556 /* libz.dylib in Frameworks */,
+				F32E2ED518D1AC9000D5A556 /* CoreLocation.framework in Frameworks */,
+				F32E2ED318D1AC7A00D5A556 /* CFNetwork.framework in Frameworks */,
+				F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */,
 				F3AAD68918C2A8A400B5A23B /* MediaPlayer.framework in Frameworks */,
 				F33EA9361878CF010045E642 /* CoreData.framework in Frameworks */,
 				F3C0290718443ADB00FF08F1 /* Accelerate.framework in Frameworks */,
+				F32E2EDF18D1B97E00D5A556 /* FacebookSDK.framework in Frameworks */,
 				F3C0290818443ADB00FF08F1 /* AssetsLibrary.framework in Frameworks */,
+				F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */,
 				F3C0290918443ADB00FF08F1 /* CoreImage.framework in Frameworks */,
 				F3C0290A18443ADB00FF08F1 /* CoreMedia.framework in Frameworks */,
-				F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */,
 				F3C028FD18442A0300FF08F1 /* libc++.dylib in Frameworks */,
-				F3C028FB184429E100FF08F1 /* MobileCoreServices.framework in Frameworks */,
 				F3C028F9184429D800FF08F1 /* AVFoundation.framework in Frameworks */,
 				F3C028DF1843F5DB00FF08F1 /* opencv2.framework in Frameworks */,
 				F3C028AC1843F5BD00FF08F1 /* CoreGraphics.framework in Frameworks */,
@@ -245,11 +275,11 @@
 			isa = PBXGroup;
 			children = (
 				F3C8567E18CFDB5400C9FE97 /* PhotoCorners.h */,
+				F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */,
 				F3C8568418CFDB5500C9FE97 /* Photo.h */,
 				F3C8568518CFDB5500C9FE97 /* Photo.m */,
 				F3C8568118CFDB5500C9FE97 /* Video.h */,
 				F3C8568218CFDB5500C9FE97 /* Video.m */,
-				F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */,
 				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
 				F3A495041891D18E00CBAE82 /* CoreDataCollectionViewController.h */,
 				F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */,
@@ -299,6 +329,8 @@
 		F3B0ECD51857B93C00143044 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F32E2ECB18D17F8500D5A556 /* SharableMovieItemProvider.h */,
+				F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */,
 				F3656E6E18BAF0440008B694 /* MotionVideoPlayer.h */,
 				F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */,
 				F3B0ECD21857B93100143044 /* Canvas.h */,
@@ -333,6 +365,15 @@
 		F3C028A81843F5BD00FF08F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */,
+				F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */,
+				F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */,
+				F32E2ED818D1ACB700D5A556 /* Security.framework */,
+				F32E2ED618D1AC9B00D5A556 /* libz.dylib */,
+				F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */,
+				F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */,
+				F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */,
+				F32E2ECE18D1AC3600D5A556 /* Parse.framework */,
 				F3AAD68818C2A8A400B5A23B /* MediaPlayer.framework */,
 				F33EA9351878CF010045E642 /* CoreData.framework */,
 				F3C0290218443ADB00FF08F1 /* Accelerate.framework */,
@@ -510,6 +551,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F32E2ECD18D17F8500D5A556 /* SharableMovieItemProvider.m in Sources */,
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
 				F33EA966187A3B860045E642 /* SharedManagedDocument.m in Sources */,
@@ -672,6 +714,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ahryun/Developer/PersonaliOSProjects/ios,
+					"$(PROJECT_DIR)",
+					/Users/ahryun/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewBlac/NewBlac-Prefix.pch";
@@ -693,6 +737,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ahryun/Developer/PersonaliOSProjects/ios,
+					"$(PROJECT_DIR)",
+					/Users/ahryun/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewBlac/NewBlac-Prefix.pch";

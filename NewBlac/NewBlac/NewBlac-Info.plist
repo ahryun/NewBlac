@@ -47,5 +47,18 @@
 	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
+	<key>FacebookAppID</key>
+	<string>66XP53YSKL.Ahryun.NewBlac</string>
+	<key>FacebookDisplayName</key>
+	<string>Pieces</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb66XP53YSKL.Ahryun.NewBlac</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -12,6 +12,9 @@
 #import "CollectionViewLayout.h"
 #import "Photo+LifeCycle.h"
 #import "MotionVideoPlayer.h"
+#import "ShareViewController.h"
+#import "SharableMovieItemProvider.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
 
@@ -54,10 +57,11 @@ static const NSString *PlayerReadyContext;
 {
     [super viewDidAppear:animated];
     // Lighten the first cell
-    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
-    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
-    cell.maskView.alpha = 0.0;
-    self.centerCell = cell;
+    [self centerACell];
+//    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+//    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
+//    cell.maskView.alpha = 0.0;
+//    self.centerCell = cell;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -88,7 +92,12 @@ static const NSString *PlayerReadyContext;
 
 - (IBAction)presentShareModally:(UIBarButtonItem *)sender
 {
-    UIActivityViewController *shareViewController = [[UIActivityViewController alloc] initWithActivityItems:@[] applicationActivities:@[]];
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
+    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    SharableMovieItemProvider *movieItemProvider = [[SharableMovieItemProvider alloc] initWithPlaceholderItem:[[NSURL alloc] init]];
+    [movieItemProvider setVideoPath:video.compFilePath];
+    ShareViewController *shareViewController = [[ShareViewController alloc] initWithActivityItems:@[movieItemProvider] applicationActivities:nil];
+    shareViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact]; //or whichever you don't need
     [self presentViewController:shareViewController animated:YES completion:^{
         NSLog(@"Share screen presented\n");
     }];
