@@ -8,6 +8,7 @@
 
 #import "VideosCollectionViewController.h"
 #import "FramesCollectionViewController.h"
+#import "LogInViewController.h"
 #import "Video+LifeCycle.h"
 #import "CollectionViewLayout.h"
 #import "Photo+LifeCycle.h"
@@ -16,10 +17,12 @@
 #import "SharableMovieItemProvider.h"
 #import "VideoCreator.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Parse/Parse.h>
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSNumber *ifAddNewVideo;
+@property (nonatomic, strong) NSNumber *ifLoggedIn;
 @property (nonatomic, strong) Video *selectedVideo;
 @property (nonatomic, strong) VideoCreator *videoCreator;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
@@ -56,6 +59,14 @@ static const NSString *PlayerReadyContext;
     [self.managedObjectContext performBlock:^{
         [Video removeVideosInManagedContext:self.managedObjectContext];
     }];
+    
+    // If the user if logged in, then go ahead and use the app. If not, redirect to login view.
+    if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
+        self.ifLoggedIn = [NSNumber numberWithBool:YES];
+    } else {
+        self.ifLoggedIn = [NSNumber numberWithBool:NO];
+        [self showLoginView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -63,10 +74,6 @@ static const NSString *PlayerReadyContext;
     [super viewDidAppear:animated];
     // Lighten the first cell
     [self centerACell];
-//    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
-//    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
-//    cell.maskView.alpha = 0.0;
-//    self.centerCell = cell;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -93,6 +100,13 @@ static const NSString *PlayerReadyContext;
 - (IBAction)presentMenuModally:(UIBarButtonItem *)sender
 {
     // Do something
+    [self showLoginView];
+    
+}
+
+- (void)showLoginView
+{
+    [self performSegueWithIdentifier:@"Show Login View" sender:self];
 }
 
 - (IBAction)presentShareModally:(UIBarButtonItem *)sender
@@ -174,6 +188,11 @@ static const NSString *PlayerReadyContext;
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
             [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
+        }
+    }
+    if ([segue.identifier isEqualToString:@"Show Login View"]) {
+        if ([segue.destinationViewController respondsToSelector:@selector(ifLoggedIn:)]) {
+            [segue.destinationViewController performSelector:@selector(ifLoggedIn:) withObject:self.ifLoggedIn];
         }
     }
 }

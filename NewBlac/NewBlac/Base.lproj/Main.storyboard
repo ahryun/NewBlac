@@ -371,6 +371,99 @@
             </objects>
             <point key="canvasLocation" x="2117" y="-4"/>
         </scene>
+        <!--Log In View Controller-->
+        <scene sceneID="354-e2-N4m">
+            <objects>
+                <viewController id="wvL-Dr-cRm" customClass="LogInViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ggR-PO-w1W"/>
+                        <viewControllerLayoutGuide type="bottom" id="hVK-hN-kIP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="u1M-Nz-KyZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BlurBackground" translatesAutoresizingMaskIntoConstraints="NO" id="RbQ-og-62g">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nXv-kS-8Eg">
+                                <rect key="frame" x="270" y="20" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="67e-Rp-HHb"/>
+                                    <constraint firstAttribute="height" constant="30" id="8PA-uL-dzD"/>
+                                </constraints>
+                                <state key="normal" image="ExitButton">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismissModal:" destination="wvL-Dr-cRm" eventType="touchUpInside" id="C0G-EQ-1W2"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZrC-2J-kKu">
+                                <rect key="frame" x="50" y="204" width="220" height="160"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tk0-2P-ORh">
+                                        <rect key="frame" x="0.0" y="52" width="220" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="highlightedColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="we don't post on behalf of you" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz2-7f-GJz">
+                                        <rect key="frame" x="-37" y="76" width="294" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XuL-4q-QSL">
+                                        <rect key="frame" x="30" y="105" width="160" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="FacebookLogin">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="login:" destination="wvL-Dr-cRm" eventType="touchUpInside" id="aQt-S5-5VQ"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rd0-Sv-WcE">
+                                        <rect key="frame" x="85" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="220" id="rnu-Vc-VpW"/>
+                                    <constraint firstAttribute="height" constant="160" id="zMb-Sj-Cu8"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="ZrC-2J-kKu" secondAttribute="centerY" constant="0.5" id="EYz-UF-ZNh"/>
+                            <constraint firstAttribute="trailing" secondItem="RbQ-og-62g" secondAttribute="trailing" id="Gpa-pr-1cc"/>
+                            <constraint firstAttribute="trailing" secondItem="nXv-kS-8Eg" secondAttribute="trailing" constant="20" symbolic="YES" id="Pje-w6-eRe"/>
+                            <constraint firstItem="RbQ-og-62g" firstAttribute="leading" secondItem="u1M-Nz-KyZ" secondAttribute="leading" id="RF4-gt-ARY"/>
+                            <constraint firstItem="RbQ-og-62g" firstAttribute="top" secondItem="u1M-Nz-KyZ" secondAttribute="top" id="Wwu-rr-qd0"/>
+                            <constraint firstAttribute="bottom" secondItem="RbQ-og-62g" secondAttribute="bottom" id="cBm-p4-FtK"/>
+                            <constraint firstAttribute="centerX" secondItem="ZrC-2J-kKu" secondAttribute="centerX" id="i6K-mN-f7e"/>
+                            <constraint firstItem="nXv-kS-8Eg" firstAttribute="top" secondItem="u1M-Nz-KyZ" secondAttribute="top" constant="20" symbolic="YES" id="oCW-W8-CyV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dismissModalButton" destination="nXv-kS-8Eg" id="wKi-C0-iyg"/>
+                        <outlet property="logInOrOutButton" destination="XuL-4q-QSL" id="HG9-TS-XSZ"/>
+                        <outlet property="mainInstruction" destination="tk0-2P-ORh" id="q4A-5p-dEP"/>
+                        <outlet property="profilePic" destination="rd0-Sv-WcE" id="3Tf-yv-jjj"/>
+                        <outlet property="subInstruction" destination="Zz2-7f-GJz" id="q7P-Cj-J7J"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="25D-WM-rB0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2967" y="-729"/>
+        </scene>
         <!--Videos Collection View Controller - pieces-->
         <scene sceneID="MVv-Q0-bKi">
             <objects>
@@ -438,6 +531,7 @@
                     <connections>
                         <outlet property="noVideoScreen" destination="PgH-qT-kF1" id="Izj-Le-Z2Q"/>
                         <outlet property="shareButton" destination="W0b-Hb-mVG" id="h5w-RV-Pfv"/>
+                        <segue destination="wvL-Dr-cRm" kind="modal" identifier="Show Login View" modalTransitionStyle="coverVertical" id="R3K-K0-OMO"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -483,8 +577,10 @@
         <image name="ActivityIndicator" width="100" height="100"/>
         <image name="AddVideoButton" width="30" height="30"/>
         <image name="BackButton" width="30" height="30"/>
+        <image name="BlurBackground" width="320" height="568"/>
         <image name="CameraButton" width="30" height="30"/>
         <image name="ExitButton" width="30" height="30"/>
+        <image name="FacebookLogin" width="160" height="40"/>
         <image name="FlashOff" width="40" height="30"/>
         <image name="FlashOn" width="40" height="30"/>
         <image name="Loupe" width="150" height="150"/>
