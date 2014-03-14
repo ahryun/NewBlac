@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mainInstruction;
 @property (weak, nonatomic) IBOutlet UILabel *subInstruction;
 @property (weak, nonatomic) IBOutlet UIButton *logInOrOutButton;
+@property (weak, nonatomic) CALayer *logoutButtonLayer;
 
 @end
 
@@ -50,15 +51,64 @@
     [self.dismissModalButton setHidden:YES];
     [self.mainInstruction setText:@"Sign in with Facebook"];
     [self.subInstruction setText:@"We don't post on behalf of you"];
+    [self.logInOrOutButton setBackgroundImage:[UIImage imageNamed:@"FacebookLogin"] forState:UIControlStateNormal];
+    [self.logInOrOutButton setTitle:@"" forState:UIControlStateNormal];
+    [self.logoutButtonLayer removeFromSuperlayer];
     [self.profilePic setHidden:YES];
 }
 
 - (void)setUpLogOutview
 {
+    FBRequest *request = [FBRequest requestForMe];
+    
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            NSError *photoLoadingError = nil;
+            NSString *facebookID = userData[@"id"];
+            NSString *name = userData[@"name"];
+            NSString *email = userData[@"email"];
+            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+            
+            [self.profilePic setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL options:NSDataReadingUncached error:&photoLoadingError]]];
+            [self.mainInstruction setText:name];
+            [self.subInstruction setText:email];
+        }
+    }];
     [self.dismissModalButton setHidden:NO];
-    [self.mainInstruction setText:[NSString stringWithFormat:@"%@", [PFUser currentUser].username]];
-    [self.subInstruction setText:[NSString stringWithFormat:@"%@", [PFUser currentUser].email]];
+    [self.logInOrOutButton setBackgroundImage:nil forState:UIControlStateNormal];
+    [self.logInOrOutButton.layer addSublayer:[self createSignOutButton]];
+    [self.logInOrOutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
     [self.profilePic setHidden:NO];
+    [self setupProfilePicMask];
+}
+
+- (void)setupProfilePicMask
+{
+    UIBezierPath *circle = [UIBezierPath bezierPathWithOvalInRect:self.profilePic.bounds];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = circle.CGPath;
+    shapeLayer.frame = self.profilePic.bounds;
+    self.profilePic.layer.mask = shapeLayer;
+}
+
+- (CAShapeLayer *)createSignOutButton
+{
+    CGRect buttonBounds = self.logInOrOutButton.bounds;
+    
+    UIBezierPath *buttonBox = [UIBezierPath bezierPathWithRoundedRect:buttonBounds cornerRadius:5.f];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.fillColor   = [UIColor clearColor].CGColor;
+    shapeLayer.strokeColor = [UIColor darkGrayColor].CGColor;
+    shapeLayer.lineWidth   = 1.f;
+    shapeLayer.frame = buttonBounds;
+    shapeLayer.path = buttonBox.CGPath;
+    self.logoutButtonLayer = shapeLayer;
+    
+    return shapeLayer;
 }
 
 #pragma mark - Storyboard Actions
@@ -74,7 +124,7 @@
     }];
 }
 
-- (IBAction)login:(UIButton *)sender
+- (IBAction)loginOrLogout:(UIButton *)sender
 {
     if (!self.loggedIn) {
         // The permissions requested from the user
@@ -90,15 +140,11 @@
                 }
             } else if (user.isNew) {
                 NSLog(@"User with facebook signed up and logged in!");
-                /*
-                // request user data from FB and store it
-                */
+                self.loggedIn = YES;
                 [self dismissModalView];
             } else {
                 NSLog(@"User with facebook logged in!");
-                /*
-                 // request user data from FB and store it
-                 */
+                self.loggedIn = YES;
                 [self dismissModalView];
             }
         }];

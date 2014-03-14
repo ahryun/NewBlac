@@ -59,6 +59,13 @@ static const NSString *PlayerReadyContext;
     [self.managedObjectContext performBlock:^{
         [Video removeVideosInManagedContext:self.managedObjectContext];
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    // Lighten the first cell
+    [self centerACell];
     
     // If the user if logged in, then go ahead and use the app. If not, redirect to login view.
     if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
@@ -67,13 +74,6 @@ static const NSString *PlayerReadyContext;
         self.ifLoggedIn = [NSNumber numberWithBool:NO];
         [self showLoginView];
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    // Lighten the first cell
-    [self centerACell];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,7 +101,6 @@ static const NSString *PlayerReadyContext;
 {
     // Do something
     [self showLoginView];
-    
 }
 
 - (void)showLoginView

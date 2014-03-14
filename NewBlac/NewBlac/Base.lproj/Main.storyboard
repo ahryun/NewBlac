@@ -388,11 +388,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nXv-kS-8Eg">
-                                <rect key="frame" x="270" y="20" width="30" height="30"/>
+                                <rect key="frame" x="240" y="0.0" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="67e-Rp-HHb"/>
-                                    <constraint firstAttribute="height" constant="30" id="8PA-uL-dzD"/>
+                                    <constraint firstAttribute="width" constant="80" id="0aG-7w-bLt"/>
+                                    <constraint firstAttribute="height" constant="80" id="dD9-ax-kE3"/>
                                 </constraints>
                                 <state key="normal" image="ExitButton">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -409,7 +409,7 @@
                                         <rect key="frame" x="0.0" y="52" width="220" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.94117647059999998" green="0.39607843139999999" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="highlightedColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="we don't post on behalf of you" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz2-7f-GJz">
@@ -422,11 +422,12 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XuL-4q-QSL">
                                         <rect key="frame" x="30" y="105" width="160" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="FacebookLogin">
+                                        <state key="normal" backgroundImage="FacebookLogin">
+                                            <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="login:" destination="wvL-Dr-cRm" eventType="touchUpInside" id="aQt-S5-5VQ"/>
+                                            <action selector="loginOrLogout:" destination="wvL-Dr-cRm" eventType="touchUpInside" id="RKW-he-ScK"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rd0-Sv-WcE">
@@ -444,12 +445,12 @@
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="ZrC-2J-kKu" secondAttribute="centerY" constant="0.5" id="EYz-UF-ZNh"/>
                             <constraint firstAttribute="trailing" secondItem="RbQ-og-62g" secondAttribute="trailing" id="Gpa-pr-1cc"/>
-                            <constraint firstAttribute="trailing" secondItem="nXv-kS-8Eg" secondAttribute="trailing" constant="20" symbolic="YES" id="Pje-w6-eRe"/>
                             <constraint firstItem="RbQ-og-62g" firstAttribute="leading" secondItem="u1M-Nz-KyZ" secondAttribute="leading" id="RF4-gt-ARY"/>
                             <constraint firstItem="RbQ-og-62g" firstAttribute="top" secondItem="u1M-Nz-KyZ" secondAttribute="top" id="Wwu-rr-qd0"/>
                             <constraint firstAttribute="bottom" secondItem="RbQ-og-62g" secondAttribute="bottom" id="cBm-p4-FtK"/>
                             <constraint firstAttribute="centerX" secondItem="ZrC-2J-kKu" secondAttribute="centerX" id="i6K-mN-f7e"/>
-                            <constraint firstItem="nXv-kS-8Eg" firstAttribute="top" secondItem="u1M-Nz-KyZ" secondAttribute="top" constant="20" symbolic="YES" id="oCW-W8-CyV"/>
+                            <constraint firstItem="nXv-kS-8Eg" firstAttribute="top" secondItem="RbQ-og-62g" secondAttribute="top" id="iA9-e4-nEq"/>
+                            <constraint firstItem="nXv-kS-8Eg" firstAttribute="trailing" secondItem="RbQ-og-62g" secondAttribute="trailing" id="wsm-lN-qyy"/>
                         </constraints>
                     </view>
                     <connections>
