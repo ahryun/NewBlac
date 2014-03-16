@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mainInstruction;
 @property (weak, nonatomic) IBOutlet UILabel *subInstruction;
 @property (weak, nonatomic) IBOutlet UIButton *logInOrOutButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingFBLogin;
 @property (weak, nonatomic) CALayer *logoutButtonLayer;
 
 @end
@@ -28,6 +29,7 @@
 {
     [super viewDidLoad];
     [self prefersStatusBarHidden];
+    [self.loadingFBLogin stopAnimating];
 
     if (!self.loggedIn) {
         [self setUpLogInView];
@@ -59,6 +61,14 @@
 
 - (void)setUpLogOutview
 {
+    [self.mainInstruction setText:@""];
+    [self.subInstruction setText:@""];
+    [self.dismissModalButton setHidden:NO];
+    [self.logInOrOutButton setBackgroundImage:nil forState:UIControlStateNormal];
+    [self.logInOrOutButton.layer addSublayer:[self createSignOutButton]];
+    [self.logInOrOutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
+    [self.profilePic setHidden:NO];
+    [self setupProfilePicMask];
     FBRequest *request = [FBRequest requestForMe];
     
     // Send request to Facebook
@@ -77,12 +87,7 @@
             [self.subInstruction setText:email];
         }
     }];
-    [self.dismissModalButton setHidden:NO];
-    [self.logInOrOutButton setBackgroundImage:nil forState:UIControlStateNormal];
-    [self.logInOrOutButton.layer addSublayer:[self createSignOutButton]];
-    [self.logInOrOutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
-    [self.profilePic setHidden:NO];
-    [self setupProfilePicMask];
+    
 }
 
 - (void)setupProfilePicMask
@@ -131,7 +136,11 @@
         NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
         
         // Login PFUser using Facebook
+        [self.logInOrOutButton setHidden:YES];
+        [self.loadingFBLogin startAnimating];
         [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
+            [self.logInOrOutButton setHidden:NO];
+            [self.loadingFBLogin stopAnimating];
             if (!user) {
                 if (!error) {
                     NSLog(@"Uh oh. The user cancelled the Facebook login.");

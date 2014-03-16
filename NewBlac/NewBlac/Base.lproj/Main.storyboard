@@ -434,9 +434,15 @@
                                         <rect key="frame" x="85" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="xZp-V3-6Ni">
+                                        <rect key="frame" x="100" y="120" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="xZp-V3-6Ni" secondAttribute="bottom" constant="20" id="nvP-Jc-iHW"/>
                                     <constraint firstAttribute="width" constant="220" id="rnu-Vc-VpW"/>
+                                    <constraint firstAttribute="centerX" secondItem="xZp-V3-6Ni" secondAttribute="centerX" id="way-3Y-n4D"/>
                                     <constraint firstAttribute="height" constant="160" id="zMb-Sj-Cu8"/>
                                 </constraints>
                             </view>
@@ -455,6 +461,7 @@
                     </view>
                     <connections>
                         <outlet property="dismissModalButton" destination="nXv-kS-8Eg" id="wKi-C0-iyg"/>
+                        <outlet property="loadingFBLogin" destination="xZp-V3-6Ni" id="d6s-xM-UxP"/>
                         <outlet property="logInOrOutButton" destination="XuL-4q-QSL" id="HG9-TS-XSZ"/>
                         <outlet property="mainInstruction" destination="tk0-2P-ORh" id="q4A-5p-dEP"/>
                         <outlet property="profilePic" destination="rd0-Sv-WcE" id="3Tf-yv-jjj"/>
