@@ -112,11 +112,6 @@ static const NSString *PlayerReadyContext;
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    SharableMovieItemProvider *movieItemProvider = [[SharableMovieItemProvider alloc] initWithPlaceholderItem:[[NSURL alloc] init]];
-    [movieItemProvider setVideoPath:video.compFilePath];
-    ShareViewController *shareViewController = [[ShareViewController alloc] initWithActivityItems:@[movieItemProvider] applicationActivities:nil];
-    shareViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact]; //or whichever you don't need
-    self.shareViewController = shareViewController;
     [self compileVideo:video];
 }
 
@@ -133,16 +128,41 @@ static const NSString *PlayerReadyContext;
     });
 }
 
+- (void)publishToFacebook:(Video *)video
+{
+    NSError *dataError;
+    NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath options:
+                         NSDataReadingMappedAlways error:&dataError];
+    
+    NSString *description = @"something";
+    NSString *title = @"video title";
+    
+    if (description == nil) description = @"";
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   videoData, @"video.mov",
+                                   @"video/quicktime", @"contentType",
+                                   title, @"title",
+                                   description, @"description",
+                                   nil];
+    [FBRequestConnection startWithGraphPath:@"/me/videos"
+                                 parameters:params
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              NSLog(@"%@", result);
+                              if (error) {
+                                  // Tell user that the upload failed
+                              }
+                          }];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
+//                [self publishToFacebook:self.videoCreator.video];
                 [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
-                [self presentViewController:self.shareViewController animated:YES completion:^{
-                    NSLog(@"Share screen presented\n");
-                }];
             }
         });
         return;
