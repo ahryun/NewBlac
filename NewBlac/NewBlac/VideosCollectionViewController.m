@@ -112,10 +112,8 @@ static const NSString *PlayerReadyContext;
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    [self compileVideo:video];
-    
     self.shareVideo = video;
+    [self compileVideo:video];
 }
 
 - (void)compileVideo:(Video *)videoToCompile
@@ -242,13 +240,10 @@ static const NSString *PlayerReadyContext;
         if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
             NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-            if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-                // If after scrolling, the user ended up on the same video, resume the video
-                if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
-                PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
-                cell.maskView.alpha = 0.0;
-                self.centerCell = cell;
-            }
+            if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
+            PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
+            cell.maskView.alpha = 0.0;
+            self.centerCell = cell;
         } else {
             // Create a blank video
             NSLog(@"No video!");

@@ -44,6 +44,7 @@
 - (void)writeImagesToVideo
 {
     // Remove an existing video file if it exists
+    self.videoDoneCreating = NO;
     NSError *removeError = nil;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:self.video.compFilePath]) {
