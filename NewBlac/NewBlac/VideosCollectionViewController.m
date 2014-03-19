@@ -13,7 +13,7 @@
 #import "CollectionViewLayout.h"
 #import "Photo+LifeCycle.h"
 #import "MotionVideoPlayer.h"
-#import "ShareViewController.h"
+#import "ShareSocialViewController.h"
 #import "SharableMovieItemProvider.h"
 #import "VideoCreator.h"
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -24,9 +24,9 @@
 @property (nonatomic, strong) NSNumber *ifAddNewVideo;
 @property (nonatomic, strong) NSNumber *ifLoggedIn;
 @property (nonatomic, strong) Video *selectedVideo;
+@property (nonatomic, strong) Video *shareVideo;
 @property (nonatomic, strong) VideoCreator *videoCreator;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
-@property (nonatomic, strong) ShareViewController *shareViewController;
 @property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 
@@ -112,7 +112,10 @@ static const NSString *PlayerReadyContext;
 {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
     Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
     [self compileVideo:video];
+    
+    self.shareVideo = video;
 }
 
 - (void)compileVideo:(Video *)videoToCompile
@@ -128,40 +131,14 @@ static const NSString *PlayerReadyContext;
     });
 }
 
-- (void)publishToFacebook:(Video *)video
-{
-    NSError *dataError;
-    NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath options:
-                         NSDataReadingMappedAlways error:&dataError];
-    
-    NSString *description = @"something";
-    NSString *title = @"video title";
-    
-    if (description == nil) description = @"";
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                   videoData, @"video.mov",
-                                   @"video/quicktime", @"contentType",
-                                   title, @"title",
-                                   description, @"description",
-                                   nil];
-    [FBRequestConnection startWithGraphPath:@"/me/videos"
-                                 parameters:params
-                                 HTTPMethod:@"POST"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              NSLog(@"%@", result);
-                              if (error) {
-                                  // Tell user that the upload failed
-                              }
-                          }];
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
-//                [self publishToFacebook:self.videoCreator.video];
+                // Bring up the share view
+                [self performSegueWithIdentifier:@"Show Share Modal" sender:self];
                 [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
             }
         });
@@ -212,6 +189,18 @@ static const NSString *PlayerReadyContext;
     if ([segue.identifier isEqualToString:@"Show Login View"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(ifLoggedIn:)]) {
             [segue.destinationViewController performSelector:@selector(ifLoggedIn:) withObject:self.ifLoggedIn];
+        }
+    }
+    if ([segue.identifier isEqualToString:@"Show Share Modal"]) {
+        UIView *snapShotView = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+        if ([segue.destinationViewController respondsToSelector:@selector(setSnapShotView:)]) {
+            [segue.destinationViewController performSelector:@selector(setSnapShotView:) withObject:snapShotView];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
+            [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.shareVideo];
+        }
+        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
+            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
         }
     }
 }

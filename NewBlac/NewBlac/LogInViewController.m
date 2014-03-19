@@ -133,7 +133,7 @@
 {
     if (!self.loggedIn) {
         // The permissions requested from the user
-        NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location", @"publish_actions", @"publish_stream"];
+        NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
         
         // Login PFUser using Facebook
         [self.logInOrOutButton setHidden:YES];

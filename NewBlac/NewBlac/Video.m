@@ -2,7 +2,7 @@
 //  Video.m
 //  NewBlac
 //
-//  Created by Ahryun Moon on 3/11/14.
+//  Created by Ahryun Moon on 3/18/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @dynamic framesPerSecond;
 @dynamic screenRatio;
 @dynamic title;
+@dynamic facebookVideoID;
 @dynamic photos;
 
 @end

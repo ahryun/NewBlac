@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F32E2ECA18D1333200D5A556 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2EC918D1333200D5A556 /* ShareViewController.m */; };
 		F32E2ECD18D17F8500D5A556 /* SharableMovieItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */; };
 		F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ECE18D1AC3600D5A556 /* Parse.framework */; };
 		F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */; };
@@ -19,6 +18,8 @@
 		F32E2EDD18D1ACC800D5A556 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */; };
 		F32E2EDF18D1B97E00D5A556 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */; };
 		F32E2EE518D298F400D5A556 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2EE418D298F400D5A556 /* LogInViewController.m */; };
+		F32E2F5018D90C5400D5A556 /* ShareSocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2F4F18D90C5400D5A556 /* ShareSocialViewController.m */; };
+		F32E2F5318D9366600D5A556 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2F5218D9366600D5A556 /* Video.m */; };
 		F330D95418972C7C009265EC /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F330D95318972C7B009265EC /* InitialViewController.m */; };
 		F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */; };
 		F33BE9941892F70A0021A5C1 /* PiecesCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9931892F70A0021A5C1 /* PiecesCollectionCell.m */; };
@@ -67,7 +68,6 @@
 		F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3C0290618443ADB00FF08F1 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F3C8566B18CBE08B00C9FE97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3C8566A18CBE08B00C9FE97 /* Images.xcassets */; };
 		F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */; };
-		F3C8568318CFDB5500C9FE97 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8568218CFDB5500C9FE97 /* Video.m */; };
 		F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = F3C8568518CFDB5500C9FE97 /* Photo.m */; };
 		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
 		F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */; };
@@ -85,8 +85,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F32E2EC818D1333200D5A556 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
-		F32E2EC918D1333200D5A556 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		F32E2ECB18D17F8500D5A556 /* SharableMovieItemProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharableMovieItemProvider.h; sourceTree = "<group>"; };
 		F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharableMovieItemProvider.m; sourceTree = "<group>"; };
 		F32E2ECE18D1AC3600D5A556 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -100,6 +98,10 @@
 		F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		F32E2EE318D298F400D5A556 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		F32E2EE418D298F400D5A556 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
+		F32E2F4E18D90C5400D5A556 /* ShareSocialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareSocialViewController.h; sourceTree = "<group>"; };
+		F32E2F4F18D90C5400D5A556 /* ShareSocialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareSocialViewController.m; sourceTree = "<group>"; };
+		F32E2F5118D9366600D5A556 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
+		F32E2F5218D9366600D5A556 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
 		F330D95218972C7B009265EC /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		F330D95318972C7B009265EC /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		F33BE98F1892F4E90021A5C1 /* VideosCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosCollectionViewController.h; sourceTree = "<group>"; };
@@ -177,8 +179,6 @@
 		F3C8566A18CBE08B00C9FE97 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F3C8567E18CFDB5400C9FE97 /* PhotoCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoCorners.h; path = NewBlac/PhotoCorners.h; sourceTree = "<group>"; };
 		F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoCorners.m; path = NewBlac/PhotoCorners.m; sourceTree = "<group>"; };
-		F3C8568118CFDB5500C9FE97 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
-		F3C8568218CFDB5500C9FE97 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
 		F3C8568418CFDB5500C9FE97 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = NewBlac/Photo.h; sourceTree = "<group>"; };
 		F3C8568518CFDB5500C9FE97 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = NewBlac/Photo.m; sourceTree = "<group>"; };
 		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
@@ -268,8 +268,8 @@
 				F33EA992187BA1380045E642 /* EditImageViewController.m */,
 				F3AAD68D18C2ABFB00B5A23B /* FullScreenMovieViewController.h */,
 				F3AAD68E18C2ABFB00B5A23B /* FullScreenMovieViewController.m */,
-				F32E2EC818D1333200D5A556 /* ShareViewController.h */,
-				F32E2EC918D1333200D5A556 /* ShareViewController.m */,
+				F32E2F4E18D90C5400D5A556 /* ShareSocialViewController.h */,
+				F32E2F4F18D90C5400D5A556 /* ShareSocialViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -277,13 +277,13 @@
 		F33EA9221877A51D0045E642 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
 				F3C8567E18CFDB5400C9FE97 /* PhotoCorners.h */,
 				F3C8567F18CFDB5400C9FE97 /* PhotoCorners.m */,
 				F3C8568418CFDB5500C9FE97 /* Photo.h */,
 				F3C8568518CFDB5500C9FE97 /* Photo.m */,
-				F3C8568118CFDB5500C9FE97 /* Video.h */,
-				F3C8568218CFDB5500C9FE97 /* Video.m */,
-				F33EA91F1877A4FC0045E642 /* ArtProgressCoreData.xcdatamodeld */,
+				F32E2F5118D9366600D5A556 /* Video.h */,
+				F32E2F5218D9366600D5A556 /* Video.m */,
 				F3A495041891D18E00CBAE82 /* CoreDataCollectionViewController.h */,
 				F3A495051891D18E00CBAE82 /* CoreDataCollectionViewController.m */,
 				F3A494DD1888A9C700CBAE82 /* Video+LifeCycle.h */,
@@ -567,9 +567,9 @@
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
 				F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */,
+				F32E2F5318D9366600D5A556 /* Video.m in Sources */,
 				F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */,
 				F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */,
-				F32E2ECA18D1333200D5A556 /* ShareViewController.m in Sources */,
 				F3A494DF1888A9C700CBAE82 /* Video+LifeCycle.m in Sources */,
 				F33EA963187A31D50045E642 /* Photo+LifeCycle.m in Sources */,
 				F3C8568018CFDB5400C9FE97 /* PhotoCorners.m in Sources */,
@@ -582,9 +582,9 @@
 				F3A494FA188DEF4E00CBAE82 /* VideoPlayView.m in Sources */,
 				F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */,
 				F33EA969187A3BA60045E642 /* TroubleshootManagedDocument.m in Sources */,
-				F3C8568318CFDB5500C9FE97 /* Video.m in Sources */,
 				F33EA91B187641E90045E642 /* ViewImageViewController.m in Sources */,
 				F3C028C01843F5BD00FF08F1 /* FramesCollectionViewController.m in Sources */,
+				F32E2F5018D90C5400D5A556 /* ShareSocialViewController.m in Sources */,
 				F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */,
 				F3B0ECCC1857A5AF00143044 /* CanvasStraightener.cpp in Sources */,
 				F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */,
