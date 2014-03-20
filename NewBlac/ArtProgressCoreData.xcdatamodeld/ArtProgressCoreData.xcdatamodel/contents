@@ -27,6 +27,7 @@
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="facebookVideoID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="framesPerSecond" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="5" defaultValueString="1" syncable="YES"/>
+        <attribute name="parseID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenRatio" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" maxCount="75" deletionRule="Cascade" ordered="YES" destinationEntity="Photo" inverseName="video" inverseEntity="Photo" syncable="YES"/>
@@ -34,6 +35,6 @@
     <elements>
         <element name="Photo" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PhotoCorners" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="Video" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Video" positionX="0" positionY="0" width="128" height="165"/>
     </elements>
 </model>

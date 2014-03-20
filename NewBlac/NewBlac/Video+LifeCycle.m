@@ -13,11 +13,7 @@
 
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    // Find if the video exists
-    // If doesn't exist, create one
-    
     Video *video = nil;
-    
     if (path) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Video"];
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];

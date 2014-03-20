@@ -120,6 +120,7 @@
         
         if (description == nil) description = @"";
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys: videoData, @"video.mov", @"video/quicktime", @"contentType", title, @"title", description, @"description", nil];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [FBRequestConnection startWithGraphPath:@"/me/videos" parameters:params HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {
                 if (result) {
@@ -132,6 +133,8 @@
             } else {
                 [self handleAPICallError:error];
             }
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
         }];
     }
 }
