@@ -155,9 +155,6 @@
     ///////////////////////// Change the position of image origin ////////////////////////////////
     float originalImageRatio = (float)CGImageGetWidth(cgImage) / (float)CGImageGetHeight(cgImage);
     CGSize imageSize = [self getImageSizewithScreenSize:size withImageSize:originalImageRatio];
-    // Below added to un-Blur the image
-//    CGContextScaleCTM(context, imageSize.width/size.width, imageSize.height/size.height);
-    // Above added to un-Blur the image
     CGContextDrawImage(context, CGRectMake((size.width - imageSize.width) / 2, (size.height - imageSize.height) / 2, imageSize.width, imageSize.height), cgImage);
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
@@ -168,11 +165,22 @@
 
 - (CGSize)getImageSizewithScreenSize:(CGSize)screenSize withImageSize:(float)originalImageRatio
 {
+    
     CGSize imageSize;
     float screenRatio = screenSize.width / screenSize.height;
     float videoRatio = [self.video.screenRatio floatValue];
     // This is so that if the video only contains non corners detected photos, meaning aspect ratio of ZERO, the video still shows the photos in correct dimensions
     if (videoRatio <= 0) videoRatio = originalImageRatio;
+    
+    // Facebook limits video ratio to 9/16 and 16/9
+    float minRatio = 9.f / 16.f;
+    float maxRatio = 16.f / 9.f;
+    if (videoRatio < minRatio) {
+        videoRatio = minRatio;
+    } else if (videoRatio > maxRatio) {
+        videoRatio = maxRatio;
+    }
+        
     if (videoRatio >= screenRatio) {
         imageSize.width = (int)screenSize.width;
         imageSize.height = (int)(screenSize.width / videoRatio);
