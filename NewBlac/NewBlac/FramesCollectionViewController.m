@@ -109,6 +109,8 @@ static const NSArray *fpsArray;
 {
     NSLog(@"I'm in clean up\n");
     if ([self.video.photos count] < 1) [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
+    
+    // If need to compile, do so before leaving
     NSError *error;
     [self.managedObjectContext save:&error];
     // When going back to the videoCollectionView, make the tool bar appear again no matter what
@@ -215,7 +217,7 @@ static const NSArray *fpsArray;
 
 - (IBAction)play:sender {
     // Prepare full page video
-    if (self.needToCompile) {
+    if (self.needToCompile || ![[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
         [self compileVideo];
         [self.playButton setImage:nil];
         [self.playButton setTitle:@"Compiling..."];
@@ -230,6 +232,11 @@ static const NSArray *fpsArray;
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
+                // Change the videoModified date - to let Parse know to update the data when convenient
+                [self.managedObjectContext performBlock:^{
+                    [self.video setDateModified:[NSDate date]];
+                }];
+                
                 [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
                 [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
             }

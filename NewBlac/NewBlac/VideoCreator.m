@@ -126,6 +126,7 @@
         weakSelf.videoDoneCreating = YES;
         
         weakSelf.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
+        
     }];
 }
 

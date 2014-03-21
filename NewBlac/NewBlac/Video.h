@@ -2,7 +2,7 @@
 //  Video.h
 //  NewBlac
 //
-//  Created by Ahryun Moon on 3/19/14.
+//  Created by Ahryun Moon on 3/20/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * facebookVideoID;
 @property (nonatomic, retain) NSString * parseID;
+@property (nonatomic, retain) NSDate * dateModified;
 @property (nonatomic, retain) NSOrderedSet *photos;
 @end
 

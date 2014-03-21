@@ -8,6 +8,7 @@
 
 #import "Video+LifeCycle.h"
 #import "Photo+LifeCycle.h"
+#import "ParseSyncer.h"
 
 @implementation Video (LifeCycle)
 
@@ -37,6 +38,9 @@
         [video setCompFilePath:path];
         [video setDateCreated:[NSDate date]];
     }
+    
+    // Add this video to Parse
+    [ParseSyncer addVideo:video inContext:context];
     
     NSError *error;
     [context save:&error];
@@ -73,6 +77,9 @@
         
         [context deleteObject:video];
         
+        // Remove this video from Parse
+        [ParseSyncer removeVideo:video];
+        
         NSError *saveError;
         [context save:&saveError];
         
@@ -92,6 +99,9 @@
         for (Video *video in matches) {
             // If no photos, delete the video
             if (![video.photos count]) [Video removeVideo:video inManagedContext:context];
+            
+            // Remove these videos from Parse as well
+            [ParseSyncer removeVideo:video];
         }
     } else {
         // Handle Error

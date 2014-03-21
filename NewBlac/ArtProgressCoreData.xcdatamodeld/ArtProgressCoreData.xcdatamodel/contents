@@ -25,6 +25,7 @@
     <entity name="Video" representedClassName="Video" syncable="YES">
         <attribute name="compFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="facebookVideoID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="framesPerSecond" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="5" defaultValueString="1" syncable="YES"/>
         <attribute name="parseID" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,6 +36,6 @@
     <elements>
         <element name="Photo" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PhotoCorners" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="Video" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Video" positionX="0" positionY="0" width="128" height="180"/>
     </elements>
 </model>

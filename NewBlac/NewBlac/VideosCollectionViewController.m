@@ -135,6 +135,11 @@ static const NSString *PlayerReadyContext;
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
+                // Change the videoModified date - to let Parse know to update the data when convenient
+                [self.managedObjectContext performBlock:^{
+                    [self.shareVideo setDateModified:[NSDate date]];
+                }];
+                
                 // Bring up the share view
                 [self performSegueWithIdentifier:@"Show Share Modal" sender:self];
                 [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
