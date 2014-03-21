@@ -8,7 +8,6 @@
 
 #import "TroubleshootManagedDocument.h"
 #import "Video+LifeCycle.h"
-#import "ParseSyncer.h"
 
 @implementation TroubleshootManagedDocument
 
@@ -16,10 +15,6 @@
 - (id)contentsForType:(NSString *)typeName error:(NSError *__autoreleasing *)outError
 {
     NSLog(@"Auto-saving document");
-    
-    // Update Parse DB with updated video contents whenever auto saving
-    [ParseSyncer updateVideosInContext:self.managedObjectContext];
-    [ParseSyncer removeVideosInContext:self.managedObjectContext];
     
     return [super contentsForType:typeName error:outError];
 }

@@ -9,6 +9,7 @@
 #import "InitialViewController.h"
 #import "SharedManagedDocument.h"
 #import <CoreData/CoreData.h>
+#import "ParseSyncer.h"
 
 @interface InitialViewController ()
 
@@ -32,6 +33,10 @@ static NSString *_SegueIdentifier = @"Go To Rootview";
 {
     if ([keyPath isEqualToString:_ManagedObjectContextChanged]) {
         if (self.managedObjectContext) {
+            // Update Parse DB with updated video contents whenever auto saving
+            [ParseSyncer updateVideosInContext:self.managedObjectContext];
+            [ParseSyncer removeVideosInContext:self.managedObjectContext];
+            
             [self performSegueWithIdentifier:_SegueIdentifier sender:self];
         }
     }

@@ -28,7 +28,6 @@
         PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
         
         // Save PFFile
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
                 // Create a PFObject around a PFFile and associate it with the current user
@@ -54,27 +53,10 @@
                 // Log details of the failure
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
-//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }
 }
 
-//+ (void)updateVideo:(Video *)video
-//{
-//    PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
-//    
-//    // Retrieve the object by id
-//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-//    [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
-//        // Now let's update it with some new data. In this case, only cheatMode and score
-//        // will get sent to the cloud. playerName hasn't changed.
-//        NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath];
-//        userCreatedVideo[@"videoFile"] = videoData;
-//        [userCreatedVideo saveEventually];
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-//    }];
-//}
-//
 + (void)updateVideosInContext:(NSManagedObjectContext *)context
 {
     NSEntityDescription *entityDescription = [NSEntityDescription
@@ -87,7 +69,6 @@
     // Retrieve the object by id
     for (Video *video in matches) {
         if (video.parseID) {
-//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
             [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
                 if (!error) {
@@ -96,17 +77,30 @@
                             NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath];
                             NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
                             PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
-                            userCreatedVideo[@"videoFile"] = videoFile;
-                            [userCreatedVideo saveEventually];
+                            [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                if (!error) {
+                                    userCreatedVideo[@"videoFile"] = videoFile;
+                                    [userCreatedVideo saveInBackground];
+                                    NSLog(@"Video %@ got updated\n", video.parseID);
+                                }
+                            }];
                         }
                     } else {
                         NSLog(@"The video has not been compiled\n");
                     }
                 } else {
                     NSLog(@"Error occurred while getting video object from Parse in updateVideosInContext: %@\n", error);
+                    if (error.code == 101) {
+                        // If error code is 101, that means the video on the user's device does not exist on Parse. Add it.
+                        NSLog(@"ObjectNotFound #101 error. Trying to add the video object to Parse\n");
+                        [ParseSyncer addVideo:video inContext:context];
+                    }
                 }
-//                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             }];
+        } else {
+            // If the video in Core Data does not exist in Parse, add it.
+            [ParseSyncer addVideo:video inContext:context];
+            NSLog(@"There was a video that was not on Parse. Adding it\n");
         }
     }
 }
@@ -115,21 +109,13 @@
 {
     // Retrieve the object by id
     if (video.parseID) {
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
         [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
             if (!error) {
-                [userCreatedVideo deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (!error) {
-                        NSLog(@"Video deleted on Parse\n");
-                    } else {
-                        NSLog(@"Error occurred while deleting the video on Parse %@\n", error);
-                    }
-                }];
+                [userCreatedVideo deleteInBackground];
             } else {
                 NSLog(@"Error occurred while getting video object from Parse in removeVideo: %@\n", error);
             }
-//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }
 }
@@ -155,13 +141,7 @@
                     [mutableMatches removeObject:video];
                     break;
                 } else {
-                    [userCreatedVideo deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        if (!error) {
-                            NSLog(@"The video got deleted on Parse\n");
-                        } else {
-                            NSLog(@"Error occurred while deleting a video on Parse %@\n", error);
-                        }
-                    }];
+                    [userCreatedVideo deleteInBackground];
                 }
             }
         }

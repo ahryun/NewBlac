@@ -13,7 +13,6 @@
 
 // Add a video on Parse
 + (void)addVideo:(Video *)video inContext:(NSManagedObjectContext *)context;
-//+ (void)updateVideo:(Video *)video;
 
 // If anything changed about the video, it gets synced on Parse
 + (void)updateVideosInContext:(NSManagedObjectContext *)context;
