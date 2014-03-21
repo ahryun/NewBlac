@@ -28,7 +28,7 @@
         PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
         
         // Save PFFile
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
                 // Create a PFObject around a PFFile and associate it with the current user
@@ -54,7 +54,7 @@
                 // Log details of the failure
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }
 }
@@ -87,7 +87,7 @@
     // Retrieve the object by id
     for (Video *video in matches) {
         if (video.parseID) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
             [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
                 if (!error) {
@@ -105,7 +105,7 @@
                 } else {
                     NSLog(@"Error occurred while getting video object from Parse in updateVideosInContext: %@\n", error);
                 }
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             }];
         }
     }
@@ -115,7 +115,7 @@
 {
     // Retrieve the object by id
     if (video.parseID) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
         [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
             if (!error) {
@@ -129,7 +129,7 @@
             } else {
                 NSLog(@"Error occurred while getting video object from Parse in removeVideo: %@\n", error);
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }
 }

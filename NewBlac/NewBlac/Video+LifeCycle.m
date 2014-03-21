@@ -98,10 +98,11 @@
     if ([matches count]) {
         for (Video *video in matches) {
             // If no photos, delete the video
-            if (![video.photos count]) [Video removeVideo:video inManagedContext:context];
-            
-            // Remove these videos from Parse as well
-            [ParseSyncer removeVideo:video];
+            if (![video.photos count]) {
+                [Video removeVideo:video inManagedContext:context];
+                // Remove these videos from Parse as well
+                [ParseSyncer removeVideo:video];
+            }
         }
     } else {
         // Handle Error
