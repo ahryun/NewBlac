@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIView *shareButtonsView;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 @property (weak, nonatomic) IBOutlet UIButton *photoAlbumButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) CALayer *loadingCircleLayer;
 @property (nonatomic) int retryCount;
 
@@ -42,6 +43,13 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self.shareButtonsView setAlpha:1.0];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.cancelButton setTitle:NSLocalizedString(@"CANCEL", @"Button to cancel the post to social network actions") forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning

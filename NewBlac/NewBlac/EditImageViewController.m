@@ -18,6 +18,7 @@
 @property (weak, nonatomic) CALayer *zoomLayer;
 @property (weak, nonatomic) CornerDetectionView *cornerDetectionView;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (nonatomic, strong) NSMutableArray *corners;
 @property (nonatomic, assign) NSUInteger selectedCornerIndex;
 @property (nonatomic, strong) CornerCircle *selectedCorner;
@@ -41,6 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Add the text "Save" to the button
+    [self.saveButton setTitle:NSLocalizedString(@"SAVE", @"A button that tells the user to save new corners before leaving this page")];
     
     // Add imageView
     UIImageView *imageView = [[UIImageView alloc] init];

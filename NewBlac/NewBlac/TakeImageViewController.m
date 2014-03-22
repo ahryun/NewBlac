@@ -139,6 +139,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    self.instructionLabel.text = NSLocalizedString(@"TAP ANYWHERE", @"Instruction to tell the user to tap anywhere on the screen to take a photo");
+    
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
                   options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)

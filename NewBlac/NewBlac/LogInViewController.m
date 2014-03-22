@@ -51,8 +51,8 @@
 - (void)setUpLogInView
 {
     [self.dismissModalButton setHidden:YES];
-    [self.mainInstruction setText:@"Sign in with Facebook"];
-    [self.subInstruction setText:@"We don't post on behalf of you"];
+    [self.mainInstruction setText: NSLocalizedString(@"Sign in with Facebook", @"Instruction to sign in with Facebook")];
+    [self.subInstruction setText:NSLocalizedString(@"We don't post on behalf of you", @"Wording to assure the user that we do not post without their explicit permission")];
     [self.logInOrOutButton setBackgroundImage:[UIImage imageNamed:@"FacebookLogin"] forState:UIControlStateNormal];
     [self.logInOrOutButton setTitle:@"" forState:UIControlStateNormal];
     [self.logoutButtonLayer removeFromSuperlayer];

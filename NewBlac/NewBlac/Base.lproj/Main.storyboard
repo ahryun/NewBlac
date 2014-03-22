@@ -181,9 +181,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAP ANYWHERE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jko-oZ-EY4">
-                                        <rect key="frame" x="70" y="109" width="181" height="30"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jko-oZ-EY4">
+                                        <rect key="frame" x="56" y="109" width="210" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="210" id="hSh-qr-S0r"/>
+                                            <constraint firstAttribute="height" constant="30" id="swN-kr-B16"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -328,7 +332,7 @@
                                 <action selector="backButtonPressed:" destination="w2n-4r-LyO" id="ZLj-Ih-N2m"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="SAVE" id="B2I-Eb-xTR">
+                        <barButtonItem key="rightBarButtonItem" id="B2I-Eb-xTR">
                             <connections>
                                 <action selector="doneEditingImage:" destination="w2n-4r-LyO" id="Eci-Px-NG7"/>
                             </connections>
@@ -339,6 +343,7 @@
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
                         <outlet property="loupeCenter" destination="kmX-1O-KLh" id="aew-DN-gKZ"/>
                         <outlet property="loupeView" destination="Al3-Er-6S7" id="4m9-Dv-8JA"/>
+                        <outlet property="saveButton" destination="B2I-Eb-xTR" id="PA2-CC-Q2s"/>
                         <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="hbp-6e-2Dv"/>
                     </connections>
                 </viewController>
@@ -405,14 +410,14 @@
                                 <rect key="frame" x="50" y="204" width="220" height="160"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tk0-2P-ORh">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tk0-2P-ORh">
                                         <rect key="frame" x="0.0" y="52" width="220" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" red="0.94117647059999998" green="0.39607843139999999" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="highlightedColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="we don't post on behalf of you" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz2-7f-GJz">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz2-7f-GJz">
                                         <rect key="frame" x="-37" y="76" width="294" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -571,7 +576,7 @@
                                             <constraint firstAttribute="width" constant="320" id="eMN-Qt-uCR"/>
                                             <constraint firstAttribute="height" constant="44" id="jyg-2W-bUm"/>
                                         </constraints>
-                                        <state key="normal" title="CANCEL">
+                                        <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -631,6 +636,7 @@
                     </view>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
+                        <outlet property="cancelButton" destination="WQl-Z3-LCq" id="dNz-lB-dXV"/>
                         <outlet property="facebookButton" destination="aWv-d6-GC0" id="sqJ-Ax-MIg"/>
                         <outlet property="photoAlbumButton" destination="hsQ-IT-xRa" id="Z1O-GI-GZk"/>
                         <outlet property="shareButtonsView" destination="IIy-vu-2bz" id="JCW-3u-tyv"/>
