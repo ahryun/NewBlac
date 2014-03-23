@@ -332,7 +332,7 @@
                                 <action selector="backButtonPressed:" destination="w2n-4r-LyO" id="ZLj-Ih-N2m"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" id="B2I-Eb-xTR">
+                        <barButtonItem key="rightBarButtonItem" image="SaveButton" id="B2I-Eb-xTR">
                             <connections>
                                 <action selector="doneEditingImage:" destination="w2n-4r-LyO" id="Eci-Px-NG7"/>
                             </connections>
@@ -343,7 +343,6 @@
                         <outlet property="buttonView" destination="alB-Uf-IqQ" id="QK2-k6-kIx"/>
                         <outlet property="loupeCenter" destination="kmX-1O-KLh" id="aew-DN-gKZ"/>
                         <outlet property="loupeView" destination="Al3-Er-6S7" id="4m9-Dv-8JA"/>
-                        <outlet property="saveButton" destination="B2I-Eb-xTR" id="PA2-CC-Q2s"/>
                         <segue destination="Sue-xC-YhO" kind="unwind" identifier="Unwind Done Editing Image" unwindAction="unwindDoneEditingImage:" id="hbp-6e-2Dv"/>
                     </connections>
                 </viewController>
@@ -698,6 +697,7 @@
         <image name="NoVideoScreen" width="320" height="220"/>
         <image name="PlayButton" width="30" height="30"/>
         <image name="PostToFB" width="80" height="80"/>
+        <image name="SaveButton" width="30" height="30"/>
         <image name="SaveToDevice" width="80" height="80"/>
         <image name="ShareDoneButton" width="80" height="80"/>
     </resources>
