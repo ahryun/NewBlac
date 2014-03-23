@@ -44,7 +44,10 @@
     [super viewDidLoad];
     
     // Add the text "Save" to the button
-    [self.saveButton setTitle:NSLocalizedString(@"SAVE", @"A button that tells the user to save new corners before leaving this page")];
+    NSString *saveString = NSLocalizedString(@"save", @"A button that tells the user to save new corners before leaving this page");
+    [self.saveButton setTitle:[saveString uppercaseString]];
+    [self.saveButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:14]} forState:UIControlStateNormal];
+    [self.saveButton setWidth:60.f];
     
     // Add imageView
     UIImageView *imageView = [[UIImageView alloc] init];
@@ -207,7 +210,9 @@
 - (IBAction)backButtonPressed:(UIBarButtonItem *)sender
 {
     if (self.coordinatesChanged) {
-        UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:@"Go back without saving?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
+        NSString *yesString = NSLocalizedString(@"yes", @"Action word to confirm leaving without saving");
+        UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Go back without saving?", @"Ask the user if she wants to leave the screen without saving the changes she's made") message:@"" delegate:self cancelButtonTitle:[cancelString capitalizedString] otherButtonTitles:[yesString capitalizedString], nil];
         [saveBeforeLeavingAlert show];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

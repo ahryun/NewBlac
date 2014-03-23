@@ -120,7 +120,7 @@ static const NSString *PlayerReadyContext;
 {
     NSLog(@"I am in compileVideo\n");
     [self.shareButton setImage:nil];
-    [self.shareButton setTitle:@"Compiling..."];
+    [self.shareButton setTitle:NSLocalizedString(@"Compiling...", @"Telling the user that the frames are being processed to create a video")];
     CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
     dispatch_async(dispatch_get_main_queue(), ^(){
         if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
@@ -286,7 +286,9 @@ static const NSString *PlayerReadyContext;
 
 - (void)deleteButtonPressed:(PiecesCollectionCell *)cell
 {
-    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle:@"Delete this piece?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+    NSString *deleteString = NSLocalizedString(@"delete", @"Action button to delete a piece of data");
+    NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
+    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete this piece?", @"Ask the user if she wants to delete this video") message:@"" delegate:self cancelButtonTitle:[cancelString capitalizedString] otherButtonTitles:[[NSString stringWithFormat:@"%@", deleteString] capitalizedString], nil];
     [deleteConfirmButton show];
 }
 

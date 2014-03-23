@@ -61,12 +61,13 @@
 
 - (void)setUpLogOutview
 {
+    NSString *logoutString = NSLocalizedString(@"sign out", @"Sign out button");
     [self.mainInstruction setText:@""];
     [self.subInstruction setText:@""];
     [self.dismissModalButton setHidden:NO];
     [self.logInOrOutButton setBackgroundImage:nil forState:UIControlStateNormal];
     [self.logInOrOutButton.layer addSublayer:[self createSignOutButton]];
-    [self.logInOrOutButton setTitle:@"SIGN OUT" forState:UIControlStateNormal];
+    [self.logInOrOutButton setTitle:[logoutString uppercaseString] forState:UIControlStateNormal];
     [self.profilePic setHidden:NO];
     [self setupProfilePicMask];
     FBRequest *request = [FBRequest requestForMe];

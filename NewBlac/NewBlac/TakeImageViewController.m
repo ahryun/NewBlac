@@ -133,15 +133,16 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     baseView.layer.mask = mask;
     
     // If photos object is created before coming into the Camera mode, take off "+1"
-    [self.frameNumberLabel setText:[NSString stringWithFormat:@"FRAME %i", [self.video.photos count] + 1]];
+    NSString *frameCountString = [NSString stringWithFormat:NSLocalizedString(@"frame %i", @"It tells the user which frame number she's on while taking a photo"), [self.video.photos count] + 1];
+    [self.frameNumberLabel setText:[frameCountString uppercaseString]];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.instructionLabel.text = NSLocalizedString(@"TAP ANYWHERE", @"Instruction to tell the user to tap anywhere on the screen to take a photo");
+    NSString *tapString = NSLocalizedString(@"tap anywhere", @"Instruction to tell the user to tap anywhere on the screen to take a photo");
+    self.instructionLabel.text = [tapString uppercaseString];
     
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
@@ -255,7 +256,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)showLoadingBar
 {
-    self.instructionLabel.text = @"CREATING FRAME";
+    NSString *creatingFrameString = NSLocalizedString(@"creating frame", @"Telling the user that the frame is being generated");
+    self.instructionLabel.text = [creatingFrameString uppercaseString];
     UIView *snapShot = [self.view resizableSnapshotViewFromRect:self.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
     snapShot.frame = self.view.frame;
     [self.view insertSubview:snapShot belowSubview:self.customActivityIndicator];
@@ -371,10 +373,11 @@ monitorSubjectAreaChange:NO];
 		} else {
 			//Not granted access to mediaType
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[[UIAlertView alloc] initWithTitle:@"NewBlac"
-											message:@"NewBlac doesn't have permission to use Camera, please change privacy settings"
+                NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
+				[[[UIAlertView alloc] initWithTitle:@"Pieces"
+											message:NSLocalizedString(@"Pieces doesn't have permission to use Camera, please change privacy settings", @"Ask the user to change the privacy settings to permit camera use")
 										   delegate:self
-								  cancelButtonTitle:@"OK"
+								  cancelButtonTitle:[okString uppercaseString]
 								  otherButtonTitles:nil] show];
 				[self setDeviceAuthorized:NO];
 			});

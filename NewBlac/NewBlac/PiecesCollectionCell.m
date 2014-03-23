@@ -64,7 +64,8 @@
     if (!self.deleteButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, 10, self.scrollView.frame.size.width, 60);
-        [button setTitle:@" DELETE" forState:UIControlStateNormal];
+        NSString *deleteString = NSLocalizedString(@"delete", @"Action button to delete a piece of data");
+        [button setTitle:[[NSString stringWithFormat:@" %@", deleteString] uppercaseString] forState:UIControlStateNormal];
         [button setTintColor:[UIColor whiteColor]];
         [button.layer setCornerRadius:5.0f];
         UIImage *scissorImage = [UIImage imageNamed:@"DeleteIcon"];
@@ -119,11 +120,11 @@
         attachment.image = [UIImage imageNamed:@"WarningSign"];
         NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
         NSMutableAttributedString *mutableAttachmentString = [attachmentString mutableCopy];
-        NSAttributedString *myString= [[NSAttributedString alloc] initWithString:@" Snap! No Corners Found"];
+        NSAttributedString *myString= [[NSAttributedString alloc] initWithString:NSLocalizedString(@" Snap! No Corners Found", @"This instruction tells the user that a rectangle was not found in the specific frame")];
         [mutableAttachmentString appendAttributedString:myString];
         warningLabel.attributedText = mutableAttachmentString;
         [warningLabel setBackgroundColor:[UIColor colorWithRed:(0.f/255.f) green:(0.f/255.f) blue:(0.f/255.f) alpha:0.7f]];
-        [warningLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:16]];
+        [warningLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
         [warningLabel setTextAlignment:NSTextAlignmentCenter];
         [warningLabel setTextColor:[UIColor lightGrayColor]];
         [self.imageView addSubview:warningLabel];

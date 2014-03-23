@@ -48,8 +48,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.cancelButton setTitle:NSLocalizedString(@"CANCEL", @"Button to cancel the post to social network actions") forState:UIControlStateNormal];
+    NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
+    [self.cancelButton setTitle:[cancelString uppercaseString] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,6 +87,7 @@
 #pragma mark - Facebook API calls
 - (void)requestPublishPermissions
 {
+    NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
     // Request publish_actions
     [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
                                           defaultAudience:FBSessionDefaultAudienceFriends
@@ -97,12 +98,12 @@
                                                 if ([FBSession.activeSession.permissions
                                                      indexOfObject:@"publish_actions"] == NSNotFound){
                                                     // Permission not granted, tell the user we will not publish
-                                                    alertTitle = @"Permission not granted";
-                                                    alertText = @"Your action will not be published to Facebook.";
+                                                    alertTitle = NSLocalizedString(@"Permission not granted", @"Warning to the user that she did not grant this app a permission to post to her Facebook account");
+                                                    alertText = NSLocalizedString(@"Your action will not be published to Facebook.", @"It explains to the user that her work will not be published to Facebook as she did not grant this app a permission");
                                                     [[[UIAlertView alloc] initWithTitle:alertTitle
                                                                                 message:alertText
                                                                                delegate:self
-                                                                      cancelButtonTitle:@"OK!"
+                                                                      cancelButtonTitle:[okString uppercaseString]
                                                                       otherButtonTitles:nil] show];
                                                     [self resetFacebookButton];
                                                 } else {
@@ -157,7 +158,7 @@
     
     if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
         // Error requires people using you app to make an action outside your app to recover
-        alertTitle = @"Something went wrong";
+        alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
         alertText = [FBErrorUtility userMessageForError:error];
         [self showMessage:alertText withTitle:alertTitle];
         
@@ -165,21 +166,21 @@
         // You need to find more information to handle the error within your app
         if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
             //The user refused to log in into your app, either ignore or...
-            alertTitle = @"Login cancelled";
-            alertText = @"You need to login to access this part of the app";
-            [self showMessage:alertText withTitle:alertTitle];
+//            alertTitle = @"Login cancelled";
+//            alertText = @"You need to login to access this part of the app";
+//            [self showMessage:alertText withTitle:alertTitle];
             
         } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
             // We need to handle session closures that happen outside of the app
-            alertTitle = @"Session Error";
-            alertText = @"Your current session is no longer valid. Please log in again.";
-            [self showMessage:alertText withTitle:alertTitle];
+//            alertTitle = @"Session Error";
+//            alertText = @"Your current session is no longer valid. Please log in again.";
+//            [self showMessage:alertText withTitle:alertTitle];
             
         } else {
             // All other errors that can happen need retries
             // Show the user a generic error message
-            alertTitle = @"Something went wrong";
-            alertText = @"Please retry";
+            alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
+            alertText = NSLocalizedString(@"Please retry", @"Ask the user to log in again");
             [self showMessage:alertText withTitle:alertTitle];
         }
     }
@@ -187,10 +188,11 @@
 
 - (void)showMessage:(NSString *)text withTitle:(NSString *)title
 {
+    NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"OK"
+                      cancelButtonTitle:[okString uppercaseString]
                       otherButtonTitles:nil] show];
 }
 
@@ -204,7 +206,7 @@
     
     if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
         // Error requires people using an app to make an out-of-band action to recover
-        alertTitle = @"Something went wrong";
+        alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
         alertText = [FBErrorUtility userMessageForError:error];
         [self showMessage:alertText withTitle:alertTitle];
         
@@ -212,15 +214,15 @@
         // We need to handle the error
         if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
             // Ignore it or...
-            alertTitle = @"Permission not granted";
-            alertText = @"Your post could not be completed because you didn't grant the necessary permissions.";
+            alertTitle = NSLocalizedString(@"Permission not granted", @"Warning to the user that she did not grant this app a permission to post to her Facebook account");;
+            alertText = NSLocalizedString(@"Your action will not be published to Facebook.", @"It explains to the user that her work will not be published to Facebook as she did not grant this app a permission");
             [self showMessage:alertText withTitle:alertTitle];
             
         } else{
             // All other errors that can happen need retries
             // Show the user a generic error message
-            alertTitle = @"Something went wrong";
-            alertText = @"Please retry";
+            alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
+            alertText = NSLocalizedString(@"Please retry", @"Ask the user to log in again");
             [self showMessage:alertText withTitle:alertTitle];
         }   
     }
@@ -271,19 +273,21 @@
     // Check if it's a "duplicate action" error
     if (errorCode == 5 && errorSubcode == 3501) {
         // Tell the user the action failed because duplicate action-object  are not allowed
-        alertTitle = @"Duplicate action";
-        alertText = @"You already did this, you can perform this action only once on each item.";
+//        alertTitle = @"Duplicate action";
+//        alertText = @"You already did this, you can perform this action only once on each item.";
+        alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
+        alertText = NSLocalizedString(@"Please try again later.", @"Ask the user to retry at a later time");
         
         // If the user should be notified, we show them the corresponding message
     } else if ([FBErrorUtility shouldNotifyUserForError:error]) {
-        alertTitle = @"Something Went Wrong";
+        alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
         alertText = [FBErrorUtility userMessageForError:error];
         
     } else {
         // show a generic error message
         NSLog(@"Unexpected error posting to open graph: %@", error);
-        alertTitle = @"Something went wrong";
-        alertText = @"Please try again later.";
+        alertTitle = NSLocalizedString(@"Something went wrong", @"Alert message to the user that there was an error in connecting to Facebook");
+        alertText = NSLocalizedString(@"Please try again later.", @"Ask the user to retry at a later time");
     }
     [self showMessage:alertText withTitle:alertTitle];
 }
@@ -300,7 +304,8 @@
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *) contextInfo
 {
     if (error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Cannot save to the camera roll" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Cannot save to the camera roll" delegate:self cancelButtonTitle:[okString uppercaseString] otherButtonTitles:nil];
         [alertView show];
     } else {
         [self resetPhotoalbumButton];

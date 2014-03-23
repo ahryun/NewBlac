@@ -22,6 +22,7 @@
 //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[UIImage imageNamed:@"BackButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setBackIndicatorImage:[UIImage imageNamed:@"BackButton"]];
     [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"BackButton"]];
+    
     // Parse
     [Parse setApplicationId:@"gsiksRJI1A3BsNSiKYeN8e4AatcFQVeUeTlOQhvJ"
                   clientKey:@"fowYql3KcQxl0lGVumCEshYXgiKJpjUEQ2h5v9oa"];

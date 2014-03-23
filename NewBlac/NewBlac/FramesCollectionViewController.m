@@ -220,7 +220,7 @@ static const NSArray *fpsArray;
     if (self.needToCompile || ![[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
         [self compileVideo];
         [self.playButton setImage:nil];
-        [self.playButton setTitle:@"Compiling..."];
+        [self.playButton setTitle:NSLocalizedString(@"Compiling...", @"Telling the user that the frames are being processed to create a video")];
     } else {
         [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
     }
@@ -309,7 +309,7 @@ static const NSArray *fpsArray;
 #pragma mark - UIPickerViewDelegate
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [NSString stringWithFormat:@"%@ Frames Per Second", fpsArray[row]];
+    return [NSString stringWithFormat:NSLocalizedString(@"%@ Frames Per Second", @"Frames Per Second"), fpsArray[row]];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -404,7 +404,9 @@ static const NSArray *fpsArray;
 
 - (void)deleteButtonPressed:(PiecesCollectionCell *)cell
 {
-    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle:@"Delete this frame?" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+    NSString *deleteString = NSLocalizedString(@"delete", @"Action button to delete a piece of data");
+    NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
+    UIAlertView *deleteConfirmButton = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Delete this frame?", @"Ask the user to confirm frame deletion") message:@"" delegate:self cancelButtonTitle:[cancelString capitalizedString] otherButtonTitles:[deleteString capitalizedString], nil];
     [deleteConfirmButton show];
 }
 
@@ -455,7 +457,7 @@ static const NSArray *fpsArray;
         self.playButton.image = playButtonImg;
         
         // Count the number of frames
-        [self.noOfFrames setTitle:[NSString stringWithFormat:@"%i count", (int)photoCount]];
+        [self.noOfFrames setTitle:[NSString stringWithFormat:NSLocalizedString(@"%i count", @"Number of frames in this video"), (int)photoCount]];
     } else {
         [self.navigationController setToolbarHidden:YES animated:YES];
     }
