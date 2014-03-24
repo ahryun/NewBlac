@@ -14,47 +14,41 @@
 // Designated initializer
 + (void)addVideo:(Video *)video inContext:(NSManagedObjectContext *)context
 {
-    if (video.compFilePath) {
-        NSData *videoData;
-        
-        // If there is no file at the path, pass nil as the video is created.
-        if ([[NSFileManager defaultManager] fileExistsAtPath:video.compFilePath]) {
-            videoData = [NSData dataWithContentsOfFile:video.compFilePath];
-        } else {
-            videoData = nil;
-        }
-        
-        NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
-        PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
-        
-        // Save PFFile
-        [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (!error) {
-                // Create a PFObject around a PFFile and associate it with the current user
-                PFObject *userCreatedVideo = [PFObject objectWithClassName:@"UserCreatedVideo"];
-                [userCreatedVideo setObject:videoFile forKey:@"videoFile"];
-                
-                // Set the access control list to current user for security purposes
-                userCreatedVideo.ACL = [PFACL ACLWithUser:[PFUser currentUser]];
-                
-                PFUser *user = [PFUser currentUser];
-                [userCreatedVideo setObject:user forKey:@"user"];
-                
-                [userCreatedVideo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (!error) {
-                        [context performBlock:^{
-                            video.parseID = userCreatedVideo.objectId;
-                        }];
-                    } else {
-                        NSLog(@"Error: %@ %@", error, [error userInfo]);
-                    }
+    // Make sure the user is saved on Parse. If the user has not been saved on Parse, trying to get ACL from the user will crash the app.
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"objectId" equalTo:[PFUser currentUser].objectId];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        PFUser *user = [objects lastObject];
+        if (video.compFilePath && user) {
+            NSData *videoData;
+            
+            // If there is no file at the path, pass nil as the video is created.
+            if ([[NSFileManager defaultManager] fileExistsAtPath:video.compFilePath]) {
+                videoData = [NSData dataWithContentsOfFile:video.compFilePath];
+            } else {
+                videoData = nil;
+            }
+            
+            // Create a PFObject around a PFFile and associate it with the current user
+            PFObject *userCreatedVideo = [PFObject objectWithClassName:@"UserCreatedVideo"];
+            NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
+            
+            userCreatedVideo.ACL = [PFACL ACLWithUser:[PFUser currentUser]];
+            [userCreatedVideo setObject:[PFFile fileWithName:videoFileName data:videoData] forKey:@"videoFile"];
+            [userCreatedVideo setObject:[PFUser currentUser] forKey:@"user"];
+            
+            NSError *addError;
+            [userCreatedVideo save:&addError];
+            if (addError) {
+                NSLog(@"Video %@ got added\n", video.parseID);
+                [context performBlock:^{
+                    video.parseID = userCreatedVideo.objectId;
                 }];
             } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
+                NSLog(@"Video failed to be added %@, %@", addError, [addError userInfo]);
             }
-        }];
-    }
+        }
+    }];
 }
 
 + (void)updateVideosInContext:(NSManagedObjectContext *)context
@@ -76,14 +70,14 @@
                         if ([userCreatedVideo.updatedAt compare:video.dateModified] == NSOrderedAscending) {
                             NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath];
                             NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
-                            PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
-                            [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                if (!error) {
-                                    userCreatedVideo[@"videoFile"] = videoFile;
-                                    [userCreatedVideo saveInBackground];
-                                    NSLog(@"Video %@ got updated\n", video.parseID);
-                                }
-                            }];
+                            userCreatedVideo[@"videoFile"] = [PFFile fileWithName:videoFileName data:videoData];;
+                            NSError *saveError;
+                            [userCreatedVideo save:&saveError];
+                            if (saveError) {
+                                NSLog(@"Video %@ got updated\n", video.parseID);
+                            } else {
+                                NSLog(@"Video failed to be updated %@, %@", saveError, [saveError userInfo]);
+                            }
                         }
                     } else {
                         NSLog(@"The video has not been compiled\n");
@@ -112,7 +106,14 @@
         PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
         [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
             if (!error) {
-                [userCreatedVideo deleteInBackground];
+                NSError *deleteError;
+                [userCreatedVideo delete:&deleteError];
+                if (deleteError) {
+                    NSLog(@"Video deleted");
+                } else {
+                    NSLog(@"Video failed to be deleted %@, %@", deleteError, [deleteError userInfo]);
+                }
+                
             } else {
                 NSLog(@"Error occurred while getting video object from Parse in removeVideo: %@\n", error);
             }
@@ -141,7 +142,13 @@
                     [mutableMatches removeObject:video];
                     break;
                 } else {
-                    [userCreatedVideo deleteInBackground];
+                    NSError *deleteError;
+                    [userCreatedVideo delete:&deleteError];
+                    if (deleteError) {
+                        NSLog(@"Video deleted");
+                    } else {
+                        NSLog(@"Video failed to be deleted %@, %@", deleteError, [deleteError userInfo]);
+                    }
                 }
             }
         }
