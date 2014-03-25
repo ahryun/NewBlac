@@ -14,7 +14,6 @@
 		F32E2ED518D1AC9000D5A556 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */; };
 		F32E2ED718D1AC9B00D5A556 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED618D1AC9B00D5A556 /* libz.dylib */; };
 		F32E2ED918D1ACB700D5A556 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED818D1ACB700D5A556 /* Security.framework */; };
-		F32E2EDB18D1ACBF00D5A556 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */; };
 		F32E2EDD18D1ACC800D5A556 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */; };
 		F32E2EDF18D1B97E00D5A556 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */; };
 		F32E2EE518D298F400D5A556 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2EE418D298F400D5A556 /* LogInViewController.m */; };
@@ -97,7 +96,6 @@
 		F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F32E2ED618D1AC9B00D5A556 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		F32E2ED818D1ACB700D5A556 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		F32E2EE318D298F400D5A556 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
@@ -204,7 +202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F32E2EDD18D1ACC800D5A556 /* SystemConfiguration.framework in Frameworks */,
-				F32E2EDB18D1ACBF00D5A556 /* StoreKit.framework in Frameworks */,
 				F32E2ED918D1ACB700D5A556 /* Security.framework in Frameworks */,
 				F3C0290B18443ADB00FF08F1 /* QuartzCore.framework in Frameworks */,
 				F32E2F6518DD2D8400D5A556 /* Crashlytics.framework in Frameworks */,
@@ -417,7 +414,6 @@
 				F32E2F6418DD2D8400D5A556 /* Crashlytics.framework */,
 				F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */,
 				F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */,
-				F32E2EDA18D1ACBF00D5A556 /* StoreKit.framework */,
 				F32E2ED818D1ACB700D5A556 /* Security.framework */,
 				F32E2ED618D1AC9B00D5A556 /* libz.dylib */,
 				F32E2ED418D1AC9000D5A556 /* CoreLocation.framework */,
@@ -541,6 +537,9 @@
 								enabled = 1;
 							};
 							com.apple.DataProtection = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
 								enabled = 0;
 							};
 						};
