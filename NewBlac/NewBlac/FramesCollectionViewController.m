@@ -230,7 +230,7 @@ static const NSArray *fpsArray;
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
         dispatch_async(dispatch_get_main_queue(), ^(){
-            NSLog(@"Video compilating is %hhd", self.videoCreator.videoDoneCreating);
+            NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
                 [self.managedObjectContext performBlock:^{

@@ -126,7 +126,7 @@
 
 - (cv::Point2f *)convertToPointArrayInRealPixel:(NSArray *)coordinates
 {
-    int count = [coordinates count];
+    NSUInteger count = [coordinates count];
     cv::Point2f *convertedArray = new cv::Point2f[count];
     for (int i = 0; i < count; i++) {
         convertedArray[i] = cv::Point2f([[coordinates objectAtIndex:i][0] floatValue] * self.imageWidth,
@@ -216,7 +216,7 @@
 {
     if (iforiginal && image.imageOrientation == UIImageOrientationUp) return image;
     
-    int kMaxResolution = 480;
+    CGFloat kMaxResolution = 480;
     
     CGImageRef imgRef = image.CGImage;
     CGFloat width = CGImageGetWidth(imgRef);

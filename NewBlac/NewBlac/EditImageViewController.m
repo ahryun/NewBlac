@@ -215,7 +215,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == [alertView cancelButtonIndex]) {
-        NSLog(@"Cancel index is %i", buttonIndex);
+        NSLog(@"Cancel index is %li", (long)buttonIndex);
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -445,7 +445,7 @@
     [self.corners enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id corner, NSUInteger idx, BOOL *stop) {
         if ([corner containsPoint:point]) {
             hitCornerIndex = idx;
-            NSLog(@"Corner index is %i", hitCornerIndex);
+            NSLog(@"Corner index is %lu", (unsigned long)hitCornerIndex);
             *stop = YES;
         }
     }];

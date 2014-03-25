@@ -188,9 +188,9 @@ static const NSString *PlayerDurationReady;
 }
 
 - (void)durationSliderTouchEnded:(UISlider *)slider {
-    [self.moviePlayerController.player seekToTime:CMTimeMake(ceil(slider.value), [self.framesPerSecond integerValue]) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+    [self.moviePlayerController.player seekToTime:CMTimeMake(ceil(slider.value), [self.framesPerSecond intValue]) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
         if (finished) {
-            NSLog(@"I want current player time to be  %f", CMTimeGetSeconds(CMTimeMake(ceil(slider.value), [self.framesPerSecond integerValue])));
+            NSLog(@"I want current player time to be  %f", CMTimeGetSeconds(CMTimeMake(ceil(slider.value), [self.framesPerSecond intValue])));
             NSLog(@"Current player time is %f", CMTimeGetSeconds(self.moviePlayerController.player.currentTime));
             [self monitorMoviePlayback:nil];
         }

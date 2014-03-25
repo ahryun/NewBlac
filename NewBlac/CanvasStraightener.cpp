@@ -95,7 +95,7 @@ void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &sq
             // find contours and store them all as a list
             findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
             vector<Point> approx;
-            for( size_t i = 0; i < contours.size(); i++ )
+            for(size_t i = 0; i < contours.size(); i++ )
             {
                 // WEED OUT of polygons that do NOT meet the CRITERIA //
                 
@@ -154,7 +154,7 @@ void CanvasStraightener::findASquare(const Mat& image, vector<vector<Point>> &sq
 }
 
 struct ySortFunction {
-    bool operator() (Point pt1, Point pt2) { return (pt1.y < pt2.y);}
+    bool operator() (Point pt1, Point pt2) {return (pt1.y < pt2.y);}
 } vectorSorter_y;
 
 Point CanvasStraightener::convertToPixel(float canvasWidth, float canvasHeight, Point &point, const float imageWidth, const float imageHeight)

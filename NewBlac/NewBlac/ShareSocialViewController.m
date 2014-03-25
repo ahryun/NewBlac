@@ -261,11 +261,11 @@
     NSString *alertTitle;
     
     // Get more error information from the error
-    int errorCode = error.code;
+    NSInteger errorCode = error.code;
     NSDictionary *errorInformation = [[[[error userInfo] objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"]
                                        objectForKey:@"body"]
                                       objectForKey:@"error"];
-    int errorSubcode = 0;
+    NSInteger errorSubcode = 0;
     if ([errorInformation objectForKey:@"code"]){
         errorSubcode = [[errorInformation objectForKey:@"code"] integerValue];
     }
