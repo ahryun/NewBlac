@@ -21,7 +21,6 @@
 		F32E2F5618DA800700D5A556 /* ParseSyncer.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2F5518DA800700D5A556 /* ParseSyncer.m */; };
 		F32E2F5F18DB994200D5A556 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2F5E18DB994200D5A556 /* Video.m */; };
 		F32E2F6518DD2D8400D5A556 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2F6418DD2D8400D5A556 /* Crashlytics.framework */; };
-		F32E2F6E18DE7F9D00D5A556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F32E2F6C18DE7F9D00D5A556 /* Localizable.strings */; };
 		F32E2F7818DE84E100D5A556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F32E2F7618DE84E100D5A556 /* Localizable.strings */; };
 		F330D95418972C7C009265EC /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F330D95318972C7B009265EC /* InitialViewController.m */; };
 		F33BE9911892F4E90021A5C1 /* VideosCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F33BE9901892F4E90021A5C1 /* VideosCollectionViewController.m */; };
@@ -107,7 +106,6 @@
 		F32E2F5D18DB994200D5A556 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = NewBlac/Video.h; sourceTree = "<group>"; };
 		F32E2F5E18DB994200D5A556 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = NewBlac/Video.m; sourceTree = "<group>"; };
 		F32E2F6418DD2D8400D5A556 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		F32E2F6D18DE7F9D00D5A556 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Localizable.strings; sourceTree = "<group>"; };
 		F32E2F7718DE84E100D5A556 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = Localizable.strings; sourceTree = "<group>"; };
 		F330D95218972C7B009265EC /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		F330D95318972C7B009265EC /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
@@ -239,14 +237,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F32E2F6B18DE7F9D00D5A556 /* fr.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				F32E2F6C18DE7F9D00D5A556 /* Localizable.strings */,
-			);
-			path = fr.lproj;
-			sourceTree = "<group>";
-		};
 		F32E2F6F18DE7FC900D5A556 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,7 +457,6 @@
 				F3C028B71843F5BD00FF08F1 /* NewBlac-Prefix.pch */,
 				F32E2F7518DE84E100D5A556 /* ko.lproj */,
 				F32E2F7018DE81E600D5A556 /* en.lproj */,
-				F32E2F6B18DE7F9D00D5A556 /* fr.lproj */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -578,7 +567,6 @@
 			files = (
 				F32E2F7818DE84E100D5A556 /* Localizable.strings in Resources */,
 				F3C8566B18CBE08B00C9FE97 /* Images.xcassets in Resources */,
-				F32E2F6E18DE7F9D00D5A556 /* Localizable.strings in Resources */,
 				F3C028B41843F5BD00FF08F1 /* InfoPlist.strings in Resources */,
 				F3C028BD1843F5BD00FF08F1 /* Main.storyboard in Resources */,
 			);
@@ -673,14 +661,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F32E2F6C18DE7F9D00D5A556 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F32E2F6D18DE7F9D00D5A556 /* fr */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		F32E2F7618DE84E100D5A556 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
