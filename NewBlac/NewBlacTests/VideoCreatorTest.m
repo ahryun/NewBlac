@@ -1,22 +1,26 @@
 //
-//  NewBlacTests.m
-//  NewBlacTests
+//  VideoCreatorTest.m
+//  NewBlac
 //
-//  Created by Ahryun Moon on 11/25/13.
-//  Copyright (c) 2013 Ahryun Moon. All rights reserved.
+//  Created by Ahryun Moon on 3/26/14.
+//  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
+#import "VideoCreator.h"
 
-@interface NewBlacTests : XCTestCase
+@interface VideoCreatorTest : XCTestCase
+
+@property (nonatomic, strong) VideoCreator *videoCreator;
 
 @end
 
-@implementation NewBlacTests
+@implementation VideoCreatorTest
 
 - (void)setUp
 {
     [super setUp];
+    
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 

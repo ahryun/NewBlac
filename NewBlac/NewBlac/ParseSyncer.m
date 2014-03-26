@@ -42,10 +42,15 @@
                         
                         [userCreatedVideo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                             if (!error) {
-                                [context performBlock:^{
-                                    video.parseID = userCreatedVideo.objectId;
-                                    NSLog(@"Video %@ got added\n", video.parseID);
-                                }];
+                                NSError *cdError;
+                                if ([context existingObjectWithID:video.objectID error:&cdError]) {
+                                    [context performBlock:^{
+                                        video.parseID = userCreatedVideo.objectId;
+                                        NSLog(@"Video %@ got added\n", video.parseID);
+                                    }];
+                                } else {
+                                    [userCreatedVideo deleteInBackground];
+                                }
                             } else {
                                 NSLog(@"Video failed to be added %@, %@", error, [error userInfo]);
                             }

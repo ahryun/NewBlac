@@ -35,9 +35,8 @@
 
 - (NSArray *)imagesArray
 {
-    if (!_imagesArray) {
-        _imagesArray = [self.video imagesArrayInOrder];
-    }
+    _imagesArray = [self.video imagesArrayInOrder];
+    
     return _imagesArray;
 }
 
@@ -82,6 +81,9 @@
     [self.writer startWriting];
     [self.writer startSessionAtSourceTime:kCMTimeZero];
     
+    // Make sure the number of photos in the video is the same as the number of photos in imagesArray
+    NSAssert([self.imagesArray count] == [self.video.photos count], @"Video has more or less photos than what's in videoCreator.imagesArray");
+    
     NSUInteger fps = [self.video.framesPerSecond integerValue];
     double frameDuration = 1;
     for(int i = 0; i < [self.imagesArray count]; i++) {
@@ -124,7 +126,6 @@
         NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
         
         weakSelf.videoDoneCreating = YES;
-        
         weakSelf.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
         
     }];

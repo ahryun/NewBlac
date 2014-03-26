@@ -68,7 +68,7 @@ static const NSArray *fpsArray;
 
     self.showPhotos = YES; // This tells the core data controller to provide photos
     self.needToCompile = NO;
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[self.video.framesPerSecond integerValue]]];
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[self.video.framesPerSecond integerValue]]];
     
     [self initializeFetchedResultsController];
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
@@ -322,7 +322,7 @@ static const NSArray *fpsArray;
         NSError *error;
         [self.managedObjectContext save:&error];
     }];
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:@"%ld FPS", (long)[framesPerSecond integerValue]]];
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[framesPerSecond integerValue]]];
     self.needToCompile = YES;
 }
 

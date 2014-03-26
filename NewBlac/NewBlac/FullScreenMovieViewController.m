@@ -199,11 +199,13 @@ static const NSString *PlayerDurationReady;
     [self performSelector:@selector(hideControls:) withObject:nil afterDelay:self.fadeDelay];
 }
 
-- (void)durationSliderValueChanged:(UISlider *)slider {
+- (void)durationSliderValueChanged:(UISlider *)slider
+{
     NSLog(@"Duration slider value changed");
 }
 
-- (void)showControls:(void(^)(void))completion {
+- (void)showControls:(void(^)(void))completion
+{
     if (!self.isShowing) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
@@ -220,7 +222,8 @@ static const NSString *PlayerDurationReady;
     }
 }
 
-- (void)hideControls:(void(^)(void))completion {
+- (void)hideControls:(void(^)(void))completion
+{
     if (self.isShowing) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
@@ -236,7 +239,8 @@ static const NSString *PlayerDurationReady;
     }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
     self.isShowing ? [self hideControls:nil] : [self showControls:nil];
 }
 

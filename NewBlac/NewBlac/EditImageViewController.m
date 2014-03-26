@@ -250,11 +250,12 @@
             [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
             NSError *error;
             [self.managedObjectContext save:&error];
+            
+            [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
         }];
+    } else {
+        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
     }
-    
-    // May need to prepareForSegue
-    [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
 }
 
 #pragma mark CornerDetectionView
