@@ -11,6 +11,6 @@
 @interface UIImage (ResizeImage)
 
 + (UIImage*)imageWithImage:(UIImage*)image
-              scaledToMultiplier:(float)multiplier;
+              scaledToMultiplier:(CGFloat)multiplier;
 
 @end

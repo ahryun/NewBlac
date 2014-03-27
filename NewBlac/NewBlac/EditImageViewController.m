@@ -11,6 +11,7 @@
 #import "PhotoCorners+LifeCycle.h"
 #import "CornerCircle.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Strings.h"
 
 @interface EditImageViewController () <CornerDetectionViewDelegate, UIAlertViewDelegate>
 
@@ -31,9 +32,6 @@
 @property (nonatomic) CAShapeLayer *mask;
 
 @end
-
-#define ZOOM_FACTOR 3.0
-#define LOUPE_BEZEL_WIDTH 8.0
 
 @implementation EditImageViewController
 
@@ -151,8 +149,8 @@
 
 - (void)drawBlackOverlay
 {
-    float imageViewWidth = self.originalImageView.frame.size.width;
-    float imageViewHeight = self.originalImageView.frame.size.height;
+    CGFloat imageViewWidth = self.originalImageView.frame.size.width;
+    CGFloat imageViewHeight = self.originalImageView.frame.size.height;
     CGRect biggerRect = CGRectMake(0, 0, imageViewWidth, imageViewHeight);
     UIBezierPath *maskPath = [UIBezierPath bezierPath];
     [maskPath moveToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
@@ -161,10 +159,10 @@
     [maskPath addLineToPoint:CGPointMake(CGRectGetMaxX(biggerRect), CGRectGetMinY(biggerRect))];
     [maskPath addLineToPoint:CGPointMake(CGRectGetMinX(biggerRect), CGRectGetMinY(biggerRect))];
     
-    [maskPath moveToPoint:CGPointMake([[self.coordinates objectAtIndex:2][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:2][1] floatValue] * imageViewHeight)];
-    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:3][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:3][1] floatValue] * imageViewHeight)];
-    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:1][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:1][1] floatValue] * imageViewHeight)];
-    [maskPath addLineToPoint:CGPointMake([[self.coordinates objectAtIndex:0][0] floatValue] * imageViewWidth, [[self.coordinates objectAtIndex:0][1] floatValue] * imageViewHeight)];
+    [maskPath moveToPoint:CGPointMake((CGFloat)[[self.coordinates objectAtIndex:2][0] floatValue] * imageViewWidth, (CGFloat)[[self.coordinates objectAtIndex:2][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake((CGFloat)[[self.coordinates objectAtIndex:3][0] floatValue] * imageViewWidth, (CGFloat)[[self.coordinates objectAtIndex:3][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake((CGFloat)[[self.coordinates objectAtIndex:1][0] floatValue] * imageViewWidth, (CGFloat)[[self.coordinates objectAtIndex:1][1] floatValue] * imageViewHeight)];
+    [maskPath addLineToPoint:CGPointMake((CGFloat)[[self.coordinates objectAtIndex:0][0] floatValue] * imageViewWidth, (CGFloat)[[self.coordinates objectAtIndex:0][1] floatValue] * imageViewHeight)];
     [maskPath closePath];
     
     self.maskPath = maskPath;
@@ -178,10 +176,10 @@
     // Need to get the core data photo and get the photo path and convert the photo in file system to UIImage
     if (self.photo) {
         UIImage *image = [UIImage imageWithData:self.photo.originalPhoto];
-        float viewRatio = self.view.bounds.size.width / self.view.bounds.size.height;
-        float imageRatio = image.size.width / image.size.height;
-        float imageWidth = 0.f;
-        float imageHeight = 0.f;
+        CGFloat viewRatio = self.view.bounds.size.width / self.view.bounds.size.height;
+        CGFloat imageRatio = image.size.width / image.size.height;
+        CGFloat imageWidth = 0.f;
+        CGFloat imageHeight = 0.f;
         if (viewRatio < imageRatio) {
             imageWidth = self.view.bounds.size.width;
             imageHeight = imageWidth / imageRatio;
@@ -189,8 +187,8 @@
             imageHeight = self.view.bounds.size.height;
             imageWidth = imageHeight * imageRatio;
         }
-        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
-        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
+        CGFloat xOffset = (self.view.bounds.size.width - imageWidth) / 2;
+        CGFloat yOffset = (self.view.bounds.size.height - imageHeight) / 2;
         
         self.originalImageView.frame = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
         self.originalImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -351,10 +349,10 @@
         self.selectedCornerIndex = [self hitTest:touchPointInImageView];
         
         if (self.selectedCornerIndex != NSNotFound) {
-            float viewWidth = self.view.frame.size.width;
-            float offset = 20.0;
-            float loupeWidth = self.loupeView.frame.size.width;
-            float loupeHeight = self.loupeView.frame.size.height;
+            CGFloat viewWidth = self.view.frame.size.width;
+            CGFloat offset = 20.0;
+            CGFloat loupeWidth = self.loupeView.frame.size.width;
+            CGFloat loupeHeight = self.loupeView.frame.size.height;
             CGPoint loupeLocation = touchPoint.x <= viewWidth / 2 ? CGPointMake(viewWidth - loupeWidth - offset, offset) : CGPointMake(offset, offset);
             self.loupeLocation = loupeLocation;
             [self.loupeView setFrame:CGRectMake(loupeLocation.x, loupeLocation.y, loupeWidth, loupeHeight)];

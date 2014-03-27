@@ -8,6 +8,7 @@
 
 #import "PiecesCollectionCell.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Strings.h"
 
 @interface PiecesCollectionCell() <UIScrollViewDelegate>
 
@@ -48,10 +49,6 @@
     [self resetWithoutAnimation];
 }
 
-#define OFFSET_TOP               (80)
-#define PULL_THRESHOLD           (50)
-#define CELL_HEIGHT              (330)
-
 - (void)prepareScrollView
 {
     NSLog(@"I'm in prepareScrollView\n");
@@ -63,7 +60,7 @@
     // Set up delete button within scroll view programmatically
     if (!self.deleteButton) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 10, self.scrollView.frame.size.width, 60);
+        button.frame = CGRectMake(0, 10, self.scrollView.frame.size.width, BUTTON_HEIGHT);
         NSString *deleteString = NSLocalizedString(@"delete", @"Action button to delete a piece of data");
         [button setTitle:[[NSString stringWithFormat:@" %@", deleteString] uppercaseString] forState:UIControlStateNormal];
         [button setTintColor:[UIColor whiteColor]];

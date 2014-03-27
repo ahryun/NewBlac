@@ -35,13 +35,13 @@
     if (self.photo) {
         
         UIImage *image = [UIImage imageWithData:self.photo.croppedPhoto];
-        float widthRatio = self.view.bounds.size.width / image.size.width;
-        float heightRatio = self.view.bounds.size.height / image.size.height;
-        float scale = MIN(widthRatio, heightRatio);
-        float imageWidth = scale * image.size.width;
-        float imageHeight = scale * image.size.height;
-        float xOffset = (self.view.bounds.size.width - imageWidth) / 2;
-        float yOffset = (self.view.bounds.size.height - imageHeight) / 2;
+        CGFloat widthRatio = self.view.bounds.size.width / image.size.width;
+        CGFloat heightRatio = self.view.bounds.size.height / image.size.height;
+        CGFloat scale = MIN(widthRatio, heightRatio);
+        CGFloat imageWidth = scale * image.size.width;
+        CGFloat imageHeight = scale * image.size.height;
+        CGFloat xOffset = (self.view.bounds.size.width - imageWidth) / 2;
+        CGFloat yOffset = (self.view.bounds.size.height - imageHeight) / 2;
         
         CGRect rect = CGRectMake(xOffset, yOffset, imageWidth, imageHeight);
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];

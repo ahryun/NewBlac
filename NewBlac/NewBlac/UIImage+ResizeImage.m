@@ -11,10 +11,10 @@
 @implementation UIImage (ResizeImage)
 
 + (UIImage*)imageWithImage:(UIImage*)image
-              scaledToMultiplier:(float)multiplier
+              scaledToMultiplier:(CGFloat)multiplier
 {
-    float imageWidth = image.size.width;
-    float imageHeight = image.size.height;
+    CGFloat imageWidth = image.size.width;
+    CGFloat imageHeight = image.size.height;
     UIGraphicsBeginImageContext(CGSizeMake(imageWidth * multiplier, imageHeight * multiplier));
     [image drawInRect:CGRectMake(0,0,imageWidth * multiplier,imageHeight * multiplier)];
     UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();

@@ -99,9 +99,9 @@ static const NSString *PlayerDurationReady;
 
 - (void)setUpBottomBar
 {
-    float height = CGRectGetHeight(self.view.frame);
-    float width = CGRectGetWidth(self.view.frame);
-    float barHeight = 50.f;
+    CGFloat height = CGRectGetHeight(self.view.frame);
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    CGFloat barHeight = 50.f;
     CGRect rect = CGRectMake(0, height - barHeight, width, barHeight);
     UIView *bottomBar = [[UIView alloc] initWithFrame:rect];
     [bottomBar setBackgroundColor:[UIColor clearColor]];
@@ -112,10 +112,10 @@ static const NSString *PlayerDurationReady;
 
 - (void)setUpSlider
 {
-    float sliderHeight = 20.f;
-    float sliderWidth = 200.f;
-    float bottomBarHeight = CGRectGetHeight(self.bottomBar.frame);
-    float bottomBarWidth = CGRectGetWidth(self.bottomBar.frame);
+    CGFloat sliderHeight = 20.f;
+    CGFloat sliderWidth = 200.f;
+    CGFloat bottomBarHeight = CGRectGetHeight(self.bottomBar.frame);
+    CGFloat bottomBarWidth = CGRectGetWidth(self.bottomBar.frame);
     UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, sliderWidth, sliderHeight)];
     [slider setCenter:CGPointMake(bottomBarWidth / 2, bottomBarHeight / 2)];
     
@@ -137,7 +137,7 @@ static const NSString *PlayerDurationReady;
 
 - (void)setUpPlaybutton
 {
-    float playButtonSize = 50.f;
+    CGFloat playButtonSize = 50.f;
     UIImage *playButton = [UIImage imageNamed:@"MoviePlayButton"];
     UIImage *stopButton = [UIImage imageNamed:@"MovieStopButton"];
     UIButton *moviePlayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, playButtonSize, playButtonSize)];
@@ -159,9 +159,9 @@ static const NSString *PlayerDurationReady;
 
 - (void)setUpDurationLabel
 {
-    float labelSize = 50.f;
-    float origin_x = self.bottomBar.frame.size.width - labelSize;
-    float origin_y = self.bottomBar.frame.size.height - labelSize;
+    CGFloat labelSize = 50.f;
+    CGFloat origin_x = self.bottomBar.frame.size.width - labelSize;
+    CGFloat origin_y = self.bottomBar.frame.size.height - labelSize;
     self.moviePlayDuration = [[UILabel alloc] initWithFrame:CGRectMake(origin_x, origin_y, labelSize, labelSize)];
     [self.bottomBar addSubview:self.moviePlayDuration];
 }

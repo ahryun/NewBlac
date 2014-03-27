@@ -40,8 +40,6 @@
 static const NSString *videoCompilingDone;
 static const NSArray *fpsArray;
 
-#define CALCULATE_FPS(FPS) (FPS - 1) / 2
-
 - (void)setVideo:(Video *)video
 {
     _video = video;

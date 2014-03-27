@@ -7,6 +7,7 @@
 //
 
 #import "CollectionViewLayout.h"
+#import "Strings.h"
 
 @interface CollectionViewLayout()
 
@@ -18,10 +19,6 @@
 @end
 
 @implementation CollectionViewLayout
-
-#define X_SPACING               (10.0)
-#define CELL_HEIGHT             (330.0)
-#define CELL_WIDTH              (230.0)
 
 #pragma mark - cells, header/footer, decoration views layout
 - (NSInteger)x_inset

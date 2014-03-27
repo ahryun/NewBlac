@@ -7,10 +7,9 @@
 //
 
 #import "Video.h"
+#import "Strings.h"
 
 @interface Video (LifeCycle)
-
-#define MAX_PHOTO_COUNT_PER_VIDEO 75
 
 + (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;

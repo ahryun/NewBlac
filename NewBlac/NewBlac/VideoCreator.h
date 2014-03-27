@@ -18,6 +18,6 @@
 - (id)initWithVideo:(Video *)video withScreenSize:(CGSize)size;
 - (void)writeImagesToVideo;
 
-- (CGSize)getImageSizewithScreenSize:(CGSize)screenSize withImageSize:(float)originalImageRatio;
+- (CGSize)getImageSizewithScreenSize:(CGSize)screenSize withImageSize:(CGFloat)originalImageRatio;
 
 @end

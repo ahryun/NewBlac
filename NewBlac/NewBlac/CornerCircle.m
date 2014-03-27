@@ -12,7 +12,7 @@
 
 @interface CornerCircle()
 
-@property (nonatomic) float circleDiameter;
+@property (nonatomic) CGFloat circleDiameter;
 @property (nonatomic, readwrite) CGPoint centerPoint;
 
 @end
@@ -22,14 +22,14 @@
 - (CGPoint)centerPoint
 {
     if (self.path) {
-        float circleRadius = self.circleDiameter / 2;
+        CGFloat circleRadius = self.circleDiameter / 2;
         _centerPoint = CGPointMake(self.path.bounds.origin.x + circleRadius,
                                        self.path.bounds.origin.y + circleRadius);
     }
     return _centerPoint;
 }
 
-- (float)circleDiameter
+- (CGFloat)circleDiameter
 {
     return 12.0;
 }
@@ -37,11 +37,11 @@
 - (id)initWithCoordinate:(NSArray *)coordinate inRect:(CGSize)size
 {
     self = [super init];
-    float circleRadius = self.circleDiameter / 2;
+    CGFloat circleRadius = self.circleDiameter / 2;
     if (self != nil) {
         self.path = [UIBezierPath bezierPathWithOvalInRect:
-                 CGRectMake([coordinate[0] floatValue] * size.width - circleRadius,
-                            [coordinate[1] floatValue] * size.height - circleRadius,
+                 CGRectMake((CGFloat)[coordinate[0] floatValue] * size.width - circleRadius,
+                            (CGFloat)[coordinate[1] floatValue] * size.height - circleRadius,
                             self.circleDiameter, self.circleDiameter)];
         UIBezierPath *whiteCircle = [UIBezierPath bezierPathWithOvalInRect:CGRectInset(self.path.bounds, -3.f, -3.f)];
         [self.path appendPath:whiteCircle];

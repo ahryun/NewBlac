@@ -43,11 +43,8 @@
                     </collectionView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
-                        <barButtonItem title="FPS" id="mCg-Eb-YDg">
-                            <color key="tintColor" red="0.94117647058823528" green="0.396078431372549" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="chooseFramesPerSecond:" destination="Tgz-jk-S1w" id="ERd-Jy-wTo"/>
-                            </connections>
+                        <barButtonItem enabled="NO" id="wYq-MW-pnn">
+                            <color key="tintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="JGP-Xv-itm"/>
                         <barButtonItem enabled="NO" image="PlayButton" style="done" id="YZr-ds-ZGa">
@@ -57,7 +54,12 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="v7k-y8-3aY"/>
-                        <barButtonItem enabled="NO" id="wYq-MW-pnn"/>
+                        <barButtonItem title="FPS" id="mCg-Eb-YDg">
+                            <color key="tintColor" red="0.94117647059999998" green="0.39607843139999999" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="chooseFramesPerSecond:" destination="Tgz-jk-S1w" id="ERd-Jy-wTo"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="pieces" id="jQr-tK-ufg">
                         <barButtonItem key="rightBarButtonItem" image="CameraButton" id="x5f-XP-HxK">
@@ -516,14 +518,20 @@
                     </collectionView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ddv-1S-GGs"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="56L-iR-drw"/>
                         <barButtonItem style="plain" systemItem="action" id="W0b-Hb-mVG">
-                            <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.94117647059999998" green="0.39607843139999999" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="presentShareModally:" destination="wEj-N1-jhZ" id="nn6-bl-7bs"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
+                        <barButtonItem image="MoreButton" id="Gb9-zR-G7V">
+                            <color key="tintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="moreActions:" destination="wEj-N1-jhZ" id="xBn-yT-JJJ"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="pieces" id="E50-xJ-2kS">
                         <barButtonItem key="leftBarButtonItem" image="MenuButton" id="5V4-To-Vtj">
@@ -669,7 +677,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
                         <segue destination="gpB-UF-YqU" kind="relationship" relationship="rootViewController" id="M2e-jb-sY1"/>
@@ -693,6 +701,7 @@
         <image name="Loupe" width="150" height="150"/>
         <image name="LoupeCenter" width="150" height="150"/>
         <image name="MenuButton" width="30" height="30"/>
+        <image name="MoreButton" width="30" height="30"/>
         <image name="NoFrameScreen" width="320" height="220"/>
         <image name="NoVideoScreen" width="320" height="220"/>
         <image name="PlayButton" width="30" height="30"/>

@@ -17,8 +17,9 @@
 #import "VideoCreator.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Parse/Parse.h>
+#import "TextEditingView.h"
 
-@interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate>
+@interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate, TextEditingViewDelegate>
 
 @property (nonatomic, strong) NSNumber *ifAddNewVideo;
 @property (nonatomic, strong) NSNumber *ifLoggedIn;
@@ -26,6 +27,8 @@
 @property (nonatomic, strong) Video *shareVideo;
 @property (nonatomic, strong) VideoCreator *videoCreator;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
+@property (nonatomic, strong) UIView *snapshotView;
+@property (nonatomic, strong) UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 
@@ -157,6 +160,63 @@ static const NSString *PlayerReadyContext;
     // Do manual segue "View And Edit Video"
     self.ifAddNewVideo = [NSNumber numberWithBool:YES];
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
+}
+
+- (IBAction)moreActions:(UIBarButtonItem *)sender
+{
+    [self prepareTitleEditingView];
+    [self showTextEditingView];
+}
+
+- (void)prepareTitleEditingView
+{
+    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+    snapShot.frame = self.navigationController.view.frame;
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
+    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Photo *photo = [video.photos lastObject];
+    TextEditingView *textEditingView = [[TextEditingView alloc] initWithFrame:CGRectOffset(snapShot.frame, 0, snapShot.frame.size.height)];
+    [textEditingView setExistingTitle:video.title];
+    [textEditingView setVideoImage:[UIImage imageWithData:photo.croppedPhoto]];
+    textEditingView.delegate = self;
+    
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectUnion(snapShot.frame, textEditingView.frame)];
+    [containerView setBackgroundColor:[UIColor whiteColor]];
+    [containerView setOpaque:YES];
+    [containerView addSubview:snapShot];
+    [containerView addSubview:textEditingView];
+    [self.navigationController.view addSubview:containerView];
+    self.containerView = containerView;
+}
+
+- (void)showTextEditingView
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.containerView setFrame:CGRectOffset(self.containerView.frame, 0, -self.containerView.frame.size.height / 2)];
+    }];
+}
+
+#pragma mark - TextEditingView Delegate
+- (void)dismissTextEditingViewDelegate:(TextEditingView *)view
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.containerView setFrame:CGRectMake(0, 0, self.containerView.frame.size.width, self.containerView.frame.size.height)];
+    } completion:^(BOOL finished) {
+        [self.containerView removeFromSuperview];
+        [self centerACell];
+    }];
+}
+
+- (void)saveTitle:(NSString *)newTitle
+{
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
+    [self.managedObjectContext performBlock:^{
+        Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        if (![newTitle isEqualToString:video.title]) {
+            [video setTitle:newTitle];
+        }
+    }];
 }
 
 #pragma mark - Update UIs

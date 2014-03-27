@@ -73,6 +73,7 @@
 		F3EE445E18E2309200D21386 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3EE445B18E2309200D21386 /* Localizable.strings */; };
 		F3EE446218E389A600D21386 /* VideoCreatorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EE446118E389A600D21386 /* VideoCreatorTest.m */; };
 		F3EE446318E3B08F00D21386 /* VideoCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A494F6188B2ED300CBAE82 /* VideoCreator.m */; };
+		F3EE446718E4B8D100D21386 /* TextEditingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EE446618E4B8D100D21386 /* TextEditingView.m */; };
 		F3FEBEF1187CCB55000C1181 /* CornerDetectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */; };
 		F3FEBF06187FA955000C1181 /* UIImage+ResizeImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF05187FA955000C1181 /* UIImage+ResizeImage.m */; };
 		F3FEBF0918809D85000C1181 /* CornerCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEBF0818809D85000C1181 /* CornerCircle.m */; };
@@ -189,6 +190,9 @@
 		F3EE445A18E2309200D21386 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F3EE445C18E2309200D21386 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		F3EE446118E389A600D21386 /* VideoCreatorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCreatorTest.m; sourceTree = "<group>"; };
+		F3EE446418E40A7100D21386 /* Strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Strings.h; sourceTree = "<group>"; };
+		F3EE446518E4B8D100D21386 /* TextEditingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditingView.h; sourceTree = "<group>"; };
+		F3EE446618E4B8D100D21386 /* TextEditingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEditingView.m; sourceTree = "<group>"; };
 		F3FEBEEF187CCB55000C1181 /* CornerDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CornerDetectionView.h; sourceTree = "<group>"; };
 		F3FEBEF0187CCB55000C1181 /* CornerDetectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CornerDetectionView.m; sourceTree = "<group>"; };
 		F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeImage.h"; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 		F33BE995189309FB0021A5C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3EE446518E4B8D100D21386 /* TextEditingView.h */,
+				F3EE446618E4B8D100D21386 /* TextEditingView.m */,
 				F3A494F8188DEF4E00CBAE82 /* VideoPlayView.h */,
 				F3A494F9188DEF4E00CBAE82 /* VideoPlayView.m */,
 				F3A37DBD18947425003B530C /* CollectionViewLayout.h */,
@@ -433,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				F3C8566A18CBE08B00C9FE97 /* Images.xcassets */,
+				F3EE446418E40A7100D21386 /* Strings.h */,
 				F3C028B81843F5BD00FF08F1 /* newBlacAppDelegate.h */,
 				F3C028B91843F5BD00FF08F1 /* newBlacAppDelegate.m */,
 				F3FEBF04187FA955000C1181 /* UIImage+ResizeImage.h */,
@@ -621,6 +628,7 @@
 				F330D95418972C7C009265EC /* InitialViewController.m in Sources */,
 				F3C028BA1843F5BD00FF08F1 /* newBlacAppDelegate.m in Sources */,
 				F3A495061891D18E00CBAE82 /* CoreDataCollectionViewController.m in Sources */,
+				F3EE446718E4B8D100D21386 /* TextEditingView.m in Sources */,
 				F3656E7018BAF0440008B694 /* MotionVideoPlayer.m in Sources */,
 				F3AAD68F18C2ABFB00B5A23B /* FullScreenMovieViewController.m in Sources */,
 				F3C8568618CFDB5500C9FE97 /* Photo.m in Sources */,
