@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "VideoCreator.h"
+#import "Video+LifeCycle.h"
 
 @interface VideoCreatorTest : XCTestCase
 
@@ -22,6 +23,8 @@
     [super setUp];
     
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    self.videoCreator = [[VideoCreator alloc] init];
 }
 
 - (void)tearDown
@@ -30,9 +33,13 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testImageRatioCalc
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    CGSize screenSize = CGSizeMake(320.f, 480.f);
+    float originalImageRatio = 150.f / 80.f;
+    
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].width, 320.f, @"Image width calculated incorrectly\n");
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].height, 180.f, @"Image height calculated incorrectly\n");
 }
 
 @end

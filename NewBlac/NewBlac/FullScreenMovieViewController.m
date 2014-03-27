@@ -41,7 +41,6 @@ static const NSString *PlayerDurationReady;
     self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
     [self setUpVideoPlayView];
-    [self addNotifications];
     
     self.showing = NO;
     self.fadeDelay = 5.0;
@@ -51,6 +50,11 @@ static const NSString *PlayerDurationReady;
     [self setUpPlaybutton];
     [self setUpDurationLabel];
     [self prefersStatusBarHidden];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self addNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -64,6 +68,8 @@ static const NSString *PlayerDurationReady;
         [self.moviePlayerController removeObserver:self forKeyPath:@"duration" context:&PlayerDurationReady];
     }
     self.moviePlayerController.isCancelled = YES;
+    [self removeNotifications];
+    [self stopDurationTimer];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -305,6 +311,11 @@ static const NSString *PlayerDurationReady;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
 }
 
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+}
+
 - (void)movieFinished:(NSNotification *)note
 {
     [self stopDurationTimer];
@@ -339,14 +350,16 @@ static const NSString *PlayerDurationReady;
     }
 }
 
--(void)selectorToRunInMainThread {
-    self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0/[self.framesPerSecond floatValue]) target:self selector:@selector(monitorMoviePlayback:) userInfo:nil repeats:YES];
-}
-
 - (void)stopDurationTimer
 {
-    [self.durationTimer invalidate];
-    self.durationTimer = nil;
+    if (self.durationTimer) {
+        [self.durationTimer invalidate];
+        self.durationTimer = nil;
+    }
+}
+
+-(void)selectorToRunInMainThread {
+    self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0/[self.framesPerSecond floatValue]) target:self selector:@selector(monitorMoviePlayback:) userInfo:nil repeats:YES];
 }
 
 @end
