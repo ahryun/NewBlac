@@ -43,6 +43,15 @@ static const NSArray *fpsArray;
 - (void)setVideo:(Video *)video
 {
     _video = video;
+    if (video.title) {
+        // Limit the title to be 10 characters
+        NSRange stringRange = {0, MIN([video.title length], 10)};
+        stringRange = [video.title rangeOfComposedCharacterSequencesForRange:stringRange];
+        NSString *shortString = [video.title substringWithRange:stringRange];
+        self.navigationItem.title = shortString;
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"No Title", @"Display that the video doesn't have any title");
+    }
 }
 
 - (void)ifAutoCameraMode:(NSNumber *)ifNewVideo
