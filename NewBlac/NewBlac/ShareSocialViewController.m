@@ -61,27 +61,32 @@
 #pragma mark - FACEBOOK
 - (IBAction)publishToFacebook:(id)sender
 {
-    self.retryCount = 0;
-    [self loadShareButton:self.facebookButton];
-    
-    // Check for publish permissions
-    [FBRequestConnection startWithGraphPath:@"/me/permissions"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              if (!error){
-                                  NSDictionary *permissions= [(NSArray *)[result data] objectAtIndex:0];
-                                  if (![permissions objectForKey:@"publish_actions"]){
-                                      // Publish permissions not found, ask for publish_actions
-                                      [self requestPublishPermissions];
+    if ([self.video.photos count] / [self.video.framesPerSecond integerValue] >= 1) {
+        self.retryCount = 0;
+        [self loadShareButton:self.facebookButton];
+        
+        // Check for publish permissions
+        [FBRequestConnection startWithGraphPath:@"/me/permissions"
+                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                  if (!error){
+                                      NSDictionary *permissions= [(NSArray *)[result data] objectAtIndex:0];
+                                      if (![permissions objectForKey:@"publish_actions"]){
+                                          // Publish permissions not found, ask for publish_actions
+                                          [self requestPublishPermissions];
+                                      } else {
+                                          // Publish permissions found, publish the OG story
+                                          [self publishStory];
+                                      }
+                                      
                                   } else {
-                                      // Publish permissions found, publish the OG story
-                                      [self publishStory];
+                                      // There was an error, handle it
+                                      [self handleAuthError:error];
                                   }
-                                  
-                              } else {
-                                  // There was an error, handle it
-                                  [self handleAuthError:error];
-                              }
-                          }];
+                              }];
+    } else {
+        UIAlertView *videoTooShortAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Add more frames", @"Warning to the user that the video is too short") message:NSLocalizedString(@"Facebook does not allow uploading videos shorter than 1 second", @"Definition of short") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [videoTooShortAlert show];
+    }
 }
 
 #pragma mark - Facebook API calls
@@ -129,7 +134,7 @@
         
         if (description == nil) description = @"";
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys: videoData, @"video.mov", @"video/quicktime", @"contentType", title, @"title", description, @"description", nil];
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [FBRequestConnection startWithGraphPath:@"/me/videos" parameters:params HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {
                 if (result) {
@@ -142,7 +147,7 @@
             } else {
                 [self handleAPICallError:error];
             }
-//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
         }];
     }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F32E2ECD18D17F8500D5A556 /* SharableMovieItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */; };
 		F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ECE18D1AC3600D5A556 /* Parse.framework */; };
 		F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */; };
 		F32E2ED318D1AC7A00D5A556 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */; };
@@ -90,8 +89,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F32E2ECB18D17F8500D5A556 /* SharableMovieItemProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharableMovieItemProvider.h; sourceTree = "<group>"; };
-		F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharableMovieItemProvider.m; sourceTree = "<group>"; };
 		F32E2ECE18D1AC3600D5A556 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -353,8 +350,6 @@
 		F3B0ECD51857B93C00143044 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F32E2ECB18D17F8500D5A556 /* SharableMovieItemProvider.h */,
-				F32E2ECC18D17F8500D5A556 /* SharableMovieItemProvider.m */,
 				F3656E6E18BAF0440008B694 /* MotionVideoPlayer.h */,
 				F3656E6F18BAF0440008B694 /* MotionVideoPlayer.m */,
 				F3B0ECD21857B93100143044 /* Canvas.h */,
@@ -614,7 +609,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F32E2ECD18D17F8500D5A556 /* SharableMovieItemProvider.m in Sources */,
 				F3B0ECD41857B93100143044 /* Canvas.mm in Sources */,
 				F3C028B61843F5BD00FF08F1 /* main.mm in Sources */,
 				F33EA966187A3B860045E642 /* SharedManagedDocument.m in Sources */,

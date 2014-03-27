@@ -36,10 +36,21 @@
 - (void)testImageRatioCalc
 {
     CGSize screenSize = CGSizeMake(320.f, 480.f);
-    float originalImageRatio = 150.f / 80.f;
     
+    // When originalImageRatio is larger than maxRatio allowed by Facebook
+    float originalImageRatio = 150.f / 80.f;
     XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].width, 320.f, @"Image width calculated incorrectly\n");
     XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].height, 180.f, @"Image height calculated incorrectly\n");
+    
+    // When originalImageRatio is smaller than minRatio allowed by Facebook
+    originalImageRatio = 10.f / 80.f;
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].width, 270.f, @"Image width calculated incorrectly\n");
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].height, 480.f, @"Image height calculated incorrectly\n");
+    
+    // When originalImageRatio is in between minRatio and maxRatio allowed by Facebook
+    originalImageRatio = 50.f / 80.f;
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].width, 300.f, @"Image width calculated incorrectly\n");
+    XCTAssertEqual([self.videoCreator getImageSizewithScreenSize:screenSize withImageSize:originalImageRatio].height, 480.f, @"Image height calculated incorrectly\n");
 }
 
 @end
