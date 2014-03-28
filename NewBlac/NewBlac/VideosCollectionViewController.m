@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *titleButton;
 
 @end
 
@@ -162,7 +163,7 @@ static const NSString *PlayerReadyContext;
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
 }
 
-- (IBAction)moreActions:(UIBarButtonItem *)sender
+- (IBAction)editTitle:(UIBarButtonItem *)sender
 {
     [self prepareTitleEditingView];
     [self showTextEditingView];
@@ -213,7 +214,7 @@ static const NSString *PlayerReadyContext;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
     [self.managedObjectContext performBlock:^{
         Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        if (![newTitle isEqualToString:video.title]) {
+        if (![newTitle isEqualToString:video.title] && [newTitle length]) {
             [video setTitle:newTitle];
         }
     }];
@@ -308,6 +309,21 @@ static const NSString *PlayerReadyContext;
             PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
             cell.maskView.alpha = 0.0;
             self.centerCell = cell;
+            NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+            Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            if ([video.title length]) {
+                NSRange stringRange = {0, MIN([video.title length], SHORT_TEXT_LENGTH)};
+                stringRange = [video.title rangeOfComposedCharacterSequencesForRange:stringRange];
+                NSString *shortString = [video.title substringWithRange:stringRange];
+                if ([video.title length] > SHORT_TEXT_LENGTH) {
+                    shortString = [shortString stringByAppendingString:@"..."];
+                }
+                [self.titleButton setTitle:shortString];
+                self.titleButton.image = nil;
+            } else {
+                [self.titleButton setTitle:nil];
+                self.titleButton.image = [UIImage imageNamed:@"MoreButton"];
+            }
         } else {
             // Create a blank video
             NSLog(@"No video!");

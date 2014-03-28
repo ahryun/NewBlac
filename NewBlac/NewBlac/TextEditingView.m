@@ -11,7 +11,6 @@
 
 @interface TextEditingView() <UITextViewDelegate>
 
-@property (nonatomic, strong) UIImageView *videoImageView;
 @property (nonatomic, weak) UITextView *titleField;
 
 @end
@@ -29,7 +28,7 @@
 - (void)initializeTextEditingView
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, LABEL_HEIGHT)];
-    label.text = NSLocalizedString(@"Title This Piece", @"Ask the user to set a title for the video");
+    label.text = NSLocalizedString(@"Add Title", @"Ask the user to set a title for the video");
     label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:24];
     label.bounds = CGRectMake(0, S_OFFSET_TOP, self.frame.size.width, LABEL_HEIGHT - S_OFFSET_TOP);
     label.textColor = PINK_COLOR;
@@ -46,7 +45,6 @@
     CGFloat height = IMAGE_WIDTH / self.videoImage.size.width * self.videoImage.size.height;
     [videoImageView setFrame:CGRectMake(PADDING, LABEL_HEIGHT + PADDING, IMAGE_WIDTH, height)];
     [self addSubview:videoImageView];
-    self.videoImageView = videoImageView;
     
     CGFloat textFieldWidth = CGRectGetWidth(self.bounds) - IMAGE_WIDTH - (2 * PADDING);
     UITextView *titleField = [[UITextView alloc] initWithFrame:CGRectMake(IMAGE_WIDTH + (2 * PADDING), LABEL_HEIGHT + PADDING, textFieldWidth, TEXTFIELD_HEIGHT)];

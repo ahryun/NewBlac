@@ -129,8 +129,14 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
         NSData *videoData = [NSData dataWithContentsOfFile:self.video.compFilePath options:
                              NSDataReadingMappedAlways error:&dataError];
-        NSString *title = @"";
-        NSString *description = @"";
+        
+        NSString *title = NSLocalizedString(@"Uploaded from Pieces App", @"Title for all videos uploaded from Pieces");
+        NSString *description;
+        if ([self.video.title length]) {
+            description = self.video.title;
+        } else {
+            description = @"";
+        }
         
         if (description == nil) description = @"";
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys: videoData, @"video.mov", @"video/quicktime", @"contentType", title, @"title", description, @"description", nil];

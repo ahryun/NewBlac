@@ -519,17 +519,17 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="56L-iR-drw"/>
+                        <barButtonItem image="MoreButton" id="Gb9-zR-G7V">
+                            <color key="tintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="editTitle:" destination="wEj-N1-jhZ" id="ruo-9w-WrD"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
                         <barButtonItem style="plain" systemItem="action" id="W0b-Hb-mVG">
                             <color key="tintColor" red="0.94117647059999998" green="0.39607843139999999" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="presentShareModally:" destination="wEj-N1-jhZ" id="nn6-bl-7bs"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eBt-HB-7z7"/>
-                        <barButtonItem image="MoreButton" id="Gb9-zR-G7V">
-                            <color key="tintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="moreActions:" destination="wEj-N1-jhZ" id="xBn-yT-JJJ"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -551,6 +551,7 @@
                     <connections>
                         <outlet property="noVideoScreen" destination="PgH-qT-kF1" id="Izj-Le-Z2Q"/>
                         <outlet property="shareButton" destination="W0b-Hb-mVG" id="h5w-RV-Pfv"/>
+                        <outlet property="titleButton" destination="Gb9-zR-G7V" id="3mo-10-3dD"/>
                         <segue destination="wvL-Dr-cRm" kind="modal" identifier="Show Login View" modalTransitionStyle="coverVertical" id="R3K-K0-OMO"/>
                         <segue destination="dVl-Za-DLC" kind="modal" identifier="Show Share Modal" animates="NO" id="43y-pB-i3d"/>
                     </connections>
