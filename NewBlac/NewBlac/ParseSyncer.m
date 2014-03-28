@@ -34,6 +34,7 @@
                 PFObject *userCreatedVideo = [PFObject objectWithClassName:@"UserCreatedVideo"];
                 NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
                 PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     if (!error) {
                         userCreatedVideo.ACL = [PFACL ACLWithUser:[PFUser currentUser]];
@@ -56,7 +57,7 @@
                             }
                         }];
                     }
-                    
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 }];
             }
         } else {
@@ -89,15 +90,19 @@
                                     NSData *videoData = [NSData dataWithContentsOfFile:video.compFilePath];
                                     NSString *videoFileName = [[video.compFilePath componentsSeparatedByString:@"/"] lastObject];
                                     PFFile *videoFile = [PFFile fileWithName:videoFileName data:videoData];
+                                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                                     [videoFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                        [userCreatedVideo setObject:videoFile forKey:@"videoFile"];
-                                        [userCreatedVideo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                            if (!error) {
-                                                NSLog(@"Video %@ got updated\n", video.parseID);
-                                            } else {
-                                                NSLog(@"Video failed to be updated %@, %@", error, [error userInfo]);
-                                            }
-                                        }];
+                                        if (!error) {
+                                            [userCreatedVideo setObject:videoFile forKey:@"videoFile"];
+                                            [userCreatedVideo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                                if (!error) {
+                                                    NSLog(@"Video %@ got updated\n", video.parseID);
+                                                } else {
+                                                    NSLog(@"Video failed to be updated %@, %@", error, [error userInfo]);
+                                                }
+                                            }];
+                                        }
+                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                     }];
                                 }
                             } else {
