@@ -7,6 +7,7 @@
 //
 
 #import "ShareSocialViewController.h"
+#import "VideosCollectionViewController.h"
 #import <Parse/Parse.h>
 
 @interface ShareSocialViewController ()
@@ -23,15 +24,6 @@
 @implementation ShareSocialViewController
 
 #pragma mark - View Life Cycle
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -345,13 +337,9 @@
 
 - (void)dismissSelf
 {
-//    [self resetFacebookButton];
-    [UIView animateWithDuration:0.5f animations:^{
-        self.shareButtonsView.layer.opacity = 0.f;
-    } completion:^(BOOL finished) {
-        [self dismissViewControllerAnimated:NO completion:^{
-            NSLog(@"Modal has been dismissed\n");
-        }];
+    self.snapShotView.layer.opacity = 0.f;
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSLog(@"Modal dismissed");
     }];
 }
 

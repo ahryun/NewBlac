@@ -98,6 +98,13 @@ static const NSString *PlayerReadyContext;
     self.ifAddNewVideo = [NSNumber numberWithBool:NO];
 }
 
+- (void)chooseCenterCell
+{
+    NSIndexPath *centerCellPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+    NSLog(@"My collectionview looks like %@", self.collectionView.indexPathsForVisibleItems);
+    self.centerCell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:centerCellPath];
+}
+
 #pragma mark - Storyboard Actions
 
 - (IBAction)presentMenuModally:(UIBarButtonItem *)sender
@@ -113,8 +120,8 @@ static const NSString *PlayerReadyContext;
 
 - (IBAction)presentShareModally:(UIBarButtonItem *)sender
 {
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
-    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSIndexPath *pathForCenterCell = [self.collectionView indexPathForCell:self.centerCell];
+    Video *video = [self.fetchedResultsController objectAtIndexPath:pathForCenterCell];
     self.shareVideo = video;
     [self compileVideo:video];
 }
@@ -211,12 +218,20 @@ static const NSString *PlayerReadyContext;
 
 - (void)saveTitle:(NSString *)newTitle
 {
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
     [self.managedObjectContext performBlock:^{
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
         Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
         if (![newTitle isEqualToString:video.title] && [newTitle length]) {
             [video setTitle:newTitle];
         }
+    }];
+}
+
+#pragma mark - ShareViewModal Delegate
+- (void)dismissShareModalViewDelegate:(ShareSocialViewController *)view
+{
+    [self dismissViewControllerAnimated:NO completion:^{
+        [self centerACell];
     }];
 }
 
@@ -303,14 +318,12 @@ static const NSString *PlayerReadyContext;
 - (void)centerACell {
     for (NSInteger sectionNumber = 0; sectionNumber < [self.collectionView numberOfSections]; sectionNumber++) {
         if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
-            NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+            [self chooseCenterCell];
+            NSIndexPath *pathForCenterCell = [self.collectionView indexPathForCell:self.centerCell];
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
             if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
-            PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
-            cell.maskView.alpha = 0.0;
-            self.centerCell = cell;
-            NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-            Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            self.centerCell.maskView.alpha = 0.0;
+            Video *video = [self.fetchedResultsController objectAtIndexPath:pathForCenterCell];
             if ([video.title length]) {
                 NSRange stringRange = {0, MIN([video.title length], SHORT_TEXT_LENGTH)};
                 stringRange = [video.title rangeOfComposedCharacterSequencesForRange:stringRange];

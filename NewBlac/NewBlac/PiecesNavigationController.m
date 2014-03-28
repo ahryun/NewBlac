@@ -19,7 +19,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     // Setting the attributes of the title in Navigation Bar
-    NSDictionary *titleTextAttributes = [NSDictionary dictionaryWithObjects:@[[UIFont fontWithName:@"HelveticaNeue-Light" size:24.0f], [UIColor whiteColor]] forKeys:@[NSFontAttributeName, NSForegroundColorAttributeName]];
+    NSDictionary *titleTextAttributes = [NSDictionary dictionaryWithObjects:@[[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], [UIColor whiteColor]] forKeys:@[NSFontAttributeName, NSForegroundColorAttributeName]];
     [self.navigationBar setTitleTextAttributes:titleTextAttributes];
     [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavigationBarTile"] forBarMetrics:UIBarMetricsDefault];
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolBarTile"] forToolbarPosition:UIBarPositionBottom barMetrics:UIBarMetricsDefault];

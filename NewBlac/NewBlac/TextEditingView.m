@@ -35,7 +35,7 @@
     label.textAlignment = NSTextAlignmentCenter;
     CALayer* layer = [label layer];
     CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.borderColor = [UIColor lightGrayColor].CGColor;
+    bottomBorder.borderColor = LIGHT_GRAY_COLOR.CGColor;
     bottomBorder.borderWidth = 1;
     bottomBorder.frame = CGRectMake(-1, LABEL_HEIGHT-1, layer.frame.size.width, 1);
     [layer addSublayer:bottomBorder];
