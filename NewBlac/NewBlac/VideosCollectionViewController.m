@@ -70,7 +70,7 @@ static const NSString *PlayerReadyContext;
     // Lighten the first cell
     [self centerACell];
     
-    // If the user if logged in, then go ahead and use the app. If not, redirect to login view.
+    // If the user is logged in, then go ahead and use the app. If not, redirect to login view.
     if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
         self.ifLoggedIn = [NSNumber numberWithBool:YES];
     } else {
