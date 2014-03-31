@@ -25,7 +25,7 @@
     photoCorners.topRightyPercent = coordinates[3][1];
     
     [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
     
     return photoCorners;

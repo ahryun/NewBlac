@@ -18,7 +18,6 @@
     Video *video;
     if (path) {
         video = [Video MR_findFirstByAttribute:@"compFilePath" withValue:path inContext:context];
-        
         if (!video) {
             video = [Video MR_createInContext:context];
             video.compFilePath = path;
@@ -35,7 +34,7 @@
     [ParseSyncer addVideo:video];
     
     [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
     
     return video;
@@ -72,7 +71,7 @@
         
         [video MR_deleteInContext:context];
         [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            NSLog(@"An error occurred while trying to save context %@", error);
+            if (error) NSLog(@"An error occurred while trying to save context %@", error);
         }];
         
         NSLog(@"You went back to gallery without saving the video. It's been deleted\n");

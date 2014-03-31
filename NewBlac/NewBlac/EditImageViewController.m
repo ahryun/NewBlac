@@ -245,7 +245,7 @@
         [self.photo setCroppedPhoto:imageData];
         [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
         [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            NSLog(@"An error occurred while trying to save context %@", error);
+            if (error) NSLog(@"An error occurred while trying to save context %@", error);
         }];
         
         [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];

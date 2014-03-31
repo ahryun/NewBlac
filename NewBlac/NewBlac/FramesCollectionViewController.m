@@ -124,7 +124,7 @@ static const NSArray *fpsArray;
     
     // If need to compile, do so before leaving
     [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
 
     // When going back to the videoCollectionView, make the tool bar appear again no matter what
@@ -325,7 +325,7 @@ static const NSArray *fpsArray;
     [self.video setFramesPerSecond:framesPerSecond];
         
     [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
 
     [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[framesPerSecond integerValue]]];

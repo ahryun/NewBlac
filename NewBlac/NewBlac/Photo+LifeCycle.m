@@ -28,7 +28,7 @@
     [photo setCanvasRect:photoCorners];
     
     [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
     
     return photo;
@@ -41,7 +41,7 @@
     [photo.video updateAllPhotoIndexInVideo];
     
     [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        NSLog(@"An error occurred while trying to save context %@", error);
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
 }
 
