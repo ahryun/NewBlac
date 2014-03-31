@@ -353,30 +353,6 @@
             </objects>
             <point key="canvasLocation" x="3529" y="-4"/>
         </scene>
-        <!--Initial View Controller - pieces-->
-        <scene sceneID="9mc-R1-S8v">
-            <objects>
-                <viewController id="gpB-UF-YqU" customClass="InitialViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wjm-kB-a5C"/>
-                        <viewControllerLayoutGuide type="bottom" id="v9L-sm-mO0"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yg6-qe-qbC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="pieces" id="F2m-OU-fyU"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <connections>
-                        <segue destination="wEj-N1-jhZ" kind="push" identifier="Go To Rootview" id="mUM-aN-d9z"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SaC-bA-1G9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2117" y="-4"/>
-        </scene>
         <!--Log In View Controller-->
         <scene sceneID="354-e2-N4m">
             <objects>
@@ -558,7 +534,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEy-sc-OEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2546" y="-4"/>
+            <point key="canvasLocation" x="2318" y="-4"/>
         </scene>
         <!--Share Social View Controller-->
         <scene sceneID="Qsy-r1-MN0">
@@ -681,7 +657,7 @@
                         <color key="barTintColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </toolbar>
                     <connections>
-                        <segue destination="gpB-UF-YqU" kind="relationship" relationship="rootViewController" id="M2e-jb-sY1"/>
+                        <segue destination="wEj-N1-jhZ" kind="relationship" relationship="rootViewController" id="srD-tP-pU5"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eft-n3-MC4" userLabel="First Responder" sceneMemberID="firstResponder"/>

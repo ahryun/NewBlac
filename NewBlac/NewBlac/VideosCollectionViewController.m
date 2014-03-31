@@ -18,6 +18,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Parse/Parse.h>
 #import "TextEditingView.h"
+#import "ParseSyncer.h"
 
 @interface VideosCollectionViewController () <ScrollingCellDelegate, UIAlertViewDelegate, TextEditingViewDelegate>
 
@@ -49,6 +50,10 @@ static const NSString *PlayerReadyContext;
     self.propertyNameOfInterest = @"dateCreated";
     self.cacheNameOfInterest = @"Videos Cache";
     
+    self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+    [ParseSyncer updateVideos];
+    [ParseSyncer removeVideos];
+    
     self.showPhotos = NO; // This tells the core data controller to provide videos
     [self initializeFetchedResultsController];
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
@@ -59,9 +64,7 @@ static const NSString *PlayerReadyContext;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     // When the view loads (not every time it appears)
-    [self.managedObjectContext performBlock:^{
-        [Video removeVideosInManagedContext:self.managedObjectContext];
-    }];
+    [Video removeVideos];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -146,9 +149,7 @@ static const NSString *PlayerReadyContext;
             NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
-                [self.managedObjectContext performBlock:^{
-                    [self.shareVideo setDateModified:[NSDate date]];
-                }];
+                [self.shareVideo setDateModified:[NSDate date]];
                 
                 // Bring up the share view
                 [self performSegueWithIdentifier:@"Show Share Modal" sender:self];
@@ -164,7 +165,7 @@ static const NSString *PlayerReadyContext;
 - (IBAction)addVideo:(UIBarButtonItem *)sender
 {
     NSLog(@"I'm in addVideo\n");
-    self.selectedVideo = [Video videoWithPath:nil inManagedObjectContext:self.managedObjectContext];
+    self.selectedVideo = [Video videoWithPath:nil];
     // Do manual segue "View And Edit Video"
     self.ifAddNewVideo = [NSNumber numberWithBool:YES];
     [self performSegueWithIdentifier:@"View And Edit Video" sender:self];
@@ -260,9 +261,6 @@ static const NSString *PlayerReadyContext;
         if ([segue.destinationViewController respondsToSelector:@selector(ifAutoCameraMode:)]) {
             [segue.destinationViewController performSelector:@selector(ifAutoCameraMode:) withObject:self.ifAddNewVideo];
         }
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
-        }
     }
     if ([segue.identifier isEqualToString:@"Show Login View"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(ifLoggedIn:)]) {
@@ -276,9 +274,6 @@ static const NSString *PlayerReadyContext;
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.shareVideo];
-        }
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
         }
     }
 }
@@ -389,7 +384,7 @@ static const NSString *PlayerReadyContext;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.deleteCandidateCell];
         Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
         self.selectedVideo = video;
-        [Video removeVideo:self.selectedVideo inManagedContext:self.managedObjectContext];
+        [Video removeVideo:self.selectedVideo];
         [self centerACell];
         
         int videoCount = (int)[self.collectionView numberOfItemsInSection:0];

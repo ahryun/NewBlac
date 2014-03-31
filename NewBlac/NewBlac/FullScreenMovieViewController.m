@@ -38,6 +38,7 @@ static const NSString *PlayerDurationReady;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
     [self setUpVideoPlayView];

@@ -12,34 +12,37 @@
 
 @implementation Photo (LifeCycle)
 
-+ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates withApertureSize:(float)apertureSize withFocalLength:(float)focalLength ifCornersDetected:(BOOL)cornersDetected inManagedObjectContext:(NSManagedObjectContext *)context
++ (Photo *)photoWithOriginalPhoto:(UIImage *)originalPhoto withCroppedPhoto:(UIImage *)croppedPhoto withCoordinates:(NSArray *)coordinates withApertureSize:(float)apertureSize withFocalLength:(float)focalLength ifCornersDetected:(BOOL)cornersDetected
 {
-    Photo *photo = nil;
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    Photo *photo = [Photo MR_createInContext:context];
     NSData *originalPhotoData = UIImageJPEGRepresentation(originalPhoto, 0);
     NSData *croppedPhotoData = UIImageJPEGRepresentation(croppedPhoto, 0);
-    photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
     [photo setOriginalPhoto:originalPhotoData];
     [photo setCroppedPhoto:croppedPhotoData];
     [photo setTimeTaken:[NSDate date]];
     [photo setApertureSize:[NSNumber numberWithFloat:apertureSize]];
     [photo setFocalLength:[NSNumber numberWithFloat:focalLength]];
     [photo setCornersDetected:[NSNumber numberWithBool:cornersDetected]];
-    PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates withManagedObjectContext:context];
+    PhotoCorners *photoCorners = [PhotoCorners photoCorners:coordinates];
     [photo setCanvasRect:photoCorners];
     
-    NSError *error;
-    [context save:&error];
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
+    }];
     
     return photo;
 }
 
-+ (void)deletePhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context
++ (void)deletePhoto:(Photo *)photo
 {
-    [context deleteObject:photo];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    [photo MR_deleteInContext:context];
     [photo.video updateAllPhotoIndexInVideo];
     
-    NSError *error;
-    [context save:&error];
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
+    }];
 }
 
 @end

@@ -15,8 +15,7 @@
                   withCoordinates:(NSArray *)coordinates
                  withApertureSize:(float)apertureSize
                   withFocalLength:(float)focalLength
-                ifCornersDetected:(BOOL)cornersDetected
-           inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)deletePhoto:(Photo *)photo inContext:(NSManagedObjectContext *)context;
+                ifCornersDetected:(BOOL)cornersDetected;
++ (void)deletePhoto:(Photo *)photo;
 
 @end

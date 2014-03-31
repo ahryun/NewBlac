@@ -15,7 +15,6 @@
 @interface FramesCollectionViewController : CoreDataCollectionViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) Video *video;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) PiecesCollectionCell *centerCell;
 
 - (void)ifAutoCameraMode:(NSNumber *)ifNewVideo;

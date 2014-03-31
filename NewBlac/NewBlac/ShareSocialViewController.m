@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     self.snapShotView.layer.opacity = 0.3;
     [self.view addSubview:self.snapShotView];
@@ -136,11 +137,9 @@
         [FBRequestConnection startWithGraphPath:@"/me/videos" parameters:params HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {
                 if (result) {
-                    [self.managedObjectContext performBlock:^{
-                        [self.video setFacebookVideoID:[result objectForKey:@"id"]];
-                        [self resetFacebookButton];
-                        [self dismissSelf];
-                    }];
+                    [self.video setFacebookVideoID:[result objectForKey:@"id"]];
+                    [self resetFacebookButton];
+                    [self dismissSelf];
                 }
             } else {
                 [self handleAPICallError:error];

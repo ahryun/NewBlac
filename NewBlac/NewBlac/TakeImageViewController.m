@@ -38,6 +38,7 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic) BOOL lockInterfaceRotation;
 @property (nonatomic, getter = isDeviceAuthorized) BOOL deviceAuthorized;
@@ -56,7 +57,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	
+    
+    self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+
 	// Create the AVCaptureSession
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -227,26 +230,24 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                         self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
                         [self.canvas straightenCanvas];
                         self.croppedImage = self.canvas.originalImage;
-                        [self.managedObjectContext performBlock:^{
-                            // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-                            [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-                            self.photo = [Photo photoWithOriginalPhoto:image
-                                                      withCroppedPhoto:self.croppedImage
-                                                       withCoordinates:self.canvas.coordinates
-                                                      withApertureSize:apertureSize
-                                                       withFocalLength:focalLength
-                                                     ifCornersDetected:self.canvas.cornersDetected
-                                                inManagedObjectContext:self.managedObjectContext];
-                            
-                            // Think about whether it's right to put a filter here. App crashes if more than 75 photos are added to a single video.8
-                            // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
-                            BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
-                            if (!success) [Photo deletePhoto:self.photo inContext:self.managedObjectContext];
-                            NSError *error;
-                            [self.managedObjectContext save:&error];
-                            
-                            [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
+                        // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
+                        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
+                        self.photo = [Photo photoWithOriginalPhoto:image
+                                                  withCroppedPhoto:self.croppedImage
+                                                   withCoordinates:self.canvas.coordinates
+                                                  withApertureSize:apertureSize
+                                                   withFocalLength:focalLength
+                                                 ifCornersDetected:self.canvas.cornersDetected];
+                        
+                        // Think about whether it's right to put a filter here. App crashes if more than 75 photos are added to a single video.8
+                        // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
+                        BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
+                        if (!success) [Photo deletePhoto:self.photo];
+                        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                            NSLog(@"An error occurred while trying to save context %@", error);
                         }];
+                        
+                        [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     });
                 }
             }];

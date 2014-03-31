@@ -26,6 +26,7 @@
 #define MAX_TEXT_LENGTH             (150) // TextEditingView
 #define SHORT_TEXT_LENGTH           (15) // FramesCollectionViewController
 #define LABEL_HEIGHT                (80) // TextEditingView
+#define COREDATA_STORE_NAME         @"NewBlacPersistentStore"
 
 #define PINK_COLOR                  ([UIColor colorWithRed:(240.f/255) green:(101.f/255) blue:(98.f/255) alpha:1.f])
 #define LIGHT_GRAY_COLOR                  ([UIColor colorWithRed:(200.f/255) green:(200.f/255) blue:(200.f/255) alpha:1.f])

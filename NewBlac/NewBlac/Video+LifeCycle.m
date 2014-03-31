@@ -12,38 +12,31 @@
 
 @implementation Video (LifeCycle)
 
-+ (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context
++ (Video *)videoWithPath:(NSString *)path
 {
-    Video *video = nil;
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    Video *video;
     if (path) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Video"];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
-        request.predicate = [NSPredicate predicateWithFormat:@"compFilePath = %@", path];
+        video = [Video MR_findFirstByAttribute:@"compFilePath" withValue:path inContext:context];
         
-        NSError *error = nil;
-        NSArray *matches = [context executeFetchRequest:request error:&error];
-        
-        if (!matches || [matches count] > 1) {
-            // Handle error
-        } else if (![matches count]) {
-            video = [NSEntityDescription insertNewObjectForEntityForName:@"Video" inManagedObjectContext:context];
-            [video setCompFilePath:path];
-            [video setDateCreated:[NSDate date]];
-        } else {
-            video = [matches lastObject];
+        if (!video) {
+            video = [Video MR_createInContext:context];
+            video.compFilePath = path;
+            video.dateCreated = [NSDate date];
         }
     } else {
         path = [Video getRandomFilePath];
-        video = [NSEntityDescription insertNewObjectForEntityForName:@"Video" inManagedObjectContext:context];
+        video = [Video MR_createInContext:context];
         [video setCompFilePath:path];
         [video setDateCreated:[NSDate date]];
     }
     
     // Add this video to Parse
-    [ParseSyncer addVideo:video inContext:context];
+    [ParseSyncer addVideo:video];
     
-    NSError *error;
-    [context save:&error];
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
+    }];
     
     return video;
 }
@@ -65,8 +58,10 @@
     return videoPathWithFormat;
 }
 
-+ (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context
++ (void)removeVideo:(Video *)video
 {
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+
     if (video && context) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
@@ -75,13 +70,10 @@
             if (!success) NSLog(@"Error happened while trying to remove video in file system: %@\n", error);
         }
         
-        [context deleteObject:video];
-        
-        // Remove this video from Parse
-        [ParseSyncer removeVideo:video];
-        
-        NSError *saveError;
-        [context save:&saveError];
+        [video MR_deleteInContext:context];
+        [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            NSLog(@"An error occurred while trying to save context %@", error);
+        }];
         
         NSLog(@"You went back to gallery without saving the video. It's been deleted\n");
     } else {
@@ -89,17 +81,15 @@
     }
 }
 
-+ (void)removeVideosInManagedContext:(NSManagedObjectContext *)context
++ (void)removeVideos
 {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Video"];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
-    NSError *error = nil;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    NSArray *matches = [Video MR_findAllSortedBy:@"dateCreated" ascending:YES inContext:context];
     if ([matches count]) {
         for (Video *video in matches) {
             // If no photos, delete the video
             if (![video.photos count]) {
-                [Video removeVideo:video inManagedContext:context];
+                [Video removeVideo:video];
                 // Remove these videos from Parse as well
                 [ParseSyncer removeVideo:video];
             }

@@ -17,6 +17,5 @@
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic, strong) Canvas *canvas;
 @property (nonatomic, strong) Video *video;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end

@@ -25,28 +25,12 @@ static NSString *_SegueIdentifier = @"Go To Rootview";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self addObserver:self forKeyPath:_ManagedObjectContextChanged options:NSKeyValueObservingOptionNew context:NULL];
-    [self useDemoDocument];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:_ManagedObjectContextChanged]) {
-        if (self.managedObjectContext) {
-            // Update Parse DB with updated video contents whenever auto saving
-            [ParseSyncer updateVideosInContext:self.managedObjectContext];
-            [ParseSyncer removeVideosInContext:self.managedObjectContext];
-            
-            [self performSegueWithIdentifier:_SegueIdentifier sender:self];
-        }
-    }
-}
-
-- (void)useDemoDocument
-{
-    [[SharedManagedDocument sharedInstance] performWithDocument:^(UIManagedDocument *document){
-        self.managedObjectContext = document.managedObjectContext;
-    }];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    self.managedObjectContext = context;
+    [ParseSyncer updateVideos];
+    [ParseSyncer removeVideos];
+    
+    [self performSegueWithIdentifier:_SegueIdentifier sender:self];
 }
 
 #pragma mark - Segues

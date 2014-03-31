@@ -12,6 +12,5 @@
 @interface TakeImageViewController : UIViewController
 
 @property (nonatomic, strong) Video *video;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end

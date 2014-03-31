@@ -10,11 +10,11 @@
 
 @implementation PhotoCorners (LifeCycle)
 
-+ (PhotoCorners *)photoCorners:(NSArray *)coordinates withManagedObjectContext:(NSManagedObjectContext *)context
++ (PhotoCorners *)photoCorners:(NSArray *)coordinates
 {
-    PhotoCorners *photoCorners = nil;
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    PhotoCorners *photoCorners = [PhotoCorners MR_createInContext:context];
     NSLog(@"%@", coordinates);
-    photoCorners = [NSEntityDescription insertNewObjectForEntityForName:@"PhotoCorners" inManagedObjectContext:context];
     photoCorners.bottomLeftxPercent = coordinates[0][0];
     photoCorners.bottomLeftyPercent = coordinates[0][1];
     photoCorners.bottomRightxPercent = coordinates[1][0];
@@ -24,8 +24,9 @@
     photoCorners.topRightxPercent = coordinates[3][0];
     photoCorners.topRightyPercent = coordinates[3][1];
     
-    NSError *error;
-    [context save:&error];
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
+    }];
     
     return photoCorners;
 }

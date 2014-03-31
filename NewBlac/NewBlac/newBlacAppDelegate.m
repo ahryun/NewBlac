@@ -9,6 +9,7 @@
 #import "newBlacAppDelegate.h"
 #import <Parse/Parse.h>
 #import <Crashlytics/Crashlytics.h>
+#import "Strings.h"
 
 @interface newBlacAppDelegate()
 
@@ -31,6 +32,9 @@
     [PFFacebookUtils initializeFacebook];
     // Crashlytics
     [Crashlytics startWithAPIKey:@"ece2ac5a141b05d778097923cf3c78a6fb77be1e"];
+    
+    // Magical Records
+    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:COREDATA_STORE_NAME];
     return YES;
 }
 							
@@ -60,6 +64,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [MagicalRecord cleanUp];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

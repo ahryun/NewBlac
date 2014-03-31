@@ -11,9 +11,9 @@
 
 @interface Video (LifeCycle)
 
-+ (Video *)videoWithPath:(NSString *)path inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)removeVideo:(Video *)video inManagedContext:(NSManagedObjectContext *)context;
-+ (void)removeVideosInManagedContext:(NSManagedObjectContext *)context;
++ (Video *)videoWithPath:(NSString *)path;
++ (void)removeVideo:(Video *)video;
++ (void)removeVideos;
 
 - (NSArray *)imagesArrayInOrder;
 - (void)updateAPhotoIndexInVideo:(Photo *)photo atEnd:(BOOL)atEnd;

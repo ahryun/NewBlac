@@ -23,6 +23,7 @@
 @property (nonatomic, assign) NSUInteger selectedCornerIndex;
 @property (nonatomic, strong) CornerCircle *selectedCorner;
 @property (nonatomic, strong) NSMutableArray *coordinates;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL coordinatesChanged;
 @property (weak, nonatomic) IBOutlet UIImageView *loupeView;
 @property (weak, nonatomic) IBOutlet UIImageView *loupeCenter;
@@ -40,6 +41,8 @@
 {
     [super viewDidLoad];
     
+    self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+
     // Add imageView
     UIImageView *imageView = [[UIImageView alloc] init];
     [self.view insertSubview:imageView belowSubview:self.buttonView];
@@ -229,28 +232,23 @@
 {
     if (self.coordinatesChanged) {
         // Update the corner coordinates in core data
-        [self.managedObjectContext performBlock:^{
-            [self.photo.canvasRect setCoordinates:self.coordinates];
-            NSError *error;
-            [self.managedObjectContext save:&error];
-        }];
+        [self.photo.canvasRect setCoordinates:self.coordinates];
         
         // Send the new coordinates to the c++ file to recalculate the matrix
         UIImage *originalImage = [UIImage imageWithData:self.photo.originalPhoto];
         BOOL isFirstImage = [self.video.photos count] > 0 ? NO : YES;
         [self.canvas unskewWithCoordinates:self.coordinates withOriginalImage:originalImage ifFirstImage:isFirstImage];
         
-        [self.managedObjectContext performBlock:^{
-            [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-            // Replace the cropped image saved in core data
-            NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
-            [self.photo setCroppedPhoto:imageData];
-            [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
-            NSError *error;
-            [self.managedObjectContext save:&error];
-            
-            [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
+        // Replace the cropped image saved in core data
+        NSData *imageData = UIImageJPEGRepresentation(self.canvas.originalImage, 1.0);
+        [self.photo setCroppedPhoto:imageData];
+        [self.photo setCornersDetected:[NSNumber numberWithBool:YES]];
+        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            NSLog(@"An error occurred while trying to save context %@", error);
         }];
+        
+        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
     } else {
         [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
     }

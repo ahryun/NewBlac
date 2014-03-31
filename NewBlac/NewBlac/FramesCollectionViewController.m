@@ -75,6 +75,8 @@ static const NSArray *fpsArray;
     self.entityNameOfInterest = @"Photo";
     self.propertyNameOfInterest = @"indexInVideo";
     self.cacheNameOfInterest = @"Frames Cache";
+    
+    self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 
     self.showPhotos = YES; // This tells the core data controller to provide photos
     self.needToCompile = NO;
@@ -118,11 +120,13 @@ static const NSArray *fpsArray;
 - (void)cleanUpBeforeReturningToGallery
 {
     NSLog(@"I'm in clean up\n");
-    if ([self.video.photos count] < 1) [Video removeVideo:self.video inManagedContext:self.managedObjectContext];
+    if ([self.video.photos count] < 1) [Video removeVideo:self.video];
     
     // If need to compile, do so before leaving
-    NSError *error;
-    [self.managedObjectContext save:&error];
+    [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
+    }];
+
     // When going back to the videoCollectionView, make the tool bar appear again no matter what
     [self.navigationController setToolbarHidden:NO];
 }
@@ -181,9 +185,6 @@ static const NSArray *fpsArray;
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
         }
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
-        }
     }
     if ([segue.identifier isEqualToString:@"Edit Corners"]) {
         if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
@@ -194,9 +195,6 @@ static const NSArray *fpsArray;
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
-        }
-        if ([segue.destinationViewController respondsToSelector:@selector(setManagedObjectContext:)]) {
-            [segue.destinationViewController performSelector:@selector(setManagedObjectContext:) withObject:self.managedObjectContext];
         }
         [self.navigationController setToolbarHidden:YES];
     }
@@ -243,9 +241,7 @@ static const NSArray *fpsArray;
             NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
             if (self.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
-                [self.managedObjectContext performBlock:^{
-                    [self.video setDateModified:[NSDate date]];
-                }];
+                [self.video setDateModified:[NSDate date]];
                 
                 [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
                 [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
@@ -326,12 +322,12 @@ static const NSArray *fpsArray;
 {
     // perform some action
     NSNumber *framesPerSecond = fpsArray[row];
-    [self.managedObjectContext performBlock:^{
-        [self.video setFramesPerSecond:framesPerSecond];
+    [self.video setFramesPerSecond:framesPerSecond];
         
-        NSError *error;
-        [self.managedObjectContext save:&error];
+    [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"An error occurred while trying to save context %@", error);
     }];
+
     [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[framesPerSecond integerValue]]];
     self.needToCompile = YES;
 }
@@ -430,7 +426,7 @@ static const NSArray *fpsArray;
         Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
         self.selectedPhoto = photo;
         self.needToCompile = YES;
-        [Photo deletePhoto:photo inContext:self.managedObjectContext];
+        [Photo deletePhoto:photo];
         
         [self updateUI];
     }

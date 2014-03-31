@@ -12,9 +12,10 @@
 @implementation ParseSyncer
 
 // Designated initializer
-+ (void)addVideo:(Video *)video inContext:(NSManagedObjectContext *)context
++ (void)addVideo:(Video *)video
 {
     // Make sure the user is saved on Parse. If the user has not been saved on Parse, trying to get ACL from the user will crash the app.
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     PFQuery *query = [PFUser query];
     [query whereKey:@"objectId" equalTo:[PFUser currentUser].objectId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -45,10 +46,8 @@
                             if (!error) {
                                 NSError *cdError;
                                 if ([context existingObjectWithID:video.objectID error:&cdError]) {
-                                    [context performBlock:^{
-                                        video.parseID = userCreatedVideo.objectId;
-                                        NSLog(@"Video %@ got added\n", video.parseID);
-                                    }];
+                                    video.parseID = userCreatedVideo.objectId;
+                                    NSLog(@"Video %@ got added\n", video.parseID);
                                 } else {
                                     [userCreatedVideo deleteInBackground];
                                 }
@@ -66,19 +65,15 @@
     }];
 }
 
-+ (void)updateVideosInContext:(NSManagedObjectContext *)context
++ (void)updateVideos
 {
     // Asynchronously fetch Core Data
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     dispatch_queue_t cdFetch = dispatch_queue_create("Update Fetch", NULL);
     dispatch_async(cdFetch, ^{
-        NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"Video" inManagedObjectContext:context];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:entityDescription];
-        NSError *fetchError;
-        NSArray *matches = [context executeFetchRequest:request error:&fetchError];
+        NSArray *matches = [Video MR_findAllInContext:context];
         
-        if (!fetchError) {
+        if (matches) {
             // Retrieve the object by id
             for (Video *video in matches) {
                 if (video.parseID) {
@@ -113,18 +108,18 @@
                             if (error.code == 101) {
                                 // If error code is 101, that means the video on the user's device does not exist on Parse. Add it.
                                 NSLog(@"ObjectNotFound #101 error. Trying to add the video object to Parse\n");
-                                [ParseSyncer addVideo:video inContext:context];
+                                [ParseSyncer addVideo:video];
                             }
                         }
                     }];
                 } else {
                     // If the video in Core Data does not exist in Parse, add it.
-                    [ParseSyncer addVideo:video inContext:context];
+                    [ParseSyncer addVideo:video];
                     NSLog(@"There was a video that was not on Parse. Adding it\n");
                 }
             }
         } else {
-            NSLog(@"Core data failed to fetch %@, %@", fetchError, [fetchError userInfo]);
+            NSLog(@"Core data failed to fetch");
         }
     });
 }
@@ -132,6 +127,7 @@
 + (void)removeVideo:(Video *)video
 {
     // Retrieve the object by id
+    
     if (video.parseID) {
         PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
         [query getObjectInBackgroundWithId:video.parseID block:^(PFObject *userCreatedVideo, NSError *error) {
@@ -150,21 +146,16 @@
     }
 }
 
-+ (void)removeVideosInContext:(NSManagedObjectContext *)context
++ (void)removeVideos
 {
     // Asynchronously fetch Core Data
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+
     dispatch_queue_t cdFetch = dispatch_queue_create("Core Data Fetch", NULL);
     dispatch_async(cdFetch, ^{
-        NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"Video" inManagedObjectContext:context];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"parseID" ascending:YES];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:entityDescription];
-        [request setSortDescriptors:@[sortDescriptor]];
-        NSError *fetchError;
-        NSArray *matches = [context executeFetchRequest:request error:&fetchError];
+        NSArray *matches = [Video MR_findAllInContext:context];
         
-        if (!fetchError) {
+        if (!matches) {
             PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
             [query orderByAscending:@"objectID"];
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -187,7 +178,7 @@
                 }
             }];
         } else {
-            NSLog(@"Core data failed to fetch %@, %@", fetchError, [fetchError userInfo]);
+            NSLog(@"Core data failed to fetch");
         }
 
     });
