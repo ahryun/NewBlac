@@ -10,6 +10,15 @@
 #import "VideoCreator.h"
 #import "Video+LifeCycle.h"
 
+#define MR_SHORTHAND
+#import "CoreData+MagicalRecord.h"
+
+#define HC_SHORTHAND
+#import <OCHamcrestIOS/OCHamcrestIOS.h>
+
+#define MOCKITO_SHORTHAND
+#import <OCMockitoIOS/OCMockitoIOS.h>
+
 @interface VideoCreatorTest : XCTestCase
 
 @property (nonatomic, strong) VideoCreator *videoCreator;
@@ -25,12 +34,17 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
     self.videoCreator = [[VideoCreator alloc] init];
+    
+    [MagicalRecord setDefaultModelFromClass:[self class]];
+	[MagicalRecord setupCoreDataStackWithInMemoryStore];
 }
 
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+    
+    [MagicalRecord cleanUp];
 }
 
 - (void)testImageRatioCalc

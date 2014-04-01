@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F323C76418EA2F6F00EB63E3 /* OCHamcrestIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F323C76318EA2F6F00EB63E3 /* OCHamcrestIOS.framework */; };
+		F323C76618EA2FA400EB63E3 /* OCMockitoIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F323C76518EA2FA400EB63E3 /* OCMockitoIOS.framework */; };
 		F32E2ECF18D1AC3600D5A556 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ECE18D1AC3600D5A556 /* Parse.framework */; };
 		F32E2ED118D1AC6E00D5A556 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */; };
 		F32E2ED318D1AC7A00D5A556 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */; };
@@ -116,6 +118,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F323C76318EA2F6F00EB63E3 /* OCHamcrestIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCHamcrestIOS.framework; sourceTree = "<group>"; };
+		F323C76518EA2FA400EB63E3 /* OCMockitoIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMockitoIOS.framework; sourceTree = "<group>"; };
 		F32E2ECE18D1AC3600D5A556 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		F32E2ED018D1AC6E00D5A556 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F32E2ED218D1AC7A00D5A556 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -319,6 +323,8 @@
 				F3C028C91843F5BD00FF08F1 /* XCTest.framework in Frameworks */,
 				F3C028CB1843F5BD00FF08F1 /* UIKit.framework in Frameworks */,
 				F3C028CA1843F5BD00FF08F1 /* Foundation.framework in Frameworks */,
+				F323C76418EA2F6F00EB63E3 /* OCHamcrestIOS.framework in Frameworks */,
+				F323C76618EA2FA400EB63E3 /* OCMockitoIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +479,8 @@
 		F3C028A81843F5BD00FF08F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F323C76518EA2FA400EB63E3 /* OCMockitoIOS.framework */,
+				F323C76318EA2F6F00EB63E3 /* OCHamcrestIOS.framework */,
 				F32E2F6418DD2D8400D5A556 /* Crashlytics.framework */,
 				F32E2EDE18D1B97E00D5A556 /* FacebookSDK.framework */,
 				F32E2EDC18D1ACC800D5A556 /* SystemConfiguration.framework */,
@@ -1056,10 +1064,12 @@
 		F3C028DC1843F5BD00FF08F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewBlac/NewBlac-Prefix.pch";
@@ -1068,7 +1078,14 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NewBlacTests/NewBlacTests-Info.plist";
+				MACH_O_TYPE = mh_bundle;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreData,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -1076,15 +1093,24 @@
 		F3C028DD1843F5BD00FF08F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewBlac/NewBlac-Prefix.pch";
 				INFOPLIST_FILE = "NewBlacTests/NewBlacTests-Info.plist";
+				MACH_O_TYPE = mh_bundle;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreData,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
