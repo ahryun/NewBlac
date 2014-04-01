@@ -2,8 +2,7 @@
 #import <UIKit/UIKit.h>
 #endif
 
-#import "Pods-NewBlacTests-environment.h"
+#import "Pods-NewBlacKiwiTests-environment.h"
 
 
 #import <XCTest/XCTest.h>
-

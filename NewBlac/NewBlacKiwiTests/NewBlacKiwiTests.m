@@ -1,8 +1,8 @@
 //
-//  VideoCreatorTest.m
-//  NewBlac
+//  NewBlacKiwiTests.m
+//  NewBlacKiwiTests
 //
-//  Created by Ahryun Moon on 3/26/14.
+//  Created by Ahryun Moon on 4/1/14.
 //  Copyright (c) 2014 Ahryun Moon. All rights reserved.
 //
 
@@ -19,20 +19,18 @@
 #define MOCKITO_SHORTHAND
 #import <OCMockitoIOS/OCMockitoIOS.h>
 
-@interface VideoCreatorTest : XCTestCase
+@interface NewBlacKiwiTests : XCTestCase
 
 @property (nonatomic, strong) VideoCreator *videoCreator;
 
 @end
 
-@implementation VideoCreatorTest
+@implementation NewBlacKiwiTests
 
 - (void)setUp
 {
     [super setUp];
-    
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    
     self.videoCreator = [[VideoCreator alloc] init];
     
     [MagicalRecord setDefaultModelFromClass:[self class]];
@@ -41,10 +39,9 @@
 
 - (void)tearDown
 {
+    [MagicalRecord cleanUp];
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
-    
-    [MagicalRecord cleanUp];
 }
 
 - (void)testImageRatioCalc

@@ -9,14 +9,14 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>NewBlacTests.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>F323C7DE18EB56A200EB63E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>F3C028A51843F5BD00FF08F1</key>
 		<dict>
 			<key>primary</key>

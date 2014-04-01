@@ -4,12 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-NewBlacTests-Kiwi.xcscheme</key>
+		<key>Pods-NewBlacKiwiTests-Kiwi.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-NewBlacTests.xcscheme</key>
+		<key>Pods-NewBlacKiwiTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,12 +17,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0CDC5E323D514DC489FCBA88</key>
+		<key>98B1B7EE79E04DBEA665E7CD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C97CD042C7B94332A45540B0</key>
+		<key>C751A151420C4D32B8A1BEC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

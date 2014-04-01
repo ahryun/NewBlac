@@ -155,7 +155,7 @@
     dispatch_async(cdFetch, ^{
         NSArray *matches = [Video MR_findAllInContext:context];
         
-        if (!matches) {
+        if (matches) {
             PFQuery *query = [PFQuery queryWithClassName:@"UserCreatedVideo"];
             [query orderByAscending:@"objectID"];
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {

@@ -307,7 +307,7 @@
 {
     if (error) {
         NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed" message:@"Cannot save to the camera roll" delegate:self cancelButtonTitle:[okString uppercaseString] otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed", @"Tell the user that the video saving failed") message:NSLocalizedString(@"Cannot save to the camera roll", @"Explain that the save failed") delegate:self cancelButtonTitle:[okString uppercaseString] otherButtonTitles:nil];
         [alertView show];
     } else {
         [self resetPhotoalbumButton];
