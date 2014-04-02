@@ -211,9 +211,10 @@ static const NSArray *fpsArray;
         CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^(){
-            if (!weakself.videoCreator) weakself.videoCreator = [[VideoCreator alloc] initWithVideo:weakself.video withScreenSize:size];
-            [weakself.videoCreator addObserver:weakself forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
-            [weakself.videoCreator writeImagesToVideo];
+            typeof(self) strongSelf = weakself;
+            if (!strongSelf.videoCreator) strongSelf.videoCreator = [[VideoCreator alloc] initWithVideo:strongSelf.video withScreenSize:size];
+            [strongSelf.videoCreator addObserver:strongSelf forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+            [strongSelf.videoCreator writeImagesToVideo];
         });
     }
 }
@@ -234,13 +235,14 @@ static const NSArray *fpsArray;
     if (context == &videoCompilingDone) {
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^(){
+            typeof(self) strongSelf = weakself;
             NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
-            if (weakself.videoCreator.videoDoneCreating) {
+            if (strongSelf.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
-                [weakself.video setDateModified:[NSDate date]];
+                [strongSelf.video setDateModified:[NSDate date]];
                 
-                [weakself.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
-                [weakself performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
+                [strongSelf.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
+                [strongSelf performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
             }
         });
         return;

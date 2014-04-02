@@ -81,8 +81,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 	dispatch_queue_t sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	[self setSessionQueue:sessionQueue];
 	
+    __weak typeof(self) weakSelf = self;
 	dispatch_async(sessionQueue, ^{
-		[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
+        typeof(self) strongSelf = weakSelf;
+		[strongSelf setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		
 		NSError *error = nil;
 		AVCaptureDevice *videoDevice = [TakeImageViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
@@ -91,14 +93,14 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		if (error) NSLog(@"%@", error);
 		if ([session canAddInput:videoDeviceInput]) {
 			[session addInput:videoDeviceInput];
-			[self setVideoDeviceInput:videoDeviceInput];
+			[strongSelf setVideoDeviceInput:videoDeviceInput];
 		}
 		
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
 		if ([session canAddOutput:stillImageOutput]) {
 			[stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
 			[session addOutput:stillImageOutput];
-			[self setStillImageOutput:stillImageOutput];
+			[strongSelf setStillImageOutput:stillImageOutput];
 		}
 	});
 }
@@ -201,12 +203,14 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     // Let the user know that the photo is being processed
     [self showLoadingBar];
     if ([self.video.photos count] < MAX_PHOTO_COUNT_PER_VIDEO) {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(self.sessionQueue, ^{
+            typeof(self) strongSelf = weakSelf;
             // Update the orientation on the still image output video connection before capturing.
-            [[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[self.stillImagePreview layer] connection] videoOrientation]];
+            [[strongSelf.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[strongSelf.stillImagePreview layer] connection] videoOrientation]];
             
             // Capture a still image.
-            [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+            [strongSelf.stillImageOutput captureStillImageAsynchronouslyFromConnection:[strongSelf.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                 // Creates exifAttachments
                 CFDictionaryRef exifAttachments = CMGetAttachment(imageDataSampleBuffer,
                                                                   kCGImagePropertyExifDictionary,
@@ -226,28 +230,29 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                     NSLog(@"FocalLength is %f and FNumber is %f\n", focalLength, apertureSize);
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        float aspectRatio = !self.video.screenRatio ? 0 : [self.video.screenRatio floatValue];
-                        self.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
-                        [self.canvas straightenCanvas];
-                        self.croppedImage = self.canvas.originalImage;
+                        typeof(self) strongSelf = weakSelf;
+                        float aspectRatio = !strongSelf.video.screenRatio ? 0 : [strongSelf.video.screenRatio floatValue];
+                        strongSelf.canvas = [[Canvas alloc] initWithPhoto:image withFocalLength:focalLength withApertureSize:apertureSize withAspectRatio:aspectRatio];
+                        [strongSelf.canvas straightenCanvas];
+                        strongSelf.croppedImage = strongSelf.canvas.originalImage;
                         // Photo entity is created in core data with paths to original photo, cropped photo and coordinate.
-                        [self.video setScreenRatio:[NSNumber numberWithFloat:self.canvas.screenAspect]];
-                        self.photo = [Photo photoWithOriginalPhoto:image
-                                                  withCroppedPhoto:self.croppedImage
-                                                   withCoordinates:self.canvas.coordinates
+                        [strongSelf.video setScreenRatio:[NSNumber numberWithFloat:strongSelf.canvas.screenAspect]];
+                        strongSelf.photo = [Photo photoWithOriginalPhoto:image
+                                                  withCroppedPhoto:strongSelf.croppedImage
+                                                   withCoordinates:strongSelf.canvas.coordinates
                                                   withApertureSize:apertureSize
                                                    withFocalLength:focalLength
-                                                 ifCornersDetected:self.canvas.cornersDetected];
+                                                 ifCornersDetected:strongSelf.canvas.cornersDetected];
                         
                         // Think about whether it's right to put a filter here. App crashes if more than 75 photos are added to a single video.8
                         // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
-                        BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
-                        if (!success) [Photo deletePhoto:self.photo];
+                        BOOL success = [strongSelf.video addPhotosObjectWithAuthentification:strongSelf.photo];
+                        if (!success) [Photo deletePhoto:strongSelf.photo];
 //                        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
 //                            if (error) NSLog(@"An error occurred while trying to save context %@", error);
 //                        }];
                         
-                        [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
+                        [strongSelf performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     });
                 }
             }];
@@ -286,8 +291,10 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
         atDevicePoint:(CGPoint)point
 monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
 {
+    __weak typeof(self) weakSelf = self;
 	dispatch_async([self sessionQueue], ^{
-		AVCaptureDevice *device = [[self videoDeviceInput] device];
+        typeof(self) strongSelf = weakSelf;
+		AVCaptureDevice *device = [[strongSelf videoDeviceInput] device];
 		NSError *error = nil;
 		if ([device lockForConfiguration:&error]) {
 			if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:focusMode]) {

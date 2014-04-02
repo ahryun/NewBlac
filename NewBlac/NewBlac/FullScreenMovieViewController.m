@@ -273,18 +273,21 @@ static const NSString *PlayerDurationReady;
     __weak typeof(self) weakself = self;
     if (context == &PlayerReadyContext) {
         if (self.moviePlayerController.playerIsReady) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself setPlayerInLayer:weakself.moviePlayerController.player];
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                typeof(self) strongSelf = weakself;
+                [strongSelf setPlayerInLayer:strongSelf.moviePlayerController.player];
             });
         }
         return;
     } else if (context == &PlayerIsPlaying) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself moviePlaybackStateDidChange:weakself.moviePlayerController.isPlaying];
+            typeof(self) strongSelf = weakself;
+            [strongSelf moviePlaybackStateDidChange:strongSelf.moviePlayerController.isPlaying];
         });
     } else if (context == &PlayerDurationReady) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself movieDurationAvailable:weakself.moviePlayerController.duration];
+            typeof(self) strongSelf = weakself;
+            [strongSelf movieDurationAvailable:strongSelf.moviePlayerController.duration];
         });
     }
 }

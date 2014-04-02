@@ -155,12 +155,13 @@ static const NSString *PlayerReadyContext;
 {
     NSLog(@"I am in compileVideo\n");
     [self changeShareButtonTitle];
-	__weak typeof(self) weakself = self;
+	__weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^(){
-        CGSize size = CGSizeMake(weakself.navigationController.view.bounds.size.width, weakself.navigationController.view.bounds.size.height);
-        if (!weakself.videoCreator) weakself.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
-        [weakself.videoCreator addObserver:weakself forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
-        [weakself.videoCreator writeImagesToVideo];
+        typeof(self) strongSelf = weakSelf;
+        CGSize size = CGSizeMake(strongSelf.navigationController.view.bounds.size.width, strongSelf.navigationController.view.bounds.size.height);
+        if (!strongSelf.videoCreator) strongSelf.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
+        [strongSelf.videoCreator addObserver:strongSelf forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+        [strongSelf.videoCreator writeImagesToVideo];
     });
 }
 
@@ -173,15 +174,17 @@ static const NSString *PlayerReadyContext;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^(){
-            NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
-            if (self.videoCreator.videoDoneCreating) {
+            typeof(self) strongSelf = weakSelf;
+            NSLog(@"Video compilating is %i", strongSelf.videoCreator.videoDoneCreating);
+            if (strongSelf.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
-                [self.shareVideo setDateModified:[NSDate date]];
+                [strongSelf.shareVideo setDateModified:[NSDate date]];
                 
                 // Bring up the share view
-                [self performSegueWithIdentifier:@"Show Share Modal" sender:self];
-                [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
+                [strongSelf performSegueWithIdentifier:@"Show Share Modal" sender:strongSelf];
+                [strongSelf.videoCreator removeObserver:strongSelf forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
             }
         });
         return;

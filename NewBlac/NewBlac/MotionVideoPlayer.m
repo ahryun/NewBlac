@@ -31,15 +31,17 @@ static const NSString *ItemRateContext;
     
     NSString *tracksKey = @"tracks";
     [self.videoAsset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:^(){
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.isCancelled) {
+            typeof(self) strongSelf = weakSelf;
+            if (!strongSelf.isCancelled) {
                 NSError *error;
-                AVKeyValueStatus status = [self.videoAsset statusOfValueForKey:tracksKey error:&error];
+                AVKeyValueStatus status = [strongSelf.videoAsset statusOfValueForKey:tracksKey error:&error];
                 NSLog(@"The AVKeyValueStatus is %li\n", (long)status);
                 if (status == AVKeyValueStatusLoaded) {
-                    self.playerItem = [AVPlayerItem playerItemWithAsset:self.videoAsset];
-                    self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-                    [self registerNotification];
+                    strongSelf.playerItem = [AVPlayerItem playerItemWithAsset:strongSelf.videoAsset];
+                    strongSelf.player = [AVPlayer playerWithPlayerItem:strongSelf.playerItem];
+                    [strongSelf registerNotification];
                 } else {
                     // You should deal with the error appropriately.
                     NSLog(@"The asset's tracks were not loaded:\n%@", [error localizedDescription]);
@@ -61,22 +63,26 @@ static const NSString *ItemRateContext;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &ItemStatusContext) {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Context is %ld\n", (long)[self.player.currentItem status]);
-            if ([self.playerItem status] == AVPlayerItemStatusReadyToPlay) {
-                self.duration = CMTimeGetSeconds(self.playerItem.duration);
-                self.playerIsReady = YES;
+            typeof(self) strongSelf = weakSelf;
+            NSLog(@"Context is %ld\n", (long)[strongSelf.player.currentItem status]);
+            if ([strongSelf.playerItem status] == AVPlayerItemStatusReadyToPlay) {
+                strongSelf.duration = CMTimeGetSeconds(strongSelf.playerItem.duration);
+                strongSelf.playerIsReady = YES;
             } else {
-                self.playerIsReady = NO;
+                strongSelf.playerIsReady = NO;
             }
         });
         return;
     } else if (context == &ItemRateContext) {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.player.rate == 0) { //stopped
-                self.isPlaying = NO;
+            typeof(self) strongSelf = weakSelf;
+            if (strongSelf.player.rate == 0) { //stopped
+                strongSelf.isPlaying = NO;
             } else {
-                self.isPlaying = YES;
+                strongSelf.isPlaying = YES;
             }
         });
     }

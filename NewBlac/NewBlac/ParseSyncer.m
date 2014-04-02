@@ -72,7 +72,6 @@
     dispatch_queue_t cdFetch = dispatch_queue_create("Update Fetch", NULL);
     dispatch_async(cdFetch, ^{
         NSArray *matches = [Video MR_findAllInContext:context];
-        
         if (matches) {
             // Retrieve the object by id
             for (Video *video in matches) {
