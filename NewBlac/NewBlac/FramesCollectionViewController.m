@@ -16,7 +16,7 @@
 #import "FullScreenMovieViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate, ScrollingCellDelegate>
+@interface FramesCollectionViewController () <UIPickerViewDataSource, UIPickerViewDelegate, ScrollingCellDelegate, EditImageViewControllerDelegate>
 
 @property (nonatomic) BOOL needToCompile;
 @property (nonatomic) BOOL autoCameraMode;
@@ -112,23 +112,7 @@ static const NSArray *fpsArray;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    // Hackish way to know if the user clicked "Back" button in the navigation controller
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) [self cleanUpBeforeReturningToGallery];
     self.autoCameraMode = NO;
-}
-
-- (void)cleanUpBeforeReturningToGallery
-{
-    NSLog(@"I'm in clean up\n");
-    if ([self.video.photos count] < 1) [Video removeVideo:self.video];
-    
-    // If need to compile, do so before leaving
-    [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        if (error) NSLog(@"An error occurred while trying to save context %@", error);
-    }];
-
-    // When going back to the videoCollectionView, make the tool bar appear again no matter what
-    [self.navigationController setToolbarHidden:NO];
 }
 
 #pragma mark - Segues
@@ -155,14 +139,6 @@ static const NSArray *fpsArray;
     [self ifAutoCameraMode:[NSNumber numberWithBool:NO]];
 }
 
-- (IBAction)unwindDoneEditingImage:(UIStoryboardSegue *)segue
-{
-    // When the user edited corners - photo added
-    self.needToCompile = YES;
-    
-    [self.collectionView reloadItemsAtIndexPaths:@[self.selectedCellIndexPath]];
-}
-
 - (IBAction)unwindCancelEditingImage:(UIStoryboardSegue *)segue
 {
     // When the user comes back from editing corner mode without making any change - no photo
@@ -187,6 +163,9 @@ static const NSArray *fpsArray;
         }
     }
     if ([segue.identifier isEqualToString:@"Edit Corners"]) {
+        EditImageViewController *editViewcontroller = (EditImageViewController *)segue.destinationViewController;
+        editViewcontroller.delegate = self;
+        
         if ([segue.destinationViewController respondsToSelector:@selector(setPhoto:)]) {
             [segue.destinationViewController performSelector:@selector(setPhoto:) withObject:self.selectedPhoto];
         }
@@ -206,6 +185,21 @@ static const NSArray *fpsArray;
             [segue.destinationViewController performSelector:@selector(setFramesPerSecond:) withObject:self.video.framesPerSecond];
         }
     }
+}
+
+#pragma mark - Storyboard Actions
+- (IBAction)backButtonPressed:(UIBarButtonItem *)sender
+{
+    [self cleanUpBeforeReturningToGallery];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)cleanUpBeforeReturningToGallery
+{
+    NSLog(@"I'm in clean up\n");
+    if ([self.video.photos count] < 1) [Video removeVideo:self.video];
+    
+    [self.navigationController setToolbarHidden:NO];
 }
 
 #pragma mark - Model
@@ -430,6 +424,14 @@ static const NSArray *fpsArray;
         
         [self updateUI];
     }
+}
+
+#pragma mark - ViewController Delegates
+- (void)popEditImageViewController:(EditImageViewController *)viewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    self.needToCompile = YES;
+    [self.collectionView reloadItemsAtIndexPaths:@[self.selectedCellIndexPath]];
 }
 
 #pragma mark - Update UIs

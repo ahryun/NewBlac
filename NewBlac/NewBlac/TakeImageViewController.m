@@ -243,9 +243,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                         // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
                         BOOL success = [self.video addPhotosObjectWithAuthentification:self.photo];
                         if (!success) [Photo deletePhoto:self.photo];
-                        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                            if (error) NSLog(@"An error occurred while trying to save context %@", error);
-                        }];
+//                        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+//                            if (error) NSLog(@"An error occurred while trying to save context %@", error);
+//                        }];
                         
                         [self performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     });

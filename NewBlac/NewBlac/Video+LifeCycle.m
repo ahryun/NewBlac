@@ -73,8 +73,6 @@
         [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (error) NSLog(@"An error occurred while trying to save context %@", error);
         }];
-        
-        NSLog(@"You went back to gallery without saving the video. It's been deleted\n");
     } else {
         NSLog(@"Something went wrong while deleting the video");
     }
@@ -126,18 +124,27 @@
 
 - (void)updateAPhotoIndexInVideo:(Photo *)photo atEnd:(BOOL)atEnd
 {
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     if (atEnd) {
         [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos count]]];
     } else {
         [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos indexOfObject:photo]]];
     }
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
+    }];
+
 }
 
 - (void)updateAllPhotoIndexInVideo
 {
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     for (Photo *photo in self.photos) {
         [photo setIndexInVideo:[NSNumber numberWithInteger:[self.photos indexOfObject:photo]]];
     }
+    [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (error) NSLog(@"An error occurred while trying to save context %@", error);
+    }];
 }
 
 @end

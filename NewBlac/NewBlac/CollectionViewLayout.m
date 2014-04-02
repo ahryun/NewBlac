@@ -88,18 +88,18 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    UIScrollView *scrollView = self.collectionView;
-    CGFloat delta = newBounds.origin.x - scrollView.bounds.origin.x;
-    for (UIAttachmentBehavior *spring in self.dynamicAnimator.behaviors) {
-        UICollectionViewLayoutAttributes *item = [spring.items firstObject];
-        CGPoint center = item.center;
-        center.x += delta;
-        item.center = center;
-        
-        [self.dynamicAnimator updateItemUsingCurrentState:item];
-    }
-    
-    return NO;
+//    UIScrollView *scrollView = self.collectionView;
+//    CGFloat delta = newBounds.origin.x - scrollView.bounds.origin.x;
+//    for (UIAttachmentBehavior *spring in self.dynamicAnimator.behaviors) {
+//        UICollectionViewLayoutAttributes *item = [spring.items firstObject];
+//        CGPoint center = item.center;
+//        center.x += delta;
+//        item.center = center;
+//        
+//        [self.dynamicAnimator updateItemUsingCurrentState:item];
+//    }
+
+    return YES;
 }
 
 - (CGRect)frameForCellAtIndexPath:(NSIndexPath *)indexPath withTotalWidth:(NSInteger)totalWidth

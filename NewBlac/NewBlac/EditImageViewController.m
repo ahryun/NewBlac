@@ -36,6 +36,8 @@
 
 @implementation EditImageViewController
 
+@synthesize delegate;
+
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
@@ -61,11 +63,6 @@
     
     self.buttonView.opaque = NO;
     [self.buttonView setBackgroundColor:[UIColor clearColor]];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLayoutSubviews
@@ -247,10 +244,9 @@
         [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (error) NSLog(@"An error occurred while trying to save context %@", error);
         }];
-        
-        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+        [self.delegate popEditImageViewController:self];
     } else {
-        [self performSegueWithIdentifier:@"Unwind Done Editing Image" sender:self];
+        [self.delegate popEditImageViewController:self];
     }
 }
 
@@ -322,6 +318,13 @@
     return corner.path;
 }
 
+// Delete below
+//- (UIBezierPath *)drawTapTargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
+//{
+//    CornerCircle *corner = [self.corners objectAtIndex:index];
+//    return corner.tapTarget;
+//}
+
 - (UIColor *)fillColorInView:(CornerDetectionView *)view
 {
     return [UIColor colorWithRed:(240.f/255) green:(101.f/255) blue:(98.f/255) alpha:1.f];
@@ -379,6 +382,10 @@
             
             if (self.selectedCornerIndex != NSNotFound) {
                 CGPoint translation = [panRecognizer translationInView:self.originalImageView];
+                
+                // Check if the translation puts the corner beyond the boundary of the superview
+                translation = [self checkIfWithinBounds:(CGPoint)translation];
+
                 CGRect originalBounds = self.selectedCorner.totalBounds;
                 CGRect newBounds = CGRectApplyAffineTransform(originalBounds, CGAffineTransformMakeTranslation(translation.x, translation.y));
                 CGRect rectToRedraw = CGRectUnion(originalBounds, newBounds);
@@ -413,6 +420,23 @@
         default:
             break;
     }
+}
+
+- (CGPoint)checkIfWithinBounds:(CGPoint)translation
+{
+    if (self.selectedCorner.centerPoint.x + translation.x < 0) {
+        translation.x = - self.selectedCorner.centerPoint.x;
+    } else if (self.selectedCorner.centerPoint.x + translation.x > self.originalImageView.bounds.size.width) {
+        translation.x = self.originalImageView.bounds.size.width - self.selectedCorner.centerPoint.x;
+    }
+    
+    if (self.selectedCorner.centerPoint.y + translation.y < 0) {
+        translation.y = - self.selectedCorner.centerPoint.y;
+    } else if (self.selectedCorner.centerPoint.y + translation.y > self.originalImageView.bounds.size.height) {
+        translation.y = self.originalImageView.bounds.size.height - self.selectedCorner.centerPoint.y;
+    }
+    
+    return translation;
 }
 
 - (void)showLoupe

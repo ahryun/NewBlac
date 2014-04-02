@@ -61,7 +61,7 @@ static const NSString *PlayerReadyContext;
     self.collectionView.delegate = self;
     
     // Navigation Bar Buttons configuration
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     // When the view loads (not every time it appears)
     [Video removeVideos];

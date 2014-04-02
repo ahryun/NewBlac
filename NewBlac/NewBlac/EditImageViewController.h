@@ -11,11 +11,22 @@
 #import "Canvas.h"
 #import "Video+LifeCycle.h"
 
+@protocol EditImageViewControllerDelegate;
 
-@interface EditImageViewController : UIViewController
+@interface EditImageViewController : UIViewController {
+    id<EditImageViewControllerDelegate> delegate;
+}
 
+@property (nonatomic, strong) id<EditImageViewControllerDelegate> delegate;
 @property (nonatomic, strong) Photo *photo;
 @property (nonatomic, strong) Canvas *canvas;
 @property (nonatomic, strong) Video *video;
 
 @end
+
+@protocol EditImageViewControllerDelegate <NSObject>
+
+- (void)popEditImageViewController:(EditImageViewController *)viewController;
+
+@end
+

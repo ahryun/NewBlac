@@ -88,6 +88,7 @@
     }
     
     return CGRectInset(self.path.bounds, -(self.path.lineWidth + 1.0f), -(self.path.lineWidth + 1.0f));
+//    return CGRectInset(self.tapTarget.bounds, -(self.tapTarget.lineWidth + 1.0f), -(self.tapTarget.lineWidth + 1.0f));
 }
 
 #pragma mark - Modifying Shapes

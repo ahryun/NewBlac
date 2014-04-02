@@ -23,6 +23,7 @@
 @protocol CornerDetectionViewDelegate <NSObject>
 
 - (UIBezierPath *)drawPathInView:(CornerDetectionView *)view atIndex:(NSUInteger)index;
+//- (UIBezierPath *)drawTapTargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index;
 - (UIColor *)fillColorInView:(CornerDetectionView *)view;
 - (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view;
 
