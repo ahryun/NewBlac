@@ -159,9 +159,9 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                                                      name:AVCaptureDeviceSubjectAreaDidChangeNotification
                                                    object:[[self videoDeviceInput] device]];
 		
-		__weak TakeImageViewController *weakSelf = self;
+        __weak typeof(self) weakself = self;
 		[self setRuntimeErrorHandlingObserver:[[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
-			TakeImageViewController *strongSelf = weakSelf;
+			TakeImageViewController *strongSelf = weakself;
 			dispatch_async([strongSelf sessionQueue], ^{
 				// Manually restarting the session since it must have been stopped due to an error.
 				[strongSelf.session startRunning];

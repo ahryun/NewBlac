@@ -42,29 +42,59 @@ static const NSString *videoCompilingDone;
 static const NSString *PlayerReadyContext;
 
 #pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.entityNameOfInterest = @"Video";
-    self.propertyNameOfInterest = @"dateCreated";
-    self.cacheNameOfInterest = @"Videos Cache";
-    
     self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-    [ParseSyncer updateVideos];
-    [ParseSyncer removeVideos];
     
-    self.showPhotos = NO; // This tells the core data controller to provide videos
+    [self setUpFetchedResultController];
+    [self syncParse];
     [self initializeFetchedResultsController];
-    CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
-    self.collectionView.collectionViewLayout = layout;
-    self.collectionView.delegate = self;
-    
-    // Navigation Bar Buttons configuration
-//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self setUpCollectionView];
     
     // When the view loads (not every time it appears)
     [Video removeVideos];
+}
+
+- (void)setUpFetchedResultController
+{
+    self.entityNameOfInterest = @"Video";
+    self.propertyNameOfInterest = @"dateCreated";
+    self.cacheNameOfInterest = @"Videos Cache";
+    self.showPhotos = NO;  // This tells the core data controller to provide videos
+}
+
+- (void)syncParse
+{
+    [ParseSyncer updateVideos];
+    [ParseSyncer removeVideos];
+}
+
+- (void)setUpCollectionView
+{
+    CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
+    self.collectionView.collectionViewLayout = layout;
+    self.collectionView.delegate = self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSUInteger videoCount = [self.collectionView numberOfItemsInSection:0];
+    [self resetToolbarWithPhotoCount:videoCount];
+    [self showNoVideoScreen:videoCount];
+}
+
+- (void)showNoVideoScreen:(NSUInteger)videoCount
+{
+    if (videoCount == 0) {
+        [self.noVideoScreen setHidden:NO];
+    } else {
+        [self.noVideoScreen setHidden:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -72,25 +102,17 @@ static const NSString *PlayerReadyContext;
     [super viewDidAppear:animated];
     // Lighten the first cell
     [self centerACell];
-    
+    [self askUserToLogin];
+}
+
+- (void)askUserToLogin
+{
     // If the user if logged in, then go ahead and use the app. If not, redirect to login view.
     if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
         self.ifLoggedIn = [NSNumber numberWithBool:YES];
     } else {
         self.ifLoggedIn = [NSNumber numberWithBool:NO];
         [self showLoginView];
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    int videoCount = (int)[self.collectionView numberOfItemsInSection:0];
-    [self resetToolbarWithPhotoCount:videoCount];
-    [self.noVideoScreen setHidden:YES];
-    if (videoCount == 0) {
-        [self.noVideoScreen setHidden:NO];
     }
 }
 
@@ -132,14 +154,20 @@ static const NSString *PlayerReadyContext;
 - (void)compileVideo:(Video *)videoToCompile
 {
     NSLog(@"I am in compileVideo\n");
+    [self changeShareButtonTitle];
+	__weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        CGSize size = CGSizeMake(weakself.navigationController.view.bounds.size.width, weakself.navigationController.view.bounds.size.height);
+        if (!weakself.videoCreator) weakself.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
+        [weakself.videoCreator addObserver:weakself forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+        [weakself.videoCreator writeImagesToVideo];
+    });
+}
+
+- (void)changeShareButtonTitle
+{
     [self.shareButton setImage:nil];
     [self.shareButton setTitle:NSLocalizedString(@"Compiling...", @"Telling the user that the frames are being processed to create a video")];
-    CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
-    dispatch_async(dispatch_get_main_queue(), ^(){
-        if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:videoToCompile withScreenSize:size];
-        [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
-        [self.videoCreator writeImagesToVideo];
-    });
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -387,7 +415,7 @@ static const NSString *PlayerReadyContext;
         [Video removeVideo:self.selectedVideo];
         [self centerACell];
         
-        int videoCount = (int)[self.collectionView numberOfItemsInSection:0];
+        NSUInteger videoCount = [self.collectionView numberOfItemsInSection:0];
         [self resetToolbarWithPhotoCount:videoCount];
         if (videoCount == 0) {
             [self.noVideoScreen setHidden:NO];

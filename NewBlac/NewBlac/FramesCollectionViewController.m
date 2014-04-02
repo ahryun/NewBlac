@@ -209,10 +209,11 @@ static const NSArray *fpsArray;
     NSLog(@"I am in compileVideo\n");
     if (self.video && [self.video.photos count] > 0) {
         CGSize size = CGSizeMake(self.navigationController.view.bounds.size.width, self.navigationController.view.bounds.size.height);
+        __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^(){
-            if (!self.videoCreator) self.videoCreator = [[VideoCreator alloc] initWithVideo:self.video withScreenSize:size];
-            [self.videoCreator addObserver:self forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
-            [self.videoCreator writeImagesToVideo];
+            if (!weakself.videoCreator) weakself.videoCreator = [[VideoCreator alloc] initWithVideo:weakself.video withScreenSize:size];
+            [weakself.videoCreator addObserver:weakself forKeyPath:@"videoDoneCreating" options:0 context:&videoCompilingDone];
+            [weakself.videoCreator writeImagesToVideo];
         });
     }
 }
@@ -231,14 +232,15 @@ static const NSArray *fpsArray;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
     if (context == &videoCompilingDone) {
+        __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_main_queue(), ^(){
             NSLog(@"Video compilating is %i", self.videoCreator.videoDoneCreating);
-            if (self.videoCreator.videoDoneCreating) {
+            if (weakself.videoCreator.videoDoneCreating) {
                 // Change the videoModified date - to let Parse know to update the data when convenient
-                [self.video setDateModified:[NSDate date]];
+                [weakself.video setDateModified:[NSDate date]];
                 
-                [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
-                [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
+                [weakself.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
+                [weakself performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
             }
         });
         return;

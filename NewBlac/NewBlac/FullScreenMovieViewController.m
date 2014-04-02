@@ -270,20 +270,21 @@ static const NSString *PlayerDurationReady;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
 {
+    __weak typeof(self) weakself = self;
     if (context == &PlayerReadyContext) {
         if (self.moviePlayerController.playerIsReady) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self setPlayerInLayer:self.moviePlayerController.player];
+                [weakself setPlayerInLayer:weakself.moviePlayerController.player];
             });
         }
         return;
     } else if (context == &PlayerIsPlaying) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self moviePlaybackStateDidChange:self.moviePlayerController.isPlaying];
+            [weakself moviePlaybackStateDidChange:weakself.moviePlayerController.isPlaying];
         });
     } else if (context == &PlayerDurationReady) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self movieDurationAvailable:self.moviePlayerController.duration];
+            [weakself movieDurationAvailable:weakself.moviePlayerController.duration];
         });
     }
 }

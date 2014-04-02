@@ -119,14 +119,14 @@
     [writerInput markAsFinished];
     NSLog(@"End session source time is %f", CMTimeGetSeconds(CMTimeMake(frameDuration * [self.imagesArray count], (int32_t)fps)));
     [self.writer endSessionAtSourceTime:CMTimeMake(frameDuration * [self.imagesArray count], (int32_t)fps)];
-    __weak VideoCreator *weakSelf = self;
+	__weak typeof(self) weakself = self;
     [self.writer finishWritingWithCompletionHandler:^(){
         // Do something
         NSLog(@"Finished creating a video");
         NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
         
-        weakSelf.videoDoneCreating = YES;
-        weakSelf.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
+        weakself.videoDoneCreating = YES;
+        weakself.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
         
     }];
 }
