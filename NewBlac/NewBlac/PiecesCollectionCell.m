@@ -171,9 +171,11 @@
 - (void)reset
 {
     self.pulling = NO;
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.5 animations:^{
-        self.deleteButton.alpha = 0;
-        [self.scrollView setContentOffset:CGPointMake(self.scrollView.contentOffset.x, OFFSET_TOP)];
+        typeof(self) strongSelf = weakSelf;
+        strongSelf.deleteButton.alpha = 0;
+        [strongSelf.scrollView setContentOffset:CGPointMake(strongSelf.scrollView.contentOffset.x, OFFSET_TOP)];
     }];
 }
 

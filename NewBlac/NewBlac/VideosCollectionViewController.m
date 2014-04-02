@@ -250,9 +250,11 @@ static const NSString *PlayerReadyContext;
 
 - (void)saveTitle:(NSString *)newTitle
 {
+    __weak typeof(self) weakSelf = self;
     [self.managedObjectContext performBlock:^{
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
-        Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        typeof(self) strongSelf = weakSelf;
+        NSIndexPath *indexPath = [strongSelf.collectionView indexPathForCell:strongSelf.centerCell];
+        Video *video = [strongSelf.fetchedResultsController objectAtIndexPath:indexPath];
         if (![newTitle isEqualToString:video.title] && [newTitle length]) {
             [video setTitle:newTitle];
         }

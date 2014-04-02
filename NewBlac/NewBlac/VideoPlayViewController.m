@@ -64,8 +64,10 @@ static const NSString *PlayerReadyContext;
                         change:(NSDictionary *)change context:(void *)context
 {
     if (context == &PlayerReadyContext) {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self setPlayerInLayer:self.videoPlayer.player];
+            typeof(self) strongSelf = weakSelf;
+            [strongSelf setPlayerInLayer:strongSelf.videoPlayer.player];
         });
         return;
     }

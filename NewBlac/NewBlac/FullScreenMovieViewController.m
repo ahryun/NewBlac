@@ -215,8 +215,10 @@ static const NSString *PlayerDurationReady;
 {
     if (!self.isShowing) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
+        __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
-            self.customControlsView.alpha = 1.f;
+            typeof(self) strongSelf = weakSelf;
+            strongSelf.customControlsView.alpha = 1.f;
         } completion:^(BOOL finished) {
             _showing = YES;
             if (completion)
@@ -233,8 +235,10 @@ static const NSString *PlayerDurationReady;
 {
     if (self.isShowing) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControls:) object:nil];
+        __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
-            self.customControlsView.alpha = 0.f;
+            typeof(self) strongSelf = weakSelf;
+            strongSelf.customControlsView.alpha = 0.f;
         } completion:^(BOOL finished) {
             _showing = NO;
             if (completion)

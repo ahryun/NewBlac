@@ -257,9 +257,11 @@ static const NSArray *fpsArray;
     [self prepareFramesPerSecondPickerView];
     
     // Animation to bring it up
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:1 animations:^{
-        self.snapshotView.frame = CGRectOffset(self.snapshotView.frame, 0, -CGRectGetHeight(self.pickerView.frame));
-        self.pickerView.frame = CGRectOffset(self.pickerView.frame, 0, -CGRectGetHeight(self.pickerView.frame));
+        typeof(self) strongSelf = weakSelf;
+        strongSelf.snapshotView.frame = CGRectOffset(strongSelf.snapshotView.frame, 0, -CGRectGetHeight(strongSelf.pickerView.frame));
+        strongSelf.pickerView.frame = CGRectOffset(strongSelf.pickerView.frame, 0, -CGRectGetHeight(strongSelf.pickerView.frame));
     }];
 }
 
@@ -290,9 +292,11 @@ static const NSArray *fpsArray;
 - (void)removePickerView
 {
     // Animation to bring it up
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:1 animations:^{
-        self.snapshotView.frame = CGRectOffset(self.snapshotView.frame, 0, CGRectGetHeight(self.pickerView.frame));
-        self.pickerView.frame = CGRectOffset(self.pickerView.frame, 0, CGRectGetHeight(self.pickerView.frame));
+        typeof(self) strongSelf = weakSelf;
+        strongSelf.snapshotView.frame = CGRectOffset(strongSelf.snapshotView.frame, 0, CGRectGetHeight(strongSelf.pickerView.frame));
+        strongSelf.pickerView.frame = CGRectOffset(strongSelf.pickerView.frame, 0, CGRectGetHeight(strongSelf.pickerView.frame));
     } completion:^(BOOL finished) {
         [self.snapshotView removeFromSuperview];
         [self.pickerView removeFromSuperview];

@@ -149,21 +149,23 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     NSString *tapString = NSLocalizedString(@"tap anywhere", @"Instruction to tell the user to tap anywhere on the screen to take a photo");
     self.instructionLabel.text = [tapString uppercaseString];
     
+    __weak typeof(self) weakSelf = self;
 	dispatch_async(self.sessionQueue, ^{
-		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized"
+        typeof(self) strongSelf = weakSelf;
+		[strongSelf addObserver:strongSelf forKeyPath:@"sessionRunningAndDeviceAuthorized"
                   options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
                   context:SessionRunningAndDeviceAuthorizedContext];
-		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage"
+		[strongSelf addObserver:strongSelf forKeyPath:@"stillImageOutput.capturingStillImage"
                   options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
                   context:CapturingStillImageContext];
-		[[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(subjectAreaDidChange:)
                                                      name:AVCaptureDeviceSubjectAreaDidChangeNotification
-                                                   object:[[self videoDeviceInput] device]];
+                                                   object:[[strongSelf videoDeviceInput] device]];
 		
-        __weak typeof(self) weakself = self;
-		[self setRuntimeErrorHandlingObserver:[[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
-			TakeImageViewController *strongSelf = weakself;
+        __weak typeof(self) weakSelf = self;
+		[self setRuntimeErrorHandlingObserver:[[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[strongSelf session] queue:nil usingBlock:^(NSNotification *note) {
+			typeof(self) strongSelf = weakSelf;
 			dispatch_async([strongSelf sessionQueue], ^{
 				// Manually restarting the session since it must have been stopped due to an error.
 				[strongSelf.session startRunning];
@@ -175,14 +177,16 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    __weak typeof(self) weakSelf = self;
 	dispatch_async(self.sessionQueue, ^{
-		[self.session stopRunning];
+        typeof(self) strongSelf = weakSelf;
+		[strongSelf.session stopRunning];
 		
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[self.videoDeviceInput device]];
-		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
+		[[NSNotificationCenter defaultCenter] removeObserver:strongSelf name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[strongSelf.videoDeviceInput device]];
+		[[NSNotificationCenter defaultCenter] removeObserver:strongSelf.runtimeErrorHandlingObserver];
 		
-		[self removeObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized" context:SessionRunningAndDeviceAuthorizedContext];
-		[self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
+		[strongSelf removeObserver:strongSelf forKeyPath:@"sessionRunningAndDeviceAuthorized" context:SessionRunningAndDeviceAuthorizedContext];
+		[strongSelf removeObserver:strongSelf forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
 	});
 }
 
@@ -343,11 +347,13 @@ monitorSubjectAreaChange:NO];
 		if (isCapturingStillImage) [self runStillImageCaptureAnimation];
 	} else if (context == SessionRunningAndDeviceAuthorizedContext) {
 		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
+        __weak typeof(self) weakSelf = self;
 		dispatch_async(dispatch_get_main_queue(), ^{
+            typeof(self) strongSelf = weakSelf;
 			if (isRunning) {
-				[self.cancelCamera setEnabled:YES];
+				[strongSelf.cancelCamera setEnabled:YES];
 			} else {
-				[self.cancelCamera setEnabled:NO];
+				[strongSelf.cancelCamera setEnabled:NO];
 			}
 		});
 	} else {
@@ -357,10 +363,12 @@ monitorSubjectAreaChange:NO];
 
 - (void)runStillImageCaptureAnimation
 {
+    __weak typeof(self) weakSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[self.stillImagePreview layer] setOpacity:0.0];
+        typeof(self) strongSelf = weakSelf;
+		[[strongSelf.stillImagePreview layer] setOpacity:0.0];
 		[UIView animateWithDuration:.25 animations:^{
-			[[self.stillImagePreview layer] setOpacity:1.0];
+			[[strongSelf.stillImagePreview layer] setOpacity:1.0];
 		}];
 	});
 }
@@ -380,14 +388,16 @@ monitorSubjectAreaChange:NO];
 			[self setDeviceAuthorized:YES];
 		} else {
 			//Not granted access to mediaType
+            __weak typeof(self) weakSelf = self;
 			dispatch_async(dispatch_get_main_queue(), ^{
+                typeof(self) strongSelf = weakSelf;
                 NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
 				[[[UIAlertView alloc] initWithTitle:@"Pieces"
 											message:NSLocalizedString(@"Pieces doesn't have permission to use Camera, please change privacy settings", @"Ask the user to change the privacy settings to permit camera use")
-										   delegate:self
+										   delegate:strongSelf
 								  cancelButtonTitle:[okString uppercaseString]
 								  otherButtonTitles:nil] show];
-				[self setDeviceAuthorized:NO];
+				[strongSelf setDeviceAuthorized:NO];
 			});
 		}
 	}];

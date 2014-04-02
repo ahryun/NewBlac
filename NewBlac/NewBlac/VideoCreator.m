@@ -122,11 +122,12 @@
 	__weak typeof(self) weakself = self;
     [self.writer finishWritingWithCompletionHandler:^(){
         // Do something
+        typeof(self) strongSelf = weakself;
         NSLog(@"Finished creating a video");
-        NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:self.video.compFilePath]] tracks] count]);
+        NSLog(@"No of tracks in this video is %lu", (unsigned long)[[[AVURLAsset assetWithURL:[NSURL fileURLWithPath:strongSelf.video.compFilePath]] tracks] count]);
         
-        weakself.videoDoneCreating = YES;
-        weakself.numberOfFramesInLastCompiledVideo = [self.imagesArray count];
+        strongSelf.videoDoneCreating = YES;
+        strongSelf.numberOfFramesInLastCompiledVideo = [strongSelf.imagesArray count];
         
     }];
 }

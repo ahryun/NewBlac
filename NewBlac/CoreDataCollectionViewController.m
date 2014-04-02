@@ -123,21 +123,22 @@
 {
     if ([_sectionChanges count] > 0)
     {
+        __weak typeof(self) weakSelf = self;
         [self.collectionView performBatchUpdates:^{
-            
+            typeof(self) strongSelf = weakSelf;
             for (NSDictionary *change in _sectionChanges) {
                 [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
                     
                     NSFetchedResultsChangeType type = [key unsignedIntegerValue];
                     switch (type) {
                         case NSFetchedResultsChangeInsert:
-                            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
+                            [strongSelf.collectionView insertSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
                             break;
                         case NSFetchedResultsChangeDelete:
-                            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
+                            [strongSelf.collectionView deleteSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
                             break;
                         case NSFetchedResultsChangeUpdate:
-                            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
+                            [strongSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
                             break;
                     }
                 }];
@@ -151,25 +152,25 @@
             [self.collectionView reloadData];
             
         } else {
-            
+            __weak typeof(self) weakSelf = self;
             [self.collectionView performBatchUpdates:^{
-                
+                typeof(self) strongSelf = weakSelf;
                 for (NSDictionary *change in _objectChanges) {
                     [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
                         
                         NSFetchedResultsChangeType type = [key unsignedIntegerValue];
                         switch (type) {
                             case NSFetchedResultsChangeInsert:
-                                [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                                [strongSelf.collectionView insertItemsAtIndexPaths:@[obj]];
                                 break;
                             case NSFetchedResultsChangeDelete:
-                                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                                [strongSelf.collectionView deleteItemsAtIndexPaths:@[obj]];
                                 break;
                             case NSFetchedResultsChangeUpdate:
-                                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                                [strongSelf.collectionView reloadItemsAtIndexPaths:@[obj]];
                                 break;
                             case NSFetchedResultsChangeMove:
-                                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                                [strongSelf.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
                                 break;
                         }
                     }];
