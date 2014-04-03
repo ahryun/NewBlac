@@ -28,7 +28,6 @@
 @property (nonatomic, strong) Video *shareVideo;
 @property (nonatomic, strong) VideoCreator *videoCreator;
 @property (nonatomic, strong) PiecesCollectionCell *deleteCandidateCell;
-@property (nonatomic, strong) UIView *snapshotView;
 @property (nonatomic, strong) UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIImageView *noVideoScreen;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
@@ -145,16 +144,27 @@ static const NSString *PlayerReadyContext;
 
 - (IBAction)presentShareModally:(UIBarButtonItem *)sender
 {
-    NSIndexPath *pathForCenterCell = [self.collectionView indexPathForCell:self.centerCell];
-    Video *video = [self.fetchedResultsController objectAtIndexPath:pathForCenterCell];
-    self.shareVideo = video;
-    [self compileVideo:video];
+    [self chooseCenterCell];
+    [self changeShareButtonTitle];
+    self.shareVideo = [self determineVideo:self.centerCell];
+    [self compileVideo:self.shareVideo];
+}
+
+- (Video *)determineVideo:(PiecesCollectionCell *)centerCell
+{
+    Video *video = nil;
+    if (centerCell) {
+        NSIndexPath *pathForCenterCell = [self.collectionView indexPathForCell:centerCell];
+        video = [self.fetchedResultsController objectAtIndexPath:pathForCenterCell];
+    } else {
+        NSLog(@"Center cell not chosen\n");
+    }
+    return video;
 }
 
 - (void)compileVideo:(Video *)videoToCompile
 {
     NSLog(@"I am in compileVideo\n");
-    [self changeShareButtonTitle];
 	__weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^(){
         typeof(self) strongSelf = weakSelf;
@@ -183,8 +193,8 @@ static const NSString *PlayerReadyContext;
                 [strongSelf.shareVideo setDateModified:[NSDate date]];
                 
                 // Bring up the share view
-                [strongSelf performSegueWithIdentifier:@"Show Share Modal" sender:strongSelf];
                 [strongSelf.videoCreator removeObserver:strongSelf forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
+                [strongSelf performSegueWithIdentifier:@"Show Share Modal" sender:strongSelf];
             }
         });
         return;
@@ -196,6 +206,7 @@ static const NSString *PlayerReadyContext;
 - (IBAction)addVideo:(UIBarButtonItem *)sender
 {
     NSLog(@"I'm in addVideo\n");
+    // Create a brand new video object in Core Data
     self.selectedVideo = [Video videoWithPath:nil];
     // Do manual segue "View And Edit Video"
     self.ifAddNewVideo = [NSNumber numberWithBool:YES];
@@ -204,17 +215,17 @@ static const NSString *PlayerReadyContext;
 
 - (IBAction)editTitle:(UIBarButtonItem *)sender
 {
+    [self chooseCenterCell];
     [self prepareTitleEditingView];
     [self showTextEditingView];
 }
 
 - (void)prepareTitleEditingView
 {
-    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
-    snapShot.frame = self.navigationController.view.frame;
+    UIView *snapShot = [self createSnapshotView];
     
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:self.centerCell];
-    Video *video = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [self chooseCenterCell];
+    Video *video = [self determineVideo:self.centerCell];
     Photo *photo = [video.photos lastObject];
     TextEditingView *textEditingView = [[TextEditingView alloc] initWithFrame:CGRectOffset(snapShot.frame, 0, snapShot.frame.size.height)];
     [textEditingView setExistingTitle:video.title];
@@ -228,6 +239,13 @@ static const NSString *PlayerReadyContext;
     [containerView addSubview:textEditingView];
     [self.navigationController.view addSubview:containerView];
     self.containerView = containerView;
+}
+
+- (UIView *)createSnapshotView
+{
+    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+    snapShot.frame = self.navigationController.view.frame;
+    return snapShot;
 }
 
 - (void)showTextEditingView
@@ -253,8 +271,8 @@ static const NSString *PlayerReadyContext;
     __weak typeof(self) weakSelf = self;
     [self.managedObjectContext performBlock:^{
         typeof(self) strongSelf = weakSelf;
-        NSIndexPath *indexPath = [strongSelf.collectionView indexPathForCell:strongSelf.centerCell];
-        Video *video = [strongSelf.fetchedResultsController objectAtIndexPath:indexPath];
+        [self chooseCenterCell];
+        Video *video = [strongSelf determineVideo:strongSelf.centerCell];
         if (![newTitle isEqualToString:video.title] && [newTitle length]) {
             [video setTitle:newTitle];
         }
@@ -301,9 +319,9 @@ static const NSString *PlayerReadyContext;
         }
     }
     if ([segue.identifier isEqualToString:@"Show Share Modal"]) {
-        UIView *snapShotView = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+        UIView *snapShot = [self createSnapshotView];
         if ([segue.destinationViewController respondsToSelector:@selector(setSnapShotView:)]) {
-            [segue.destinationViewController performSelector:@selector(setSnapShotView:) withObject:snapShotView];
+            [segue.destinationViewController performSelector:@selector(setSnapShotView:) withObject:snapShot];
         }
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.shareVideo];
@@ -351,24 +369,28 @@ static const NSString *PlayerReadyContext;
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
             if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
             self.centerCell.maskView.alpha = 0.0;
-            Video *video = [self.fetchedResultsController objectAtIndexPath:pathForCenterCell];
-            if ([video.title length]) {
-                NSRange stringRange = {0, MIN([video.title length], SHORT_TEXT_LENGTH)};
-                stringRange = [video.title rangeOfComposedCharacterSequencesForRange:stringRange];
-                NSString *shortString = [video.title substringWithRange:stringRange];
-                if ([video.title length] > SHORT_TEXT_LENGTH) {
-                    shortString = [shortString stringByAppendingString:@"..."];
-                }
-                [self.titleButton setTitle:shortString];
-                self.titleButton.image = nil;
-            } else {
-                [self.titleButton setTitle:nil];
-                self.titleButton.image = [UIImage imageNamed:@"MoreButton"];
-            }
+            Video *video = [self determineVideo:self.centerCell];
+            [self setVideoTitleWith:video];
         } else {
             // Create a blank video
             NSLog(@"No video!");
         }
+    }
+}
+
+- (void)setVideoTitleWith:(Video *)video {
+    if (video && [video.title length]) {
+        NSRange stringRange = {0, MIN([video.title length], SHORT_TEXT_LENGTH)};
+        stringRange = [video.title rangeOfComposedCharacterSequencesForRange:stringRange];
+        NSString *shortString = [video.title substringWithRange:stringRange];
+        if ([video.title length] > SHORT_TEXT_LENGTH) {
+            shortString = [shortString stringByAppendingString:@"..."];
+        }
+        [self.titleButton setTitle:shortString];
+        self.titleButton.image = nil;
+    } else {
+        [self.titleButton setTitle:nil];
+        self.titleButton.image = [UIImage imageNamed:@"MoreButton"];
     }
 }
 
@@ -422,9 +444,7 @@ static const NSString *PlayerReadyContext;
         
         NSUInteger videoCount = [self.collectionView numberOfItemsInSection:0];
         [self resetToolbarWithPhotoCount:videoCount];
-        if (videoCount == 0) {
-            [self.noVideoScreen setHidden:NO];
-        }
+        [self showNoVideoScreen:videoCount];
     }
 }
 

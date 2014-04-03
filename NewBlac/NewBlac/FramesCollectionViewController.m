@@ -43,6 +43,11 @@ static const NSArray *fpsArray;
 - (void)setVideo:(Video *)video
 {
     _video = video;
+    [self setVideoTitle:video];
+}
+
+- (void)setVideoTitle:(Video *)video
+{
     if ([video.title length]) {
         // Limit the title to be 10 characters
         NSRange stringRange = {0, MIN([video.title length], SHORT_TEXT_LENGTH)};
@@ -68,27 +73,40 @@ static const NSArray *fpsArray;
 }
 
 #pragma mark - View Lifecycle
+- (void)setUpFetchedResultController
+{
+    self.entityNameOfInterest = @"Photo";
+    self.propertyNameOfInterest = @"indexInVideo";
+    self.cacheNameOfInterest = @"Frames Cache";
+    self.showPhotos = YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.entityNameOfInterest = @"Photo";
-    self.propertyNameOfInterest = @"indexInVideo";
-    self.cacheNameOfInterest = @"Frames Cache";
-    
     self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
-
-    self.showPhotos = YES; // This tells the core data controller to provide photos
-    self.needToCompile = NO;
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[self.video.framesPerSecond integerValue]]];
     
+    [self setUpFetchedResultController]; // This tells the core data controller to provide photos
+    self.needToCompile = NO;
     [self initializeFetchedResultsController];
+    [self setUpCollectionView];
+    [self setUpFPS];
+}
+
+- (void)setUpFPS
+{
+    [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[self.video.framesPerSecond integerValue]]];
+    fpsArray = @[@1, @3, @5];
+}
+
+- (void)setUpCollectionView
+{
     CollectionViewLayout *layout = [[CollectionViewLayout alloc] init];
     self.collectionView.collectionViewLayout = layout;
     self.collectionView.delegate = self;
-    
-    fpsArray = @[@1, @3, @5];
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -101,12 +119,17 @@ static const NSArray *fpsArray;
     [super viewDidAppear:animated];
     
     // Lighten the first cell
-    NSIndexPath *firstFrameIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
-    PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:firstFrameIndexPath];
-    cell.maskView.alpha = 0.0;
-    self.centerCell = cell;
+    [self chooseCenterCell];
+    [self centerACell];
     
     if (self.autoCameraMode) [self performSegueWithIdentifier:@"Ready Camera" sender:self];
+}
+
+- (void)chooseCenterCell
+{
+    NSIndexPath *centerCellPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
+    NSLog(@"My collectionview looks like %@", self.collectionView.indexPathsForVisibleItems);
+    self.centerCell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:centerCellPath];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -125,6 +148,12 @@ static const NSArray *fpsArray;
 
 - (IBAction)unwindCancelPhoto:(UIStoryboardSegue *)segue
 {
+    [self determineCompilablility];
+    [self ifAutoCameraMode:[NSNumber numberWithBool:NO]];
+}
+
+- (void)determineCompilablility
+{
     // When the user cancels camera - no photo
     if ([self.video.photos count] > 0) {
         if (!self.videoCreator || self.videoCreator.numberOfFramesInLastCompiledVideo != [self.video.photos count]) {
@@ -135,8 +164,6 @@ static const NSArray *fpsArray;
     } else {
         self.needToCompile = NO;
     }
-    
-    [self ifAutoCameraMode:[NSNumber numberWithBool:NO]];
 }
 
 - (IBAction)unwindCancelEditingImage:(UIStoryboardSegue *)segue
@@ -156,7 +183,7 @@ static const NSArray *fpsArray;
     NSLog(@"I'm in segue\n");
     if ([segue.identifier isEqualToString:@"Ready Camera"]) {
         // Hack to set the height of collectionview right
-        if ([self.video.photos count] == 1) [self.navigationController setToolbarHidden:NO];
+//        if ([self.video.photos count] == 1) [self.navigationController setToolbarHidden:NO];
         
         if ([segue.destinationViewController respondsToSelector:@selector(setVideo:)]) {
             [segue.destinationViewController performSelector:@selector(setVideo:) withObject:self.video];
@@ -198,7 +225,6 @@ static const NSArray *fpsArray;
 {
     NSLog(@"I'm in clean up\n");
     if ([self.video.photos count] < 1) [Video removeVideo:self.video];
-    
     [self.navigationController setToolbarHidden:NO];
 }
 
@@ -223,11 +249,15 @@ static const NSArray *fpsArray;
     // Prepare full page video
     if (self.needToCompile || ![[NSFileManager defaultManager] fileExistsAtPath:self.video.compFilePath]) {
         [self compileVideo];
-        [self.playButton setImage:nil];
-        [self.playButton setTitle:NSLocalizedString(@"Compiling...", @"Telling the user that the frames are being processed to create a video")];
+        [self showCompiling];
     } else {
         [self performSegueWithIdentifier:@"Play Full Screen Video" sender:self];
     }
+}
+
+- (void)showCompiling {
+    [self.playButton setImage:nil];
+    [self.playButton setTitle:NSLocalizedString(@"Compiling...", @"Telling the user that the frames are being processed to create a video")];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -268,8 +298,7 @@ static const NSArray *fpsArray;
 - (void)prepareFramesPerSecondPickerView
 {
     // Create snapshot
-    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:NO withCapInsets:UIEdgeInsetsZero];
-    snapShot.frame = self.navigationController.view.frame;
+    UIView *snapShot = [self createSnapshotView];
     [self.navigationController.view addSubview:snapShot];
     self.snapshotView = snapShot;
     [self.snapshotView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removePickerView)]];
@@ -287,6 +316,13 @@ static const NSArray *fpsArray;
     [pickerView selectRow:CALCULATE_FPS([self.video.framesPerSecond intValue]) inComponent:0 animated:NO];
     [self.navigationController.view addSubview:pickerView];
     self.pickerView = pickerView;
+}
+
+- (UIView *)createSnapshotView
+{
+    UIView *snapShot = [self.navigationController.view resizableSnapshotViewFromRect:self.navigationController.view.frame afterScreenUpdates:YES withCapInsets:UIEdgeInsetsZero];
+    snapShot.frame = self.navigationController.view.frame;
+    return snapShot;
 }
 
 - (void)removePickerView
@@ -330,7 +366,7 @@ static const NSArray *fpsArray;
         if (error) NSLog(@"An error occurred while trying to save context %@", error);
     }];
 
-    [self.framesPerSecond setTitle:[NSString stringWithFormat:NSLocalizedString(@"%ld FPS", @"Frames per second"), (long)[framesPerSecond integerValue]]];
+    [self setUpFPS];
     self.needToCompile = YES;
 }
 
@@ -367,14 +403,11 @@ static const NSArray *fpsArray;
 - (void)centerACell {
     for (NSInteger sectionNumber = 0; sectionNumber < [self.collectionView numberOfSections]; sectionNumber++) {
         if ([self.collectionView numberOfItemsInSection:sectionNumber] > 0) {
+            [self chooseCenterCell];
             NSIndexPath *pathForCenterCell = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds), CGRectGetMidY(self.collectionView.bounds))];
             [self.collectionView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-            if ([self.collectionView indexPathForCell:self.centerCell] != pathForCenterCell) {
-                if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
-                PiecesCollectionCell *cell = (PiecesCollectionCell *)[self.collectionView cellForItemAtIndexPath:pathForCenterCell];
-                cell.maskView.alpha = 0.0;
-                self.centerCell = cell;
-            }
+            if (self.centerCell) self.centerCell.maskView.alpha = 0.3;
+            self.centerCell.maskView.alpha = 0.0;
         } else {
             // Create a blank video
             NSLog(@"No video!");
@@ -446,19 +479,28 @@ static const NSArray *fpsArray;
 
 - (void)updateUI
 {
-    int photoCount = (int)[self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
-    [self.noFramesScreen setHidden:YES];
-    [self resetToolbarWithPhotoCount:photoCount];
-    
-    if (photoCount <= 0) {
+    NSUInteger framesCount = [self.video.photos count]; // This reset toolbar gets called before deletion is completed by NSManagedObjectContext. So this is a hackish way to get around the problem.
+    [self showNoFramesScreen:framesCount];
+    [self resetToolbarWithPhotoCount:framesCount];
+    [self checkIfMoreThanMaxFrames:framesCount];
+}
+
+- (void)checkIfMoreThanMaxFrames:(NSUInteger)framesCount
+{
+    if (framesCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
+        [self.cameraButton setEnabled:NO];
+        self.autoCameraMode = NO;
+    } else {
+        [self.cameraButton setEnabled:YES];
+    }
+}
+
+- (void)showNoFramesScreen:(NSUInteger)frameCount
+{
+    if (frameCount == 0) {
         [self.noFramesScreen setHidden:NO];
     } else {
-        if (photoCount >= MAX_PHOTO_COUNT_PER_VIDEO) {
-            [self.cameraButton setEnabled:NO];
-            self.autoCameraMode = NO;
-        } else {
-            [self.cameraButton setEnabled:YES];
-        }
+        [self.noFramesScreen setHidden:YES];
     }
 }
 

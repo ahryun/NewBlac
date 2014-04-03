@@ -24,31 +24,30 @@
 @implementation ShareSocialViewController
 
 #pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
-    self.snapShotView.layer.opacity = 0.3;
-    [self.view addSubview:self.snapShotView];
-    [self.view insertSubview:self.snapShotView belowSubview:self.shareButtonsView];
-    
+    [self showSnapShotView];
+    [self showShareButtonView];
+}
+
+- (void)showShareButtonView
+{
     [UIView animateWithDuration:0.5 animations:^{
         [self.shareButtonsView setAlpha:1.0];
     }];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
     [self.cancelButton setTitle:[cancelString uppercaseString] forState:UIControlStateNormal];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)showSnapShotView
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // Do any additional setup after loading the view.
+    self.snapShotView.layer.opacity = 0.3;
+    [self.view addSubview:self.snapShotView];
+    [self.view insertSubview:self.snapShotView belowSubview:self.shareButtonsView];
 }
 
 #pragma mark - FACEBOOK
@@ -56,7 +55,7 @@
 {
     if ([self.video.photos count] / [self.video.framesPerSecond integerValue] >= 1) {
         self.retryCount = 0;
-        [self loadShareButton:self.facebookButton];
+        [self loadShareButton:sender];
         
         // Check for publish permissions
         [FBRequestConnection startWithGraphPath:@"/me/permissions"
@@ -103,7 +102,7 @@
                                                                                delegate:self
                                                                       cancelButtonTitle:[okString uppercaseString]
                                                                       otherButtonTitles:nil] show];
-                                                    [self resetFacebookButton];
+                                                    [self resetButton:self.facebookButton IfSuccess:NO];
                                                 } else {
                                                     // Permission granted, publish the OG story
                                                     [self publishStory];
@@ -138,7 +137,7 @@
             if (!error) {
                 if (result) {
                     [self.video setFacebookVideoID:[result objectForKey:@"id"]];
-                    [self resetFacebookButton];
+                    [self resetButton:self.facebookButton IfSuccess:YES];
                     [self dismissSelf];
                 }
             } else {
@@ -153,7 +152,7 @@
 #pragma mark - Facebook Error Handling
 - (void)handleAuthError:(NSError *)error
 {
-    [self resetFacebookButton];
+    [self resetButton:self.facebookButton IfSuccess:NO];
     
     NSString *alertText;
     NSString *alertTitle;
@@ -201,7 +200,7 @@
 // Helper method to handle errors during permissions request
 - (void)handleRequestPermissionError:(NSError *)error
 {
-    [self resetFacebookButton];
+    [self resetButton:self.facebookButton IfSuccess:NO];
     
     NSString *alertText;
     NSString *alertTitle;
@@ -233,7 +232,7 @@
 // Helper method to handle errors during API calls
 - (void)handleAPICallError:(NSError *)error
 {
-    [self resetFacebookButton];
+    [self resetButton:self.facebookButton IfSuccess:NO];
     // If the user has removed a permission that was previously granted
     if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryPermissions) {
         NSLog(@"Re-requesting permissions");
@@ -309,8 +308,9 @@
         NSString *okString = NSLocalizedString(@"ok", @"Action button to acknowledge what's been said");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed", @"Tell the user that the video saving failed") message:NSLocalizedString(@"Cannot save to the camera roll", @"Explain that the save failed") delegate:self cancelButtonTitle:[okString uppercaseString] otherButtonTitles:nil];
         [alertView show];
+        [self resetButton:self.photoAlbumButton IfSuccess:NO];
     } else {
-        [self resetPhotoalbumButton];
+        [self resetButton:self.photoAlbumButton IfSuccess:YES];
         [self dismissSelf];
     }
 }
@@ -344,11 +344,7 @@
 
 - (void)loadShareButton:(UIButton *)button
 {
-    // Make all buttons disabled
-    [button setSelected:NO];
-    for (UIButton *button in self.shareButtonsView.subviews) {
-        [button setEnabled:NO];
-    }
+    [self diableButtons];
     
     CALayer *loadingCircle = [CALayer layer];
     loadingCircle.contents = (id)[UIImage imageNamed:@"ShareLoadingButton"].CGImage;
@@ -363,20 +359,21 @@
     }];
 }
 
-- (void)resetFacebookButton
+- (void)diableButtons
 {
     // Make all buttons disabled
-    [self.facebookButton setSelected:YES];
     for (UIButton *button in self.shareButtonsView.subviews) {
-        [button setEnabled:YES];
+        [button setSelected:NO];
+        [button setEnabled:NO];
     }
-    if (self.loadingCircleLayer) [self.loadingCircleLayer removeFromSuperlayer];
 }
 
-- (void)resetPhotoalbumButton
+- (void)resetButton:(UIButton *)button IfSuccess:(BOOL)success
 {
-    [self.photoAlbumButton setSelected:YES];
+    // Make all buttons disabled
+    if (success) [button setSelected:YES];
     for (UIButton *button in self.shareButtonsView.subviews) {
+        [button setSelected:NO];
         [button setEnabled:YES];
     }
     if (self.loadingCircleLayer) [self.loadingCircleLayer removeFromSuperlayer];

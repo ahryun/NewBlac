@@ -42,6 +42,7 @@ static const NSString *PlayerDurationReady;
     self.videoIsEmpty = YES;
     [self loadAssetFromVideo];
     [self setUpVideoPlayView];
+    [self addNotifications];
     
     self.showing = NO;
     self.fadeDelay = 5.0;
@@ -53,21 +54,10 @@ static const NSString *PlayerDurationReady;
     [self prefersStatusBarHidden];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self addNotifications];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    if (!self.videoIsEmpty) {
-        [self.moviePlayerController unregisterNotification];
-        [self.moviePlayerController removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
-        [self.moviePlayerController removeObserver:self forKeyPath:@"isPlaying" context:&PlayerIsPlaying];
-        [self.moviePlayerController removeObserver:self forKeyPath:@"duration" context:&PlayerDurationReady];
-    }
     self.moviePlayerController.isCancelled = YES;
     [self removeNotifications];
     [self stopDurationTimer];
@@ -263,9 +253,6 @@ static const NSString *PlayerDurationReady;
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.videoPath]) {
         self.videoIsEmpty = NO;
         [self.moviePlayerController loadAssetFromVideo:videoURL];
-        [self.moviePlayerController addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
-        [self.moviePlayerController addObserver:self forKeyPath:@"isPlaying" options:0 context:&PlayerIsPlaying];
-        [self.moviePlayerController addObserver:self forKeyPath:@"duration" options:0 context:&PlayerDurationReady];
     } else {
         // Video data object exists but no video saved yet
     }
@@ -317,12 +304,22 @@ static const NSString *PlayerDurationReady;
 
 - (void)addNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    if (!self.videoIsEmpty) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+        [self.moviePlayerController addObserver:self forKeyPath:@"playerIsReady" options:0 context:&PlayerReadyContext];
+        [self.moviePlayerController addObserver:self forKeyPath:@"isPlaying" options:0 context:&PlayerIsPlaying];
+        [self.moviePlayerController addObserver:self forKeyPath:@"duration" options:0 context:&PlayerDurationReady];
+    }
 }
 
 - (void)removeNotifications
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    if (!self.videoIsEmpty) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+        [self.moviePlayerController removeObserver:self forKeyPath:@"playerIsReady" context:&PlayerReadyContext];
+        [self.moviePlayerController removeObserver:self forKeyPath:@"isPlaying" context:&PlayerIsPlaying];
+        [self.moviePlayerController removeObserver:self forKeyPath:@"duration" context:&PlayerDurationReady];
+    }
 }
 
 - (void)movieFinished:(NSNotification *)note

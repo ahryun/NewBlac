@@ -60,8 +60,20 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     
     self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 
+    [self prefersStatusBarHidden];
+    [self setUpAVCaptureSession];
+    [self drawBlackOverlay];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (void)setUpAVCaptureSession
+{
 	// Create the AVCaptureSession
-	AVCaptureSession *session = [[AVCaptureSession alloc] init];
+    AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetPhoto;
 	[self setSession:session];
 	
@@ -71,18 +83,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 	// Check for device authorization
 	[self checkDeviceAuthorizationStatus];
     
-    // Hide the status bar
-    [self prefersStatusBarHidden];
-    
-    // Draw the black overlay view
-    [self drawBlackOverlay];
-
 	// Dispatch the rest of session setup to the sessionQueue so that the main queue isn't blocked.
 	dispatch_queue_t sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	[self setSessionQueue:sessionQueue];
 	
     __weak typeof(self) weakSelf = self;
-	dispatch_async(sessionQueue, ^{
+	dispatch_async(self.sessionQueue, ^{
         typeof(self) strongSelf = weakSelf;
 		[strongSelf setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		
@@ -108,7 +114,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 - (void)drawBlackOverlay
 {
     UIView *baseView = [[UIView alloc] initWithFrame:self.view.bounds];
-    //self.view = baseView;
     [self.view insertSubview:baseView belowSubview:self.buttonsView];
     [baseView setBackgroundColor:[UIColor blackColor]];
     baseView.userInteractionEnabled = NO;
@@ -142,22 +147,26 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
     [self.frameNumberLabel setText:[frameCountString uppercaseString]];
 }
 
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     NSString *tapString = NSLocalizedString(@"tap anywhere", @"Instruction to tell the user to tap anywhere on the screen to take a photo");
     self.instructionLabel.text = [tapString uppercaseString];
     
+    [self registerForAVCaptureSessionNotification];
+}
+
+- (void)registerForAVCaptureSessionNotification
+{
     __weak typeof(self) weakSelf = self;
 	dispatch_async(self.sessionQueue, ^{
         typeof(self) strongSelf = weakSelf;
 		[strongSelf addObserver:strongSelf forKeyPath:@"sessionRunningAndDeviceAuthorized"
-                  options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                  context:SessionRunningAndDeviceAuthorizedContext];
+                        options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                        context:SessionRunningAndDeviceAuthorizedContext];
 		[strongSelf addObserver:strongSelf forKeyPath:@"stillImageOutput.capturingStillImage"
-                  options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                  context:CapturingStillImageContext];
+                        options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                        context:CapturingStillImageContext];
 		[[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(subjectAreaDidChange:)
                                                      name:AVCaptureDeviceSubjectAreaDidChangeNotification
@@ -177,6 +186,12 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
+    [self unregisterForAVCaptureSessionNotification];
+}
+
+- (void)unregisterForAVCaptureSessionNotification
+{
     __weak typeof(self) weakSelf = self;
 	dispatch_async(self.sessionQueue, ^{
         typeof(self) strongSelf = weakSelf;
@@ -188,17 +203,6 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
 		[strongSelf removeObserver:strongSelf forKeyPath:@"sessionRunningAndDeviceAuthorized" context:SessionRunningAndDeviceAuthorizedContext];
 		[strongSelf removeObserver:strongSelf forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
 	});
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Main Functions
@@ -248,14 +252,8 @@ static void *SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevice
                                                    withFocalLength:focalLength
                                                  ifCornersDetected:strongSelf.canvas.cornersDetected];
                         
-                        // Think about whether it's right to put a filter here. App crashes if more than 75 photos are added to a single video.8
-                        // If, for some freak reason, the user was able to get into this view when there are 75 frames in this video, video fails to add the video and if fails the photo gets deleted. Worst case scenario.
                         BOOL success = [strongSelf.video addPhotosObjectWithAuthentification:strongSelf.photo];
                         if (!success) [Photo deletePhoto:strongSelf.photo];
-//                        [self.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-//                            if (error) NSLog(@"An error occurred while trying to save context %@", error);
-//                        }];
-                        
                         [strongSelf performSegueWithIdentifier:@"Add Image To Video" sender:self];
                     });
                 }

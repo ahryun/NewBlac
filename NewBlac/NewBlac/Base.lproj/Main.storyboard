@@ -310,7 +310,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
+                            <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alB-Uf-IqQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
@@ -604,7 +604,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.094117647060000004" green="0.70588235290000001" blue="0.65098039220000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="4JZ-YJ-6nb"/>
                                     <constraint firstItem="hsQ-IT-xRa" firstAttribute="leading" secondItem="aWv-d6-GC0" secondAttribute="trailing" constant="20" id="9JN-go-Hiv"/>
@@ -618,7 +618,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="IIy-vu-2bz" secondAttribute="bottom" id="ee4-hh-Y8f"/>
                             <constraint firstItem="IIy-vu-2bz" firstAttribute="leading" secondItem="h3a-vO-ABk" secondAttribute="leading" id="uW4-sJ-XzA"/>

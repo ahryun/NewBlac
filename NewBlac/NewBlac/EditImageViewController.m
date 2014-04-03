@@ -45,6 +45,11 @@
     
     self.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 
+    [self addImageView];
+}
+
+- (void)addImageView
+{
     // Add imageView
     UIImageView *imageView = [[UIImageView alloc] init];
     [self.view insertSubview:imageView belowSubview:self.buttonView];
@@ -57,39 +62,38 @@
     [self.originalImageView addGestureRecognizer:panGesture];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.buttonView.opaque = NO;
-    [self.buttonView setBackgroundColor:[UIColor clearColor]];
-}
-
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
     // ViewDidLayoutSubviews is called twice and thus calling my setup call twice.
     // This is a hackish way to fix that.
-    if (!self.cornerDetectionView) [self setup];
+    if (!self.cornerDetectionView) {
+        [self displayPhoto];
+        [self displayCorners];
+        self.cornerDetectionView.delegate = self;
+        [self.cornerDetectionView reloadData];
+        [self setupView];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
+    [self cleanUp];
+}
+
+- (void)cleanUp
+{
     self.view = nil;
     self.originalImageView = nil;
     self.cornerDetectionView = nil;
 }
 
-- (void)setup
+- (void)setupView
 {
     // Sets the controller as a delegate for CornerDetectionView
-    [self displayPhoto];
-    [self displayCorners];
-    self.cornerDetectionView.delegate = self;
-    [self.cornerDetectionView reloadData];
     
     NSLog(@"View frame is %f x %f", self.view.frame.size.width, self.view.frame.size.height);
     
@@ -201,13 +205,18 @@
 - (IBAction)backButtonPressed:(UIBarButtonItem *)sender
 {
     if (self.coordinatesChanged) {
-        NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
-        NSString *yesString = NSLocalizedString(@"yes", @"Action word to confirm leaving without saving");
-        UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Go back without saving?", @"Ask the user if she wants to leave the screen without saving the changes she's made") message:@"" delegate:self cancelButtonTitle:[cancelString capitalizedString] otherButtonTitles:[yesString capitalizedString], nil];
-        [saveBeforeLeavingAlert show];
+        [self askIfSaveBeforeLeaving];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (void)askIfSaveBeforeLeaving
+{
+    NSString *cancelString = NSLocalizedString(@"cancel", @"Action button to cancel action or modal");
+    NSString *yesString = NSLocalizedString(@"yes", @"Action word to confirm leaving without saving");
+    UIAlertView *saveBeforeLeavingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Go back without saving?", @"Ask the user if she wants to leave the screen without saving the changes she's made") message:@"" delegate:self cancelButtonTitle:[cancelString capitalizedString] otherButtonTitles:[yesString capitalizedString], nil];
+    [saveBeforeLeavingAlert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -318,16 +327,9 @@
     return corner.path;
 }
 
-// Delete below
-//- (UIBezierPath *)drawTapTargetInView:(CornerDetectionView *)view atIndex:(NSUInteger)index
-//{
-//    CornerCircle *corner = [self.corners objectAtIndex:index];
-//    return corner.tapTarget;
-//}
-
 - (UIColor *)fillColorInView:(CornerDetectionView *)view
 {
-    return [UIColor colorWithRed:(240.f/255) green:(101.f/255) blue:(98.f/255) alpha:1.f];
+    return PINK_COLOR;
 }
 
 - (NSUInteger)numberOfCornersInView:(CornerDetectionView *)view
