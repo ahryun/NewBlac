@@ -135,6 +135,7 @@ static const NSArray *fpsArray;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    if (!self.videoCreator.videoDoneCreating) [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
     self.autoCameraMode = NO;
 }
 

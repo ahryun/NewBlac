@@ -70,8 +70,15 @@
     [self.logInOrOutButton setTitle:[logoutString uppercaseString] forState:UIControlStateNormal];
     [self.profilePic setHidden:NO];
     [self setupProfilePicMask];
-    FBRequest *request = [FBRequest requestForMe];
     
+    // Load cached name, email and user photo until the latest data comes from FB
+    NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
+    [self.mainInstruction setText:[defaults stringForKey:@"name"]];
+    [self.subInstruction setText:[defaults stringForKey:@"email"]];
+    [self.profilePic setImage:[UIImage imageWithData:[defaults dataForKey:@"photoData"]]];
+    
+    
+    FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
@@ -82,10 +89,16 @@
             NSString *name = userData[@"name"];
             NSString *email = userData[@"email"];
             NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+            NSData *photoData = [NSData dataWithContentsOfURL:pictureURL options:NSDataReadingUncached error:&photoLoadingError];
+            NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
+            [defaults setObject:name forKey:@"name"];
+            [defaults setObject:email forKey:@"email"];
+            [defaults setObject:photoData forKey:@"photoData"];
+            [defaults synchronize];
             
-            [self.profilePic setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:pictureURL options:NSDataReadingUncached error:&photoLoadingError]]];
             [self.mainInstruction setText:name];
             [self.subInstruction setText:email];
+            [self.profilePic setImage:[UIImage imageWithData:photoData]];
         }
     }];
     

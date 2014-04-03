@@ -119,6 +119,7 @@ static const NSString *PlayerReadyContext;
 {
     [super viewWillDisappear:animated];
     
+    if (!self.videoCreator.videoDoneCreating) [self.videoCreator removeObserver:self forKeyPath:@"videoDoneCreating" context:&videoCompilingDone];
     self.ifAddNewVideo = [NSNumber numberWithBool:NO];
 }
 

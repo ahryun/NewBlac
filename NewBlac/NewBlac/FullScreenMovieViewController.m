@@ -57,7 +57,7 @@ static const NSString *PlayerDurationReady;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    if (!self.videoIsEmpty) [self.moviePlayerController unregisterNotification];
     self.moviePlayerController.isCancelled = YES;
     [self removeNotifications];
     [self stopDurationTimer];

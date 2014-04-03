@@ -156,7 +156,8 @@
     NSParameterAssert(context);
     
     ///////////////////////// Change the position of image origin ////////////////////////////////
-    CGFloat originalImageRatio = CGImageGetWidth(cgImage) / CGImageGetHeight(cgImage);
+    CGFloat originalImageRatio = (CGFloat)CGImageGetWidth(cgImage) / (CGFloat)CGImageGetHeight(cgImage);
+    NSLog(@"CGImage size is %zu, %zu", CGImageGetWidth(cgImage), CGImageGetHeight(cgImage));
     CGSize imageSize = [self getImageSizewithScreenSize:size withImageSize:originalImageRatio];
     CGContextDrawImage(context, CGRectMake((size.width - imageSize.width) / 2, (size.height - imageSize.height) / 2, imageSize.width, imageSize.height), cgImage);
     CGColorSpaceRelease(colorSpace);
@@ -185,11 +186,11 @@
     }
         
     if (videoRatio >= screenRatio) {
-        imageSize.width = (int)screenSize.width;
-        imageSize.height = (int)(screenSize.width / videoRatio);
+        imageSize.width = screenSize.width;
+        imageSize.height = (screenSize.width / videoRatio);
     } else {
-        imageSize.height = (int)screenSize.height;
-        imageSize.width = (int)(screenSize.height * videoRatio);
+        imageSize.height = screenSize.height;
+        imageSize.width = (screenSize.height * videoRatio);
     }
     
     return imageSize;
